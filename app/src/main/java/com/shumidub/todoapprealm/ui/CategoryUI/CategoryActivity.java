@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 import io.realm.RealmResults;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -71,7 +74,7 @@ public class CategoryActivity extends AppCompatActivity {
         }
 
         String groupFrom[] = new String[] { GROUPS };
-        int groupTo[] = new int[] {R.id.text1 };
+        int groupTo[] = new int[] {R.id.parent_text1};
 
         ArrayList<ArrayList<Map<String, String>>> childs = new ArrayList<>();
 
@@ -102,18 +105,17 @@ public class CategoryActivity extends AppCompatActivity {
         expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if (view.getId() == R.id.text1) {
-
-                    Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getGroup(i));
-                    textCategoryName = map.get(GROUPS);
-                    actionMode = startActionMode(callback);
-
+                if (view.getId() == R.id.parent_text1) {
+                    try{
+                        Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getGroup(i));
+                        textCategoryName = map.get(GROUPS);
+                        actionMode = startActionMode(callback);
+                    } catch (IndexOutOfBoundsException ignored){}
 //                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
+                    Log.d("DEBUG_TAG", "onItemLongClick: if");
+                }else{
+                    Log.d("DEBUG_TAG", "onItemLongClick: else");
                 }
-
-
                 return true;
             }
         });
@@ -121,8 +123,6 @@ public class CategoryActivity extends AppCompatActivity {
         if (categoryTasksListsBD.isEmpty()){
             ((TextView) findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
         }
-
-
 
         callback = new ActionMode.Callback() {
             @Override
@@ -159,47 +159,31 @@ public class CategoryActivity extends AppCompatActivity {
 
                Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getChild(i, i1));
                String textListName = map.get(CHILDS);
-               long listId =  CategoryRealmController.getTasksList(textListName).getId();
 
                if (!text.isEmpty() || !text.equals("")) {
                    TasksRealmController.insertItems(text, false, false, textListName);
                    et.setText("");
                }else{
+                   long listId;
+                   if (!CategoryRealmController.getTasksList(textListName).equals(null) ||
+                           CategoryRealmController.getTasksList(textListName) != null){
+                       listId = CategoryRealmController.getTasksList(textListName).getId();
+                   }else {
+                       listId = 0;
+                   }
                    Intent intent = new Intent(CategoryActivity.this, MainActivity.class);
+                   intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NEW_TASK);
                    intent.putExtra("textId", listId);
                    startActivity(intent);
                }
-
                return false;
             }
         });
-
-//        cl.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-//            @Override
-//            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-////                boolean someHasFocus = false;
-////                if(cl.hasFocus())
-//                    someHasFocus = true;
-////                if(someHasFocus){
-//                    if(bottom>oldBottom){
-//                        keyboardOpen = true;
-////                    }else if(bottom<oldBottom){
-//                        keyboardOpen = false;
-//                    }
-////                }else{
-//                    keyboardOpen = true;
-//                }
-//            }
-//        });
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem addCategory = menu.add("add category");
-
-
-
 
         addCategory.setOnMenuItemClickListener((MenuItem a) -> {
            (new DialogAddCategoty()).show(getSupportFragmentManager(), "category");

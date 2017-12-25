@@ -8,5 +8,17 @@ import io.realm.RealmObject;
 
 public class DefaultTasksList extends RealmObject {
 
-    //if null - all
+    private long defaulyId;
+
+    public long getDefaulyId() {
+        return defaulyId;
+    }
+
+    public void setDefaulyId(long defaulyId) {
+        this.defaulyId = defaulyId;
+    }
+
+
+
+    //toDo if null - all
 }

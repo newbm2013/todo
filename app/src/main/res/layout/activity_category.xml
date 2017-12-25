@@ -7,13 +7,17 @@
     tools:context="com.shumidub.todoapprealm.ui.CategoryUI.CategoryActivity"
     android:id="@+id/cl">
 
-<ExpandableListView
-    android:id="@+id/expandedable_list_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <ExpandableListView
+        android:id="@+id/expandedable_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/et">
 
 
-</ExpandableListView>
+    </ExpandableListView>
+
+
 
     <EditText
         android:id="@+id/et"

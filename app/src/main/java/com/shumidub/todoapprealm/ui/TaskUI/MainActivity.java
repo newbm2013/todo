@@ -23,15 +23,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         container =  findViewById(R.id.container);
         fragmentManager = getSupportFragmentManager();
-        if (!savedInstanceState.isEmpty()
-                && savedInstanceState.getLong("textListId", 0) != 0){
-            fragmentManager.beginTransaction().replace(R.id.container,
-                    ItemsFragment.newInstance(savedInstanceState.getLong("textListId"))).commit();
-        }
-        else{
-            fragmentManager.beginTransaction().replace(R.id.container, new ItemsFragment()).commit();
-        }
 
+        Intent intent = getIntent();
+        long listId= intent.getLongExtra("textId", 0);
+        fragmentManager.beginTransaction().replace(R.id.container,
+                ItemsFragment.newInstance(listId)).commit();
     }
 
     @Override
