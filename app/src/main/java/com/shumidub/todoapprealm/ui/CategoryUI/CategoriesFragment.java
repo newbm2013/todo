@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui;
+package com.shumidub.todoapprealm.ui.CategoryUI;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,10 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.RealmController;
+import com.shumidub.todoapprealm.model.TasksRealmController;
 
 /**
  * Created by Артем on 19.12.2017.
@@ -20,7 +19,7 @@ public class CategoriesFragment extends Fragment {
 
     Button enter;
 
-    RealmController realmController;
+
 
     @Nullable
     @Override
@@ -34,7 +33,7 @@ public class CategoriesFragment extends Fragment {
 
 
         enter = (Button) view.findViewById(R.id.btnEnter);
-        realmController = RealmController.getRealmController();
+
 
 //        enter.setOnClickListener( (b) ->  {
 //            realmController.insertItems(editText.getText().toString());

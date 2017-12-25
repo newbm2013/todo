@@ -10,7 +10,9 @@ import io.realm.RealmConfiguration;
  * Created by Артем on 19.12.2017.
  */
 
-public class TodoApp extends Application {
+public class App extends Application {
+
+    public static Realm realm;
 
     public final static String TAG = "DEBUG_TAG";
 
@@ -19,8 +21,15 @@ public class TodoApp extends Application {
         super.onCreate();
         Realm.init(this);
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder().build());
+        initRealm();
     }
 
+    public static void initRealm() {
+        if (realm == null) realm = Realm.getDefaultInstance();
+    }
 
+    public static void closeRealm(){
+        realm = null;
+    }
 
 }

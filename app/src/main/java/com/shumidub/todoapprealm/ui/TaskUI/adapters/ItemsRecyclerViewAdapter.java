@@ -1,28 +1,20 @@
-package com.shumidub.todoapprealm.ui;
+package com.shumidub.todoapprealm.ui.TaskUI.adapters;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.StrikethroughSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.bd.ItemsBD;
-import com.shumidub.todoapprealm.model.RealmController;
+import com.shumidub.todoapprealm.model.TasksRealmController;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
-import static com.shumidub.todoapprealm.model.RealmController.getRealmController;
+
 
 /**
  * Created by Артем on 19.12.2017.
@@ -31,8 +23,7 @@ import static com.shumidub.todoapprealm.model.RealmController.getRealmController
 public class ItemsRecyclerViewAdapter extends RecyclerView.Adapter<ItemsRecyclerViewAdapter.ViewHolder> {
 
     private List<ItemsBD> items;
-    RealmController realmController = getRealmController();
-
+    private boolean isNotEmpty;
 
     public ItemsRecyclerViewAdapter(List<ItemsBD> items){
         this.items = items;
@@ -40,7 +31,15 @@ public class ItemsRecyclerViewAdapter extends RecyclerView.Adapter<ItemsRecycler
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, null, false);
+        View view;
+        if (items != null && !items.isEmpty() && items.size() > 0) {
+            isNotEmpty = true;
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, null, false);
+        }else{
+            isNotEmpty = false;
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_empty_state, parent, false);
+        }
+
         return new ViewHolder(view);
     }
 
@@ -63,20 +62,21 @@ public class ItemsRecyclerViewAdapter extends RecyclerView.Adapter<ItemsRecycler
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
-        holder.textView.setText(items.get(position).getText());
-        holder.checkBox.setChecked(items.get(position).isDone());
-        setItemsGrayIfCheched(holder);
-        holder.checkBox.setOnCheckedChangeListener(
-                (cb, done) -> {
-                    realmController.setDoneByItemsId(done, items.get(position).getId());
-                    setItemsGrayIfCheched(holder);
-                });
+        if (isNotEmpty) {
+            holder.textView.setText(items.get(position).getText());
+            holder.checkBox.setChecked(items.get(position).isDone());
+            setItemsGrayIfCheched(holder);
+            holder.checkBox.setOnCheckedChangeListener(
+                    (cb, done) -> {
+                        TasksRealmController.setDoneByItemsId(done, items.get(position).getId());
+                        setItemsGrayIfCheched(holder);
+                    });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return (items != null && !items.isEmpty() && items.size() > 0) ? items.size() : 1;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -87,11 +87,10 @@ public class ItemsRecyclerViewAdapter extends RecyclerView.Adapter<ItemsRecycler
         public ViewHolder(View itemView) {
             super(itemView);
 
-
-
-            textView = itemView.findViewById(R.id.tv);
-            checkBox = itemView.findViewById(R.id.checkbox);
-
+            if(isNotEmpty) {
+                textView = itemView.findViewById(R.id.tv);
+                checkBox = itemView.findViewById(R.id.checkbox);
+            }
 
 
         }
