@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.bd;
+package com.shumidub.todoapprealm.model;
 
 import io.realm.RealmObject;
 
@@ -6,13 +6,13 @@ import io.realm.RealmObject;
  * Created by Артем on 24.12.2017.
  */
 
-public class TasksListBD extends RealmObject {
+public class ListModel extends RealmObject {
 
     private String name;
     private long id;
     private long idCategory;
     private boolean isCycling;
-    private boolean isDefault;
+//    private boolean isDefault; no field only view for DefaultTaskList setDefault
 
     public String getName() {
         return name;
@@ -45,15 +45,5 @@ public class TasksListBD extends RealmObject {
     public void setCycling(boolean cycling) {
         isCycling = cycling;
     }
-
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(boolean aDefault) {
-        isDefault = aDefault;
-    }
-
-
 
 }

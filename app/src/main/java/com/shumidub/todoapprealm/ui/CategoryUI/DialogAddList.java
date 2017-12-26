@@ -2,18 +2,13 @@ package com.shumidub.todoapprealm.ui.CategoryUI;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Switch;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.CategoryRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 
 import io.reactivex.annotations.NonNull;
 
@@ -39,7 +34,7 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
                         boolean isDefault = ((Switch) getDialog().findViewById(R.id.switch_default)).isChecked();
                         boolean isCycling = ((Switch) getDialog().findViewById(R.id.switch_cycling)).isChecked();
                         if (!text.isEmpty() && !categoryName.isEmpty()){
-                            CategoryRealmController.addTasksLists(text, isDefault, isCycling, categoryName );
+                            ListsRealmController.addTasksLists(text, isDefault, isCycling, categoryName );
                         }
                     }
                 })

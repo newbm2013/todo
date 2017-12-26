@@ -2,19 +2,16 @@ package com.shumidub.todoapprealm.ui.CategoryUI;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.CategoryRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 
 import io.reactivex.annotations.NonNull;
-
-import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 /**
  * Created by Артем on 24.12.2017.
@@ -35,7 +32,7 @@ public class DialogAddCategoty extends android.support.v4.app.DialogFragment{
                         EditText etName = getDialog().findViewById(R.id.name);
                         if (!etName.getText().toString().isEmpty()) {
                             String text = etName.getText().toString();
-                            CategoryRealmController.addCategory(text);
+                            CategoriesRealmController.addCategory(text);
                             Toast.makeText(getContext(), "new category added", Toast.LENGTH_SHORT).show();
                         }else {Toast.makeText(getContext(), "can't be empty", Toast.LENGTH_SHORT).show();}
                     }

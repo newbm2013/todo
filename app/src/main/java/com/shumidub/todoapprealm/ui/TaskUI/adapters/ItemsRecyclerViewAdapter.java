@@ -9,8 +9,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.bd.ItemsBD;
-import com.shumidub.todoapprealm.model.TasksRealmController;
+import com.shumidub.todoapprealm.model.TaskModel;
+import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 
 import java.util.List;
 
@@ -22,10 +22,10 @@ import java.util.List;
 
 public class ItemsRecyclerViewAdapter extends RecyclerView.Adapter<ItemsRecyclerViewAdapter.ViewHolder> {
 
-    private List<ItemsBD> items;
+    private List<TaskModel> items;
     private boolean isNotEmpty;
 
-    public ItemsRecyclerViewAdapter(List<ItemsBD> items){
+    public ItemsRecyclerViewAdapter(List<TaskModel> items){
         this.items = items;
     }
 

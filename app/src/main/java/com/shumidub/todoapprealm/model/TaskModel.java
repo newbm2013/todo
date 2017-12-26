@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.bd;
+package com.shumidub.todoapprealm.model;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ import io.realm.RealmObject;
  * Created by Артем on 19.12.2017.
  */
 
-public class ItemsBD extends RealmObject {
+public class TaskModel extends RealmObject {
 
     private long id;
     private String text;

@@ -2,7 +2,6 @@ package com.shumidub.todoapprealm.ui.TaskUI;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.bd.ItemsBD;
-import com.shumidub.todoapprealm.model.TasksRealmController;
+import com.shumidub.todoapprealm.model.TaskModel;
+import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.TaskUI.adapters.ItemsRecyclerViewAdapter;
 
 import java.util.List;
@@ -80,7 +79,7 @@ public class ItemsFragment extends Fragment {
 
         Log.d(TAG, "onViewCreated: listId = " + listId);
 
-        List<ItemsBD> items;
+        List<TaskModel> items;
 
         if (listId == 0) items = realmController.getItems();
         else items = realmController.getItems(listId);

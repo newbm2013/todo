@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.bd;
+package com.shumidub.todoapprealm.model;
 
 import io.realm.RealmObject;
 
@@ -6,7 +6,7 @@ import io.realm.RealmObject;
  * Created by Артем on 24.12.2017.
  */
 
-public class CategoryTasksListsBD extends RealmObject{
+public class CategoryModel extends RealmObject{
 
     private String name;
     private long id;

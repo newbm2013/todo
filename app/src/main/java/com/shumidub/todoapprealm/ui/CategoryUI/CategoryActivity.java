@@ -1,9 +1,7 @@
 package com.shumidub.todoapprealm.ui.CategoryUI;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,27 +9,24 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
-import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.bd.CategoryTasksListsBD;
-import com.shumidub.todoapprealm.bd.TasksListBD;
-import com.shumidub.todoapprealm.model.CategoryRealmController;
-import com.shumidub.todoapprealm.model.TasksRealmController;
+import com.shumidub.todoapprealm.model.CategoryModel;
+import com.shumidub.todoapprealm.model.ListModel;
+import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.TaskUI.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.realm.RealmResults;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
@@ -62,12 +57,12 @@ public class CategoryActivity extends AppCompatActivity {
         expandableListView = findViewById(R.id.expandedable_list_view);
 
         Map<String, String> map;
-        List<CategoryTasksListsBD> categoryTasksListsBD = CategoryRealmController.getCategoryTasksList();
-        List<TasksListBD> tasksListBDLIst = CategoryRealmController.getTasksList();
+        List<CategoryModel> categories = CategoriesRealmController.getCategories();
+        List<ListModel> lists = ListsRealmController.getLists();
 
         ArrayList<Map<String, String>> groups = new ArrayList<>();
 
-        for ( CategoryTasksListsBD item: categoryTasksListsBD) {
+        for ( CategoryModel item: categories) {
             map = new HashMap<>();
             map.put(GROUPS, item.getName());
             groups.add(map);
@@ -80,11 +75,11 @@ public class CategoryActivity extends AppCompatActivity {
 
         ArrayList<Map<String, String>> arrayList;
 
-        for (CategoryTasksListsBD category: categoryTasksListsBD){
-            List<TasksListBD> tasksList = CategoryRealmController.getTasksList(category.getId());
+        for (CategoryModel category: categories){
+            List<ListModel> tasksList = ListsRealmController.getListsByCategoryId(category.getId());
             arrayList = new ArrayList<>();
 
-            for (TasksListBD item : tasksList){
+            for (ListModel item : tasksList){
                 map = new HashMap<>();
                 map.put(CHILDS, item.getName());
                 arrayList.add(map);
@@ -120,8 +115,8 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        if (categoryTasksListsBD.isEmpty()){
-            ((TextView) findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
+        if (categories.isEmpty()){
+            (findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
         }
 
         callback = new ActionMode.Callback() {
@@ -148,7 +143,6 @@ public class CategoryActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode actionMode) {
-
             }
         };
 
@@ -165,9 +159,9 @@ public class CategoryActivity extends AppCompatActivity {
                    et.setText("");
                }else{
                    long listId;
-                   if (!CategoryRealmController.getTasksList(textListName).equals(null) ||
-                           CategoryRealmController.getTasksList(textListName) != null){
-                       listId = CategoryRealmController.getTasksList(textListName).getId();
+                   if (!ListsRealmController.getTasksList(textListName).equals(null) ||
+                           ListsRealmController.getTasksList(textListName) != null){
+                       listId = ListsRealmController.getTasksList(textListName).getId();
                    }else {
                        listId = 0;
                    }
@@ -189,8 +183,6 @@ public class CategoryActivity extends AppCompatActivity {
            (new DialogAddCategoty()).show(getSupportFragmentManager(), "category");
            return true;
         });
-
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -198,6 +190,4 @@ public class CategoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
-
-
 }

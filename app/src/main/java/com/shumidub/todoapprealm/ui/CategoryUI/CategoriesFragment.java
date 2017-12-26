@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.TasksRealmController;
 
 /**
  * Created by Артем on 19.12.2017.

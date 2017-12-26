@@ -1,8 +1,8 @@
-package com.shumidub.todoapprealm.model;
+package com.shumidub.todoapprealm.realmcontrollers;
 
 import com.shumidub.todoapprealm.App;
-import com.shumidub.todoapprealm.bd.ItemsBD;
-import com.shumidub.todoapprealm.bd.TasksListBD;
+import com.shumidub.todoapprealm.model.ListModel;
+import com.shumidub.todoapprealm.model.TaskModel;
 
 import java.util.Date;
 import java.util.List;
@@ -14,25 +14,25 @@ import io.realm.Sort;
  * Created by Артем on 21.12.2017.
  */
 
-
 public class TasksRealmController {
 
-   public static List<ItemsBD> getItems(){
-        if (App.realm == null) App.initRealm();
-        return App.realm.where(ItemsBD.class).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+   public static List<TaskModel> getItems(){
+        App.initRealm();
+        return App.realm.where(TaskModel.class).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
-    public static List<ItemsBD> getItems(long listId){
-        if (App.realm == null) App.initRealm();
-        return App.realm.where(ItemsBD.class).equalTo("taskListId", listId).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+    public static List<TaskModel> getItems(long listId){
+        App.initRealm();
+        return App.realm.where(TaskModel.class).equalTo("taskListId", listId).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
     public static  void insertItems(String text, boolean done, boolean important, long taskListId ){
+        App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                ItemsBD item = realm.createObject(ItemsBD.class);
-                item.setId(getIdForNextValue(ItemsBD.class));
+                TaskModel item = realm.createObject(TaskModel.class);
+                item.setId(getIdForNextValue(TaskModel.class));
                 item.setText(text);
                 item.setDone(done);
                 item.setLastDoneDate(new Date());
@@ -46,7 +46,8 @@ public class TasksRealmController {
     }
 
     public static  void insertItems(String text, boolean done, boolean important, String taskListName ){
-        long taskListId = App.realm.where(TasksListBD.class).equalTo("name", taskListName).findFirst().getId();
+        App.initRealm();
+        long taskListId = App.realm.where(ListModel.class).equalTo("name", taskListName).findFirst().getId();
         insertItems(text,done,important,taskListId);
     }
 
@@ -55,10 +56,11 @@ public class TasksRealmController {
     }
 
     public static void setDoneByItemsId(boolean b, long id){
+        App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                ItemsBD items = realm.where(ItemsBD.class).equalTo("id", id).findFirst();
+                TaskModel items = realm.where(TaskModel.class).equalTo("id", id).findFirst();
                 items.setDone(b);
             }
         });
