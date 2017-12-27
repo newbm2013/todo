@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.realm.RealmResults;
+
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class CategoryActivity extends AppCompatActivity {
@@ -95,6 +97,9 @@ public class CategoryActivity extends AppCompatActivity {
                 groups,R.layout.group_expandable_list, groupFrom, groupTo,
                 childs, android.R.layout.simple_list_item_1, childFrom, childTo);
 
+        findViews();
+        CategoriesAndListsAdapter categoriesAndListsAdapter = new CategoriesAndListsAdapter(this);
+        simpleExpandableListAdapter = categoriesAndListsAdapter.getAdapter();
         expandableListView.setAdapter(simpleExpandableListAdapter);
 
         expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -132,14 +137,10 @@ public class CategoryActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                return false;
-            }
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) { return false; }
 
             @Override
-            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                return false;
-            }
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) { return false;}
 
             @Override
             public void onDestroyActionMode(ActionMode actionMode) {
@@ -189,5 +190,12 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    private void findViews(){
+        expandableListView = findViewById(R.id.expandedable_list_view);
+        et = findViewById(R.id.et);
+        swDefault = findViewById(R.id.switch_default);
+        swCycling = findViewById(R.id.switch_cycling);
     }
 }

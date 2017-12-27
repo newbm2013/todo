@@ -10,22 +10,39 @@
     <ExpandableListView
         android:id="@+id/expandedable_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/et">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/switch_cycling"
+        app:layout_constraintTop_toTopOf="parent">
+        ></ExpandableListView>
+    
+    <Switch
+        android:id="@+id/switch_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="default"
+        app:layout_constraintBottom_toTopOf="@id/et"/>
 
-
-    </ExpandableListView>
-
+    <Switch
+        android:id="@+id/switch_cycling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cyclng"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/switch_default"
+        app:layout_constraintBottom_toBottomOf="@id/switch_default"
+        />
 
 
     <EditText
         android:id="@+id/et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="2dp"
         android:hint="add new task..."
-        app:layout_constraintBottom_toBottomOf="@+id/expandedable_list_view" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
     <TextView
         android:id="@+id/tv_empty"
