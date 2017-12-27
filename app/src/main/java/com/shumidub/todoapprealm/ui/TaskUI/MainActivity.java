@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         long listId= intent.getLongExtra("textId", 0);
         fragmentManager.beginTransaction().replace(R.id.container,
-                ItemsFragment.newInstance(listId)).commit();
+                TasksFragment.newInstance(listId)).commit();
     }
 
     @Override

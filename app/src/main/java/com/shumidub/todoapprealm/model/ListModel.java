@@ -12,7 +12,7 @@ public class ListModel extends RealmObject {
     private long id;
     private long idCategory;
     private boolean isCycling;
-//    private boolean isDefault; no field only view for DefaultTaskList setDefault
+//  private boolean isDefault; no field only view for DefaultTaskList setDefault
 
     public String getName() {
         return name;

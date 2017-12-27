@@ -18,8 +18,6 @@ public class TaskModel extends RealmObject {
     private Date lastDoneDate;
     private boolean isCycling;
 
-
-
     private int countValue;
 
     public long getId() {return id;}
@@ -64,7 +62,5 @@ public class TaskModel extends RealmObject {
     public void setCountValue(int countValue) {
         this.countValue = countValue;
     }
-
-
 
 }

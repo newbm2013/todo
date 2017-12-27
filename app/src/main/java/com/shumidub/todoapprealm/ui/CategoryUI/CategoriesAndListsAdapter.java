@@ -1,13 +1,13 @@
 package com.shumidub.todoapprealm.ui.CategoryUI;
 
-import android.app.Activity;
 import android.content.Context;
 import android.widget.SimpleExpandableListAdapter;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.bd.CategoryTasksListsBD;
-import com.shumidub.todoapprealm.bd.TasksListBD;
-import com.shumidub.todoapprealm.model.CategoryRealmController;
+import com.shumidub.todoapprealm.model.CategoryModel;
+import com.shumidub.todoapprealm.model.ListModel;
+import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,36 +23,45 @@ public class CategoriesAndListsAdapter {
     static final String GROUPS = "groups";
     static final String CHILDS = "childs";
     SimpleExpandableListAdapter simpleExpandableListAdapter;
-    List<CategoryTasksListsBD> categoryTasksListsBD;
-    List<TasksListBD> tasksList;
 
     public CategoriesAndListsAdapter(Context context) {
 
-            Map<String, String> map;
-            categoryTasksListsBD = CategoryRealmController.getCategoryTasksList();
-            ArrayList<Map<String, String>> groups = new ArrayList<>();
-            for (CategoryTasksListsBD item : categoryTasksListsBD) {
-                map = new HashMap<>();
-                map.put(GROUPS, item.getName());
-                groups.add(map);
-            }
-            String groupFrom[] = new String[]{GROUPS};
-            int groupTo[] = new int[]{R.id.parent_text1};
+        Map<String, String> map;
+        List<CategoryModel> categories = CategoriesRealmController.getCategories();
+        List<ListModel> lists = ListsRealmController.getLists();
 
-            ArrayList<ArrayList<Map<String, String>>> childs = new ArrayList<>();
-            ArrayList<Map<String, String>> arrayList;
-            for (CategoryTasksListsBD category : categoryTasksListsBD) {
-                tasksList = CategoryRealmController.getTasksList(category.getId());
-                arrayList = new ArrayList<>();
-                for (TasksListBD item : tasksList) {
-                    map = new HashMap<>();
-                    map.put(CHILDS, item.getName());
-                    arrayList.add(map);
-                }
-                childs.add(arrayList);
+        ArrayList<Map<String, String>> groups = new ArrayList<>();
+
+        for ( CategoryModel item: categories) {
+            map = new HashMap<>();
+            map.put(GROUPS, item.getName());
+            groups.add(map);
+        }
+
+        String groupFrom[] = new String[] { GROUPS };
+        int groupTo[] = new int[] {R.id.parent_text1};
+
+        ArrayList<ArrayList<Map<String, String>>> childs = new ArrayList<>();
+
+        ArrayList<Map<String, String>> arrayList;
+
+        for (CategoryModel category: categories){
+            List<ListModel> tasksList = ListsRealmController.getListsByCategoryId(category.getId());
+            arrayList = new ArrayList<>();
+
+            for (ListModel item : tasksList){
+                map = new HashMap<>();
+                map.put(CHILDS, item.getName());
+                arrayList.add(map);
             }
-            String childFrom[] = new String[]{CHILDS};
-            int childTo[] = new int[]{android.R.id.text1};
+            childs.add(arrayList);
+        }
+
+        String childFrom[] = new String[] { CHILDS};
+        int childTo[] = new int[] { android.R.id.text1 };
+
+
+
             simpleExpandableListAdapter = new android.widget.SimpleExpandableListAdapter(
                     context,
                     groups, R.layout.group_expandable_list, groupFrom, groupTo,

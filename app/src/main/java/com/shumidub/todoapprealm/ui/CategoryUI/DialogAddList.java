@@ -45,6 +45,4 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
                 });
         return builder.create();
     }
-
-
 }

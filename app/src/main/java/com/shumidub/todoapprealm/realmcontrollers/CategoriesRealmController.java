@@ -2,7 +2,6 @@ package com.shumidub.todoapprealm.realmcontrollers;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.model.CategoryModel;
-import com.shumidub.todoapprealm.model.ListModel;
 
 import java.util.List;
 
@@ -19,8 +18,7 @@ public class CategoriesRealmController {
     private static List<CategoryModel> categories;
 
 
-
-    public static RealmQuery<CategoryModel> getcategoryQuery(){
+    public static RealmQuery<CategoryModel> getcategoriesQuery(){
         App.initRealm();
 //        if (listsQuery == null){..below..}
         categoriesQuery = App.realm.where(CategoryModel.class);
@@ -28,8 +26,13 @@ public class CategoriesRealmController {
     }
 
     public static List<CategoryModel>  getCategories(){
-        categories = getcategoryQuery().findAll();
+        categories = getcategoriesQuery().findAll();
         return categories;
+    }
+
+    public static boolean categoriesIsEmpry(){
+        App.initRealm();
+        return getcategoriesQuery().findAll().isEmpty();
     }
 
     public static void addCategory(String name){

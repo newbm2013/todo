@@ -11,7 +11,6 @@ public class CategoryModel extends RealmObject{
     private String name;
     private long id;
 
-
     public String getName() {
         return name;
     }
@@ -27,6 +26,4 @@ public class CategoryModel extends RealmObject{
     public void setId(long id) {
         this.id = id;
     }
-
-
 }
