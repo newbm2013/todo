@@ -1,9 +1,6 @@
 package com.shumidub.todoapprealm.ui.CategoryUI;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,96 +8,46 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
+import android.widget.Switch;
 import android.widget.TextView;
 
-import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.bd.CategoryTasksListsBD;
-import com.shumidub.todoapprealm.bd.TasksListBD;
 import com.shumidub.todoapprealm.model.CategoryRealmController;
 import com.shumidub.todoapprealm.model.TasksRealmController;
 import com.shumidub.todoapprealm.ui.TaskUI.MainActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import io.realm.RealmResults;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class CategoryActivity extends AppCompatActivity {
 
     EditText et;
-    Boolean keyboardOpen = false;
-
+    Switch swDefault;
+    Switch swCycling;
     ExpandableListView expandableListView;
-    final String GROUPS = "groups";
-    final String CHILDS = "childs";
-
+    android.widget.SimpleExpandableListAdapter simpleExpandableListAdapter;
     ActionMode actionMode;
     ActionMode.Callback callback;
-
     public static String textCategoryName;
 
-    ConstraintLayout cl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        cl = findViewById(R.id.cl);
-
-        et = findViewById(R.id.et);
-        expandableListView = findViewById(R.id.expandedable_list_view);
-
-        Map<String, String> map;
-        List<CategoryTasksListsBD> categoryTasksListsBD = CategoryRealmController.getCategoryTasksList();
-        List<TasksListBD> tasksListBDLIst = CategoryRealmController.getTasksList();
-
-        ArrayList<Map<String, String>> groups = new ArrayList<>();
-
-        for ( CategoryTasksListsBD item: categoryTasksListsBD) {
-            map = new HashMap<>();
-            map.put(GROUPS, item.getName());
-            groups.add(map);
-        }
-
-        String groupFrom[] = new String[] { GROUPS };
-        int groupTo[] = new int[] {R.id.parent_text1};
-
-        ArrayList<ArrayList<Map<String, String>>> childs = new ArrayList<>();
-
-        ArrayList<Map<String, String>> arrayList;
-
-        for (CategoryTasksListsBD category: categoryTasksListsBD){
-            List<TasksListBD> tasksList = CategoryRealmController.getTasksList(category.getId());
-            arrayList = new ArrayList<>();
-
-            for (TasksListBD item : tasksList){
-                map = new HashMap<>();
-                map.put(CHILDS, item.getName());
-                arrayList.add(map);
-            }
-            childs.add(arrayList);
-        }
-
-        String childFrom[] = new String[] { CHILDS};
-        int childTo[] = new int[] { android.R.id.text1 };
-
-        SimpleExpandableListAdapter simpleExpandableListAdapter = new SimpleExpandableListAdapter(
-                this,
-                groups,R.layout.group_expandable_list, groupFrom, groupTo,
-                childs, android.R.layout.simple_list_item_1, childFrom, childTo);
-
+        findViews();
+        CategoriesAndListsAdapter categoriesAndListsAdapter = new CategoriesAndListsAdapter(this);
+        simpleExpandableListAdapter = categoriesAndListsAdapter.getAdapter();
         expandableListView.setAdapter(simpleExpandableListAdapter);
+
+        if (categoriesAndListsAdapter.categoryTasksListsBD.isEmpty()){
+            ((TextView) findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
+        }
 
         expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -108,7 +55,7 @@ public class CategoryActivity extends AppCompatActivity {
                 if (view.getId() == R.id.parent_text1) {
                     try{
                         Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getGroup(i));
-                        textCategoryName = map.get(GROUPS);
+                        textCategoryName = map.get(CategoriesAndListsAdapter.GROUPS);
                         actionMode = startActionMode(callback);
                     } catch (IndexOutOfBoundsException ignored){}
 //                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -119,10 +66,6 @@ public class CategoryActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        if (categoryTasksListsBD.isEmpty()){
-            ((TextView) findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
-        }
 
         callback = new ActionMode.Callback() {
             @Override
@@ -137,19 +80,13 @@ public class CategoryActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                return false;
-            }
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) { return false; }
 
             @Override
-            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                return false;
-            }
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) { return false;}
 
             @Override
-            public void onDestroyActionMode(ActionMode actionMode) {
-
-            }
+            public void onDestroyActionMode(ActionMode actionMode) { }
         };
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -158,7 +95,7 @@ public class CategoryActivity extends AppCompatActivity {
                String text = et.getText().toString();
 
                Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getChild(i, i1));
-               String textListName = map.get(CHILDS);
+               String textListName = map.get(CategoriesAndListsAdapter.CHILDS);
 
                if (!text.isEmpty() || !text.equals("")) {
                    TasksRealmController.insertItems(text, false, false, textListName);
@@ -184,13 +121,10 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem addCategory = menu.add("add category");
-
         addCategory.setOnMenuItemClickListener((MenuItem a) -> {
            (new DialogAddCategoty()).show(getSupportFragmentManager(), "category");
            return true;
         });
-
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -199,5 +133,10 @@ public class CategoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    private void findViews(){
+        expandableListView = findViewById(R.id.expandedable_list_view);
+        et = findViewById(R.id.et);
+        swDefault = findViewById(R.id.switch_default);
+        swCycling = findViewById(R.id.switch_cycling);
+    }
 }
