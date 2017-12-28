@@ -2,6 +2,7 @@ package com.shumidub.todoapprealm.ui.TaskUI.adapters;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 
 import java.util.List;
 
+import static com.shumidub.todoapprealm.App.TAG;
 
 
 /**
@@ -24,6 +26,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
     private List<TaskModel> items;
     private boolean isNotEmpty;
+
 
     public TasksRecyclerViewAdapter(List<TaskModel> items){
         this.items = items;
@@ -43,34 +46,92 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         return new ViewHolder(view);
     }
 
-    private void setItemsGrayIfCheched(ViewHolder holder){
-        if (holder.checkBox.isChecked()){
+    private void setTasksTextColor(ViewHolder holder, boolean isDone){
+        if (isDone){
             holder.textView.setTextColor(Color.GRAY);
 //            Spannable text = new SpannableString(holder.textView.getText().toString());
 //            text.setSpan(new StrikethroughSpan(), 0, text.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 //            holder.textView.setText(text);
+        }else if(!isDone){
+            holder.textView.setTextColor(Color.BLACK);
+//            String text = holder.textView.getText().toString();
+//            holder.textView.setText(text);
         }
     }
 
-    private void setItemsNormalIfNotCheched(ViewHolder holder){
-        if (!holder.checkBox.isChecked()){
-            holder.textView.setTextColor(Color.BLACK);
-            String text = holder.textView.getText().toString();
-            holder.textView.setText(text);
-        }
-    }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (isNotEmpty) {
-            holder.textView.setText(items.get(position).getText());
-            holder.checkBox.setChecked(items.get(position).isDone());
-            setItemsGrayIfCheched(holder);
+
+            TaskModel item = items.get(position);
+
+            long taskId = item.getId();
+            String text = item.getText();
+
+
+//            Log.d(TAG + "1", "onBindViewHolder: taskID " +items.get(position).getText() + " =" + taskId );
+
+
+            holder.textView.setText(text);
+            holder.textView.setTag(taskId);
+
+
+            holder.checkBox.setChecked(item.isDone());
+            setTasksTextColor(holder, item.isDone());
+
             holder.checkBox.setOnCheckedChangeListener(
                     (cb, done) -> {
-                        TasksRealmController.setDoneByItemsId(done, items.get(position).getId());
-                        setItemsGrayIfCheched(holder);
+                        TasksRealmController.setTaskDone(item, done);
+
+//                        holder.checkBox.isChecked()   done
+
+//                        isDone = items.get(position).isDone(); //or better done = isDone ?
+//
+                        Log.d(TAG+ "1", "SET_DONE: " +
+                                            "\n " +
+                                        "\nitem text = " + item.getText() +
+                                        "\nitems.get(position).getText() = " + items.get(position).getText() +
+                                             "\n " +
+                                        "\nitem = " + item.hashCode() +
+                                        "\nitems.get(position) =" + items.get(position).hashCode() +
+                                            "\n " +
+                                        "\nitem.taskID = " + item.getId() +
+                                        "\nitems.get(position).taskID = " + items.get(position).getId() +
+                                        "\ntaskID = " + taskId +
+                                            "\n " +
+                                        "\nitem.isDone =" + item.isDone() +
+                                        "\nitemsget(position).isDone =" + items.get(position).isDone() +
+                                        "\ndone = " + done );
+
+                        setTasksTextColor(holder, item.isDone());
                     });
+
+
+
+            holder.textView.setOnClickListener( (a)->
+                    {Log.d(TAG+ "1", "CLICK: " +
+                            "\n " +
+                            "\nitem text = " + item.getText() +
+                            "\nitems.get(position).getText() = " + items.get(position).getText() +
+                            "\n " +
+                            "\nitem = " + item.hashCode() +
+                            "\nitems.get(position) =" + items.get(position).hashCode() +
+                            "\n " +
+                            "\nitem.taskID = " + item.getId() +
+                            "\nitems.get(position).taskID = " + items.get(position).getId() +
+                            "\ntaskID = " + taskId +
+                            "\n " +
+                            "\nitem.isDone =" + item.isDone() +
+                            "\nitemsget(position).isDone =" + items.get(position).isDone() );
+                     });
+
+
+            holder.textView.setOnLongClickListener((a)-> {
+                Log.d(TAG+ "1", "onLongClick: taskID " +items.get(position).getText()
+                    + " =" + taskId  +"/" + items.get(position).getId()
+                   );
+                return true;});
         }
     }
 

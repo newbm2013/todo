@@ -55,13 +55,12 @@ public class TasksRealmController {
         insertItems(text, false, false, 0);
     }
 
-    public static void setDoneByItemsId(boolean b, long id){
+    public static void setTaskDone(TaskModel task, boolean done){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                TaskModel items = realm.where(TaskModel.class).equalTo("id", id).findFirst();
-                items.setDone(b);
+                task.setDone(done);
             }
         });
     }
