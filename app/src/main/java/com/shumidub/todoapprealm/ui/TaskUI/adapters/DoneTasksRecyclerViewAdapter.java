@@ -22,20 +22,20 @@ import static com.shumidub.todoapprealm.App.TAG;
  * Created by Артем on 19.12.2017.
  */
 
-public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAdapter.ViewHolder> {
+public class DoneTasksRecyclerViewAdapter extends RecyclerView.Adapter<DoneTasksRecyclerViewAdapter.ViewHolder> {
 
-    private List<TaskModel> tasks;
+    private List<TaskModel> doneTasks;
     private boolean isNotEmpty;
 
 
-    public TasksRecyclerViewAdapter(List<TaskModel> items){
-        this.tasks = items;
+    public DoneTasksRecyclerViewAdapter(List<TaskModel> items){
+        this.doneTasks = items;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if (tasks != null && !tasks.isEmpty() && tasks.size() > 0) {
+        if (doneTasks != null && !doneTasks.isEmpty() && doneTasks.size() > 0) {
             isNotEmpty = true;
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, null, false);
         }else{
@@ -59,7 +59,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (isNotEmpty) {
 
-            TaskModel item = tasks.get(position);
+            TaskModel item = doneTasks.get(position);
 
             long taskId = item.getId();
             String text = item.getText();
@@ -76,27 +76,21 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                     (cb) -> {
 
                         TasksRealmController.setTaskDone(item, holder.checkBox.isChecked());
-                        notifyDataSetChanged();
 
-                        try {
-                            Log.d(TAG + "1", "SET_DONE: " +
-                                    "\n " +
-                                    "\nitem text = " + item.getText() +
-                                    "\nitems.get(position).getText() = " + tasks.get(position).getText() +
-                                    "\n " +
-                                    "\nitem = " + item.hashCode() +
-                                    "\nitems.get(position) =" + tasks.get(position).hashCode() +
-                                    "\n " +
-                                    "\nitem.taskID = " + item.getId() +
-                                    "\nitems.get(position).taskID = " + tasks.get(position).getId() +
-                                    "\ntaskID = " + taskId +
-                                    "\n " +
-                                    "\nitem.isDone =" + item.isDone() +
-                                    "\nitemsget(position).isDone =" + tasks.get(position).isDone());
-                        }catch (ArrayIndexOutOfBoundsException e){
-                            e.printStackTrace();
-                        }
-
+                        Log.d(TAG+ "1", "SET_DONE: " +
+                                            "\n " +
+                                        "\nitem text = " + item.getText() +
+                                        "\nitems.get(position).getText() = " + doneTasks.get(position).getText() +
+                                             "\n " +
+                                        "\nitem = " + item.hashCode() +
+                                        "\nitems.get(position) =" + doneTasks.get(position).hashCode() +
+                                            "\n " +
+                                        "\nitem.taskID = " + item.getId() +
+                                        "\nitems.get(position).taskID = " + doneTasks.get(position).getId() +
+                                        "\ntaskID = " + taskId +
+                                            "\n " +
+                                        "\nitem.isDone =" + item.isDone() +
+                                        "\nitemsget(position).isDone =" + doneTasks.get(position).isDone());
 
                         setTasksTextColor(holder, item.isDone());
                     });
@@ -131,7 +125,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
     @Override
     public int getItemCount() {
-        return (tasks != null && !tasks.isEmpty() && tasks.size() > 0) ? tasks.size() : 1;
+        return (doneTasks != null && !doneTasks.isEmpty() && doneTasks.size() > 0) ? doneTasks.size() : 1;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
