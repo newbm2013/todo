@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.ui.TaskUI.adapters.DoneTasksRecyclerViewAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.adapters.TasksRecyclerViewAdapter;
 
 import java.util.List;
@@ -27,6 +28,12 @@ import static com.shumidub.todoapprealm.App.TAG;
 public class TasksFragment extends Fragment {
 
     long listId;
+    public TasksRecyclerViewAdapter tasksRecyclerViewAdapter;
+    public DoneTasksRecyclerViewAdapter doneTasksRecyclerViewAdapter;
+    TasksRealmController realmController;
+
+    RecyclerView rvItems;
+    RecyclerView rvDoneTasks;
 
     public static TasksFragment newInstance(long listId){
         TasksFragment itemFragment = new TasksFragment();
@@ -41,11 +48,7 @@ public class TasksFragment extends Fragment {
 //        return itemFragment;
 //    }
 
-    public TasksRecyclerViewAdapter tasksRecyclerViewAdapter;
-    TasksRealmController realmController;
 
-    RecyclerView rvItems;
-    EditText etItems;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,16 +74,26 @@ public class TasksFragment extends Fragment {
 
         if (realmController == null) realmController = new TasksRealmController();
         rvItems = view.findViewById(R.id.rv_items);
+        rvDoneTasks = view.findViewById(R.id.rv_done_task);
 
         Log.d(TAG, "onViewCreated: listId = " + listId);
 
         List<TaskModel> items;
 
-        if (listId == 0) items = realmController.getItems();
-        else items = realmController.getItems(listId);
+        if (listId == 0) items = realmController.getTasks();
+        else items = realmController.getTasks(listId);
 
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(items);
         rvItems.setAdapter(tasksRecyclerViewAdapter);
+
+        List<TaskModel> doneTasks;
+
+        if (listId == 0) doneTasks = realmController.getDoneTasks();
+        else doneTasks = realmController.getDoneTasks(listId);
+
+        rvDoneTasks.setLayoutManager(new LinearLayoutManager(getContext()));
+        doneTasksRecyclerViewAdapter = new DoneTasksRecyclerViewAdapter(doneTasks);
+        rvDoneTasks.setAdapter(tasksRecyclerViewAdapter);
     }
 }

@@ -16,14 +16,48 @@ import io.realm.Sort;
 
 public class TasksRealmController {
 
-   public static List<TaskModel> getItems(){
+//   public static List<TaskModel> getItems(){
+//        App.initRealm();
+//        return App.realm.where(TaskModel.class).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+//    }
+
+//    public static List<TaskModel> getItems(long listId){
+//        App.initRealm();
+//        return App.realm.where(TaskModel.class).equalTo("taskListId", listId).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+//    }
+
+    public static List<TaskModel> getTasks(){
         App.initRealm();
-        return App.realm.where(TaskModel.class).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+        return App.realm.where(TaskModel.class)
+                .equalTo("done", false)
+                .findAll()
+                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
-    public static List<TaskModel> getItems(long listId){
+    public static List<TaskModel> getDoneTasks(){
         App.initRealm();
-        return App.realm.where(TaskModel.class).equalTo("taskListId", listId).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+        return App.realm.where(TaskModel.class)
+                .equalTo("done", true)
+                .findAll()
+                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+    }
+
+    public static List<TaskModel> getTasks(long listId){
+        App.initRealm();
+        return App.realm.where(TaskModel.class)
+                .equalTo("taskListId", listId)
+                .equalTo("done", false)
+                .findAll()
+                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+    }
+
+    public static List<TaskModel> getDoneTasks(long listId){
+        App.initRealm();
+        return App.realm.where(TaskModel.class)
+                .equalTo("taskListId", listId)
+                .equalTo("done", true)
+                .findAll()
+                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
     public static  void insertItems(String text, boolean done, boolean important, long taskListId ){
