@@ -47,4 +47,34 @@ public class CategoriesRealmController {
             }
         });
     }
+
+    public static void editCategory(String name){
+        App.initRealm();
+        App.realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                CategoryModel item = getcategoriesQuery().equalTo("name", name).findFirst();
+                item.setName(name);
+                realm.insert(item);
+            }
+        });
+    }
+
+    public static void deleteCategory(String name){
+        App.initRealm();
+        App.realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                CategoryModel item = getcategoriesQuery().equalTo("name", name).findFirst();
+                item.deleteFromRealm();
+
+                // + list delete from list controller
+                // + tasks delete from tasks controller
+            }
+        });
+    }
+
+
+
+
 }

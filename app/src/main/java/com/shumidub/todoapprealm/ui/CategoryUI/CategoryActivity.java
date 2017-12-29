@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
@@ -32,6 +33,9 @@ public class CategoryActivity extends AppCompatActivity {
     EditText et;
     Switch swDefault;
     Switch swCycling;
+    Switch swDragon;
+    TextView tvTaskCountValue;
+
     ExpandableListView expandableListView;
 
     SimpleExpandableListAdapter simpleExpandableListAdapter;
@@ -43,6 +47,7 @@ public class CategoryActivity extends AppCompatActivity {
     ActionMode.Callback callback;
 
     public static String textCategoryName;
+    public static long idCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,9 @@ public class CategoryActivity extends AppCompatActivity {
         et = findViewById(R.id.et);
         swDefault = findViewById(R.id.switch_default);
         swCycling = findViewById(R.id.switch_cycling);
+        swDragon = findViewById(R.id.switch_dragon);
+        tvTaskCountValue = findViewById(R.id.task_value);
+        tvTaskCountValue.setOnClickListener((v) -> onTaskValueClick(tvTaskCountValue));
     }
 
     private void setEmptyStateIfCategoriesEmpty(){
@@ -118,16 +126,41 @@ public class CategoryActivity extends AppCompatActivity {
                 @Override
                 public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
                     MenuItem addList = menu.add("add list to " + textCategoryName);
+                    addList.setIcon(R.drawable.ic_launcher_foreground);
                     addList.setOnMenuItemClickListener((MenuItem a) -> {
                         DialogAddList dialogAddList = new DialogAddList();
-                        dialogAddList.show(getSupportFragmentManager(), "category");
+                        dialogAddList.show(getSupportFragmentManager(), "addtocategory");
                         return true;
                     });
+
+                    MenuItem editCategory = menu.add("edit ");
+                    editCategory.setIcon(R.drawable.ic_launcher_foreground);
+                    editCategory.setOnMenuItemClickListener((MenuItem a) -> {
+
+                        DialogAddCategoty editCategoryDialog =
+                                DialogAddCategoty.newInstance(textCategoryName, DialogAddCategoty.EDIT_CATEGORY);
+                        editCategoryDialog.show(getSupportFragmentManager(), "editcategory");
+                        return true;
+                    });
+
+
+                    MenuItem deleteCategore = menu.add("delete ");
+                    deleteCategore.setIcon(R.drawable.ic_launcher_foreground);
+                    deleteCategore.setOnMenuItemClickListener((MenuItem a) -> {
+
+                        DialogAddCategoty deleteCategoryDialog =
+                                DialogAddCategoty.newInstance(textCategoryName, DialogAddCategoty.DELETE_CATEGORY);
+                        deleteCategoryDialog.show(getSupportFragmentManager(), "deletecategory");
+                        return true;
+                    });
+
                     return true;
                 }
 
                 @Override
-                public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) { return false; }
+                public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                    actionMode.setSubtitle(textCategoryName);
+                    return false; }
 
                 @Override
                 public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) { return false;}
@@ -171,5 +204,15 @@ public class CategoryActivity extends AppCompatActivity {
             };
         }
         return childClickListener;
+    }
+
+    public void onTaskValueClick(View view) {
+        int i = Integer.valueOf(tvTaskCountValue.getText().toString());
+        if (i<10){
+            i++;
+        }else if (i>9){
+            i=1;
+        }
+        ((TextView) view).setText("" + i);
     }
 }
