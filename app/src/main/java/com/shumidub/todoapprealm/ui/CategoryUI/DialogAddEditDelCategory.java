@@ -54,6 +54,10 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        if (title == DELETE_CATEGORY && nameCategory!=null){}
+        else builder.setView(R.layout.add_category_layout);
+
         builder.setTitle(title)
 //                .setIcon(R.drawable.ic_launcher_cat)
                 .setPositiveButton(textButton, new DialogInterface.OnClickListener() {
@@ -98,8 +102,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                     }
                 });
 
-        if (title == DELETE_CATEGORY && nameCategory!=null){}
-        else builder.setView(R.layout.add_category_layout);
+
 
         return builder.create();
     }
