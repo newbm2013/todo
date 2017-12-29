@@ -3,6 +3,14 @@ package com.shumidub.todoapprealm;
 import android.app.Application;
 import android.util.Log;
 
+import com.shumidub.todoapprealm.model.CategoryModel;
+import com.shumidub.todoapprealm.model.TaskModel;
+import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+
+import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -24,6 +32,7 @@ public class App extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build());
         initRealm();
+        if(CategoriesRealmController.categoriesIsEmpry()) addContent();
     }
 
     public static void initRealm() {
@@ -34,4 +43,20 @@ public class App extends Application {
         realm = null;
     }
 
+    private void addContent() {
+        initRealm();
+        for (int i = 0; i<20; i++) {
+            long idCategory = CategoriesRealmController.addCategory("Categoty " + i);
+            if(i%2==0){
+                for (int i2 =0; i2<10; i2++) {
+                    long idList = ListsRealmController.addTasksLists("List " + i2, false, false, idCategory);
+                    if (i2%2==0){
+                        for (int i3=0; i3<100; i3++){
+                            TasksRealmController.insertItems("Task " + i3, false, false, idList);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

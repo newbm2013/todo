@@ -61,13 +61,13 @@ public class ListsRealmController {
         return App.realm.where(ListModel.class).equalTo("name", nameList).findFirst();
     }
 
-    public static void addTasksLists(String name,boolean isDefault, boolean isCycling, long idCategory ){
+    public static long addTasksLists(String name, boolean isDefault, boolean isCycling, long idCategory ){
+        long id = TasksRealmController.getIdForNextValue(ListModel.class);
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 ListModel item = realm.createObject(ListModel.class);
-                long id = TasksRealmController.getIdForNextValue(ListModel.class);
                 item.setId(id);
                 item.setName(name);
                 item.setCycling(isCycling);
@@ -76,6 +76,7 @@ public class ListsRealmController {
 //                if (isDefault) new SharedPrefHelper(null).setDefauiltListId(id);
             }
         });
+        return id;
     }
 
     public static void addTasksLists(String name,boolean isDefault, boolean isCycling, String nameCategory ){

@@ -24,7 +24,6 @@ import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController.categoriesIsEmpry;
-import static com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController.getCategories;
 import static com.shumidub.todoapprealm.ui.CategoryUI.CategoriesAndListsAdapter.CHILDS;
 import static com.shumidub.todoapprealm.ui.CategoryUI.CategoriesAndListsAdapter.GROUPS;
 
@@ -70,7 +69,7 @@ public class CategoryActivity extends AppCompatActivity {
         MenuItem addCategory = menu.add("add category");
 
         addCategory.setOnMenuItemClickListener((MenuItem a) -> {
-           (new DialogAddCategoty()).show(getSupportFragmentManager(), "category");
+           (new DialogAddEditDelCategory()).show(getSupportFragmentManager(), "category");
            return true;
         });
         return super.onCreateOptionsMenu(menu);
@@ -137,8 +136,8 @@ public class CategoryActivity extends AppCompatActivity {
                     editCategory.setIcon(R.drawable.ic_launcher_foreground);
                     editCategory.setOnMenuItemClickListener((MenuItem a) -> {
 
-                        DialogAddCategoty editCategoryDialog =
-                                DialogAddCategoty.newInstance(textCategoryName, DialogAddCategoty.EDIT_CATEGORY);
+                        DialogAddEditDelCategory editCategoryDialog =
+                                DialogAddEditDelCategory.newInstance(textCategoryName, DialogAddEditDelCategory.EDIT_CATEGORY);
                         editCategoryDialog.show(getSupportFragmentManager(), "editcategory");
                         return true;
                     });
@@ -148,8 +147,8 @@ public class CategoryActivity extends AppCompatActivity {
                     deleteCategore.setIcon(R.drawable.ic_launcher_foreground);
                     deleteCategore.setOnMenuItemClickListener((MenuItem a) -> {
 
-                        DialogAddCategoty deleteCategoryDialog =
-                                DialogAddCategoty.newInstance(textCategoryName, DialogAddCategoty.DELETE_CATEGORY);
+                        DialogAddEditDelCategory deleteCategoryDialog =
+                                DialogAddEditDelCategory.newInstance(textCategoryName, DialogAddEditDelCategory.DELETE_CATEGORY);
                         deleteCategoryDialog.show(getSupportFragmentManager(), "deletecategory");
                         return true;
                     });
@@ -159,7 +158,7 @@ public class CategoryActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                    actionMode.setSubtitle(textCategoryName);
+                    actionMode.setTitle(textCategoryName);
                     return false; }
 
                 @Override

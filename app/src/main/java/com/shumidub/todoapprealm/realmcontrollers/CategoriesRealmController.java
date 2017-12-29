@@ -35,17 +35,20 @@ public class CategoriesRealmController {
         return getcategoriesQuery().findAll().isEmpty();
     }
 
-    public static void addCategory(String name){
+    public static long addCategory(String name){
+        long idAddedindCategory = TasksRealmController.getIdForNextValue(CategoryModel.class);
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 CategoryModel item = realm.createObject(CategoryModel.class);
-                item.setId(TasksRealmController.getIdForNextValue(CategoryModel.class));
+                item.setId(idAddedindCategory);
                 item.setName(name);
                 realm.insert(item);
             }
         });
+
+        return idAddedindCategory;
     }
 
     public static void editCategory(String name){
@@ -53,9 +56,13 @@ public class CategoriesRealmController {
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                CategoryModel item = getcategoriesQuery().equalTo("name", name).findFirst();
-                item.setName(name);
-                realm.insert(item);
+
+                CategoryModel task = getcategoriesQuery().equalTo("name", name).findFirst();
+                CategoryModel copyTask = App.realm.copyFromRealm(task);
+                task.setName(name);
+//                copyTask.setName(name);
+                realm.insertOrUpdate(task);
+//                task.deleteFromRealm();
             }
         });
     }
