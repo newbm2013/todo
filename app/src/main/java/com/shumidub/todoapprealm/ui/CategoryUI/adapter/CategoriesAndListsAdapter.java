@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.CategoryUI;
+package com.shumidub.todoapprealm.ui.CategoryUI.adapter;
 
 import android.content.Context;
 import android.widget.SimpleExpandableListAdapter;
@@ -20,8 +20,8 @@ import java.util.Map;
 
 public class CategoriesAndListsAdapter {
 
-    static final String GROUPS = "groups";
-    static final String CHILDS = "childs";
+    public static final String GROUPS = "groups";
+    public static final String CHILDS = "childs";
     static SimpleExpandableListAdapter simpleExpandableListAdapter;
 
     public CategoriesAndListsAdapter(Context context) {

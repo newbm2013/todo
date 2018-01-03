@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.App;
-import com.shumidub.todoapprealm.ui.CategoryUI.CategoryActivity;
+import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,10 +1,9 @@
-package com.shumidub.todoapprealm.ui.CategoryUI;
+package com.shumidub.todoapprealm.ui.CategoryUI.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;

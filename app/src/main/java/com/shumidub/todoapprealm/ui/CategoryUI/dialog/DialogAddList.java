@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.CategoryUI;
+package com.shumidub.todoapprealm.ui.CategoryUI.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,6 +9,7 @@ import android.widget.Switch;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
 
 import io.reactivex.annotations.NonNull;
 

@@ -1,7 +1,7 @@
-package com.shumidub.todoapprealm.ui.CategoryUI;
+package com.shumidub.todoapprealm.ui.CategoryUI.activity;
 
 import android.content.Intent;
-import android.database.DataSetObserver;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,30 +16,26 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.CategoryModel;
-import com.shumidub.todoapprealm.model.ListModel;
-import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.ui.CategoryUI.actionmode.ActionModeCategoryCallback;
+import com.shumidub.todoapprealm.ui.CategoryUI.actionmode.ActionModeListCallback;
+import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddEditDelCategory;
+import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddList;
+import com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.MainActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import io.realm.RealmChangeListener;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController.categoriesIsEmpry;
-import static com.shumidub.todoapprealm.ui.CategoryUI.CategoriesAndListsAdapter.CHILDS;
-import static com.shumidub.todoapprealm.ui.CategoryUI.CategoriesAndListsAdapter.GROUPS;
+import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.CHILDS;
+import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.GROUPS;
 
 public class CategoryActivity extends AppCompatActivity {
+
+
 
     EditText et;
     Switch swDefault;
@@ -49,16 +45,23 @@ public class CategoryActivity extends AppCompatActivity {
 
     ExpandableListView expandableListView;
 
-    static SimpleExpandableListAdapter simpleExpandableListAdapter;
+     static SimpleExpandableListAdapter simpleExpandableListAdapter;
     AdapterView.OnItemLongClickListener longListener;
     ExpandableListView.OnChildClickListener childClickListener;
     CategoriesAndListsAdapter categoriesAndListsAdapter;
 
     ActionMode actionMode;
-    ActionMode.Callback callback;
+
+    ActionMode.Callback categoryCallback;
+    ActionMode.Callback listCallback;
 
     public static String textCategoryName;
     public static long idCategory;
+    public static String listName;
+    public static long listId;
+
+    static final int CATEGORY_ACTIONMODE = 1;
+    static final int LIST_ACTIONMODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,8 @@ public class CategoryActivity extends AppCompatActivity {
         expandableListView.setAdapter(simpleExpandableListAdapter);
         expandableListView.setOnItemLongClickListener(getLongListener());
         expandableListView.setOnChildClickListener(getChildClickListener());
+
+
     }
 
     @Override
@@ -98,6 +103,8 @@ public class CategoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     private void findViews(){
         expandableListView = findViewById(R.id.expandedable_list_view);
         et = findViewById(R.id.et);
@@ -119,16 +126,30 @@ public class CategoryActivity extends AppCompatActivity {
             longListener = new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    Log.d("DEBUG_TAG", "onItemLongClick: " +i + "   " + l + "   view.getpos = " + view.getVerticalScrollbarPosition() +
+                    "adapterView.getPositionForView(view) " + adapterView.getPositionForView(view));
+
                     if (view.getId() == R.id.parent_text1) {
-                        try{
+                        try {
                             Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getGroup(i));
                             textCategoryName = map.get(GROUPS);
-                            actionMode = startActionMode(getActionModeCallback());
-                        } catch (IndexOutOfBoundsException ignored){}
+                            actionMode = startActionMode(getCallback(CATEGORY_ACTIONMODE));
+                        } catch (IndexOutOfBoundsException ignored) {
+                        }
 //                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                         Log.d("DEBUG_TAG", "onItemLongClick: if");
-                    }else{
-                        Log.d("DEBUG_TAG", "onItemLongClick: else");
+                    }else if (view.getId() == android.R.id.text1) {
+                        try {
+
+                            Map<String, String> map = (Map<String, String>)
+                                    (simpleExpandableListAdapter.getChild(i,
+                                            view.getVerticalScrollbarPosition() - i));
+                            listName = map.get(CHILDS);
+                            actionMode = startActionMode(getCallback(LIST_ACTIONMODE));
+                        } catch (IndexOutOfBoundsException ignored) {
+                        }
+
                     }
                     return true;
                 }
@@ -137,60 +158,19 @@ public class CategoryActivity extends AppCompatActivity {
         return longListener;
     }
 
-    private ActionMode.Callback getActionModeCallback(){
-        if (callback == null) {
-            callback = new ActionMode.Callback() {
-                @Override
-                public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-                    MenuItem addList = menu.add("add list to " + textCategoryName);
-                    addList.setIcon(R.drawable.ic_launcher_foreground);
-                    addList.setOnMenuItemClickListener((MenuItem a) -> {
-                        DialogAddList dialogAddList = new DialogAddList();
-                        dialogAddList.show(getSupportFragmentManager(), "addtocategory");
-                        return true;
-                    });
-
-                    MenuItem editCategory = menu.add("edit ");
-                    editCategory.setIcon(R.drawable.ic_launcher_foreground);
-                    editCategory.setOnMenuItemClickListener((MenuItem a) -> {
-
-                        DialogAddEditDelCategory editCategoryDialog =
-                                DialogAddEditDelCategory.newInstance(textCategoryName, DialogAddEditDelCategory.EDIT_CATEGORY);
-                        editCategoryDialog.show(getSupportFragmentManager(), "editcategory");
-                        return true;
-                    });
-
-
-                    MenuItem deleteCategore = menu.add("delete ");
-                    deleteCategore.setIcon(R.drawable.ic_launcher_foreground);
-                    deleteCategore.setOnMenuItemClickListener((MenuItem a) -> {
-
-                        DialogAddEditDelCategory deleteCategoryDialog =
-                                DialogAddEditDelCategory.newInstance(textCategoryName, DialogAddEditDelCategory.DELETE_CATEGORY);
-                        deleteCategoryDialog.show(getSupportFragmentManager(), "deletecategory");
-                        return true;
-                    });
-
-                    return true;
-                }
-
-                @Override
-                public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                    actionMode.setTitle(textCategoryName);
-                    return false; }
-
-                @Override
-                public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                    return false;}
-
-                @Override
-                public void onDestroyActionMode(ActionMode actionMode) {
-
-                }
-            };
-        }
-        return callback;
-    }
+     private ActionMode.Callback getCallback(int callbackType){
+         if(callbackType == CATEGORY_ACTIONMODE){
+             if ( categoryCallback == null) {
+                 categoryCallback = new ActionModeCategoryCallback().getCategoryActionModeCallback(this);
+             }
+             return categoryCallback;
+         } else {
+             if ( listCallback == null) {
+                 listCallback = new ActionModeListCallback().getCategoryActionModeCallback(this);
+             }
+             return listCallback;
+         }
+     }
 
     private ExpandableListView.OnChildClickListener getChildClickListener(){
         if (childClickListener == null) {
