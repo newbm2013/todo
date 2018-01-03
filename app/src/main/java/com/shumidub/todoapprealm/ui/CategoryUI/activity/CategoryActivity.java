@@ -1,7 +1,7 @@
 package com.shumidub.todoapprealm.ui.CategoryUI.activity;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +22,6 @@ import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.CategoryUI.actionmode.ActionModeCategoryCallback;
 import com.shumidub.todoapprealm.ui.CategoryUI.actionmode.ActionModeListCallback;
 import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddEditDelCategory;
-import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddList;
 import com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.MainActivity;
 
@@ -35,8 +34,6 @@ import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndLists
 
 public class CategoryActivity extends AppCompatActivity {
 
-
-
     EditText et;
     Switch swDefault;
     Switch swCycling;
@@ -45,7 +42,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     ExpandableListView expandableListView;
 
-     static SimpleExpandableListAdapter simpleExpandableListAdapter;
+    static SimpleExpandableListAdapter simpleExpandableListAdapter;
     AdapterView.OnItemLongClickListener longListener;
     ExpandableListView.OnChildClickListener childClickListener;
     CategoriesAndListsAdapter categoriesAndListsAdapter;
@@ -78,7 +75,6 @@ public class CategoryActivity extends AppCompatActivity {
         expandableListView.setOnItemLongClickListener(getLongListener());
         expandableListView.setOnChildClickListener(getChildClickListener());
 
-
     }
 
     @Override
@@ -103,8 +99,6 @@ public class CategoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     private void findViews(){
         expandableListView = findViewById(R.id.expandedable_list_view);
         et = findViewById(R.id.et);
@@ -123,42 +117,33 @@ public class CategoryActivity extends AppCompatActivity {
 
     private AdapterView.OnItemLongClickListener getLongListener(){
         if (longListener == null) {
-            longListener = new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            longListener = (adapterView, view, i,l) -> {
 
-                    Log.d("DEBUG_TAG", "onItemLongClick: " +i + "   " + l + "   view.getpos = " + view.getVerticalScrollbarPosition() +
-                    "adapterView.getPositionForView(view) " + adapterView.getPositionForView(view));
+                String type = ((Pair<String, Long>) view.getTag()).first;
+                Long idOnTag = ((Pair<String, Long>) view.getTag()).second;
+                Log.d("DEBUG_TAG", "onItemLongClick: view " + type + " /" + idOnTag );
 
-                    if (view.getId() == R.id.parent_text1) {
-                        try {
-                            Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getGroup(i));
-                            textCategoryName = map.get(GROUPS);
-                            actionMode = startActionMode(getCallback(CATEGORY_ACTIONMODE));
-                        } catch (IndexOutOfBoundsException ignored) {
-                        }
-//                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                        Log.d("DEBUG_TAG", "onItemLongClick: if");
-                    }else if (view.getId() == android.R.id.text1) {
-                        try {
-
-                            Map<String, String> map = (Map<String, String>)
-                                    (simpleExpandableListAdapter.getChild(i,
-                                            view.getVerticalScrollbarPosition() - i));
-                            listName = map.get(CHILDS);
-                            actionMode = startActionMode(getCallback(LIST_ACTIONMODE));
-                        } catch (IndexOutOfBoundsException ignored) {
-                        }
-
-                    }
-                    return true;
+                if (view.getId() == R.id.parent_text1) {
+                    try {
+                        Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getGroup(i));
+                        textCategoryName = map.get(GROUPS);
+                        actionMode = startActionMode(getCallback(CATEGORY_ACTIONMODE));
+                    } catch (IndexOutOfBoundsException ignored) { }
+                    Log.d("DEBUG_TAG", "onItemLongClick: parent");
+                }else if (view.getId() == android.R.id.text1) {
+                    try {
+                        //todo parent and child constants, maybe name of item from tag ...
+                        //
+                        actionMode = startActionMode(getCallback(LIST_ACTIONMODE));
+                    } catch (IndexOutOfBoundsException ignored) { }
                 }
+                return true;
             };
         }
         return longListener;
     }
 
-     private ActionMode.Callback getCallback(int callbackType){
+    private ActionMode.Callback getCallback(int callbackType){
          if(callbackType == CATEGORY_ACTIONMODE){
              if ( categoryCallback == null) {
                  categoryCallback = new ActionModeCategoryCallback().getCategoryActionModeCallback(this);
@@ -170,7 +155,7 @@ public class CategoryActivity extends AppCompatActivity {
              }
              return listCallback;
          }
-     }
+    }
 
     private ExpandableListView.OnChildClickListener getChildClickListener(){
         if (childClickListener == null) {
@@ -214,5 +199,4 @@ public class CategoryActivity extends AppCompatActivity {
         }
         ((TextView) view).setText("" + i);
     }
-
 }
