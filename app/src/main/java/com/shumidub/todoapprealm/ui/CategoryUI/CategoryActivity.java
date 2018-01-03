@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm.ui.CategoryUI;
 
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,12 +16,23 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.model.CategoryModel;
+import com.shumidub.todoapprealm.model.ListModel;
+import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.TaskUI.MainActivity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import io.realm.RealmChangeListener;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController.categoriesIsEmpry;
@@ -37,7 +49,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     ExpandableListView expandableListView;
 
-    SimpleExpandableListAdapter simpleExpandableListAdapter;
+    static SimpleExpandableListAdapter simpleExpandableListAdapter;
     AdapterView.OnItemLongClickListener longListener;
     ExpandableListView.OnChildClickListener childClickListener;
     CategoriesAndListsAdapter categoriesAndListsAdapter;
@@ -62,6 +74,12 @@ public class CategoryActivity extends AppCompatActivity {
         expandableListView.setAdapter(simpleExpandableListAdapter);
         expandableListView.setOnItemLongClickListener(getLongListener());
         expandableListView.setOnChildClickListener(getChildClickListener());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        simpleExpandableListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -162,10 +180,12 @@ public class CategoryActivity extends AppCompatActivity {
                     return false; }
 
                 @Override
-                public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) { return false;}
+                public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                    return false;}
 
                 @Override
                 public void onDestroyActionMode(ActionMode actionMode) {
+
                 }
             };
         }
@@ -214,4 +234,5 @@ public class CategoryActivity extends AppCompatActivity {
         }
         ((TextView) view).setText("" + i);
     }
+
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
     public static String DELETE_CATEGORY = "Delete Category";
 
     String nameCategory;
+    String title;
 
     public static DialogAddEditDelCategory newInstance(String nameCategory, String mode){
         DialogAddEditDelCategory dialogAddCategoty = new DialogAddEditDelCategory();
@@ -42,7 +44,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        String title;
+
         String textButton = "Add";
 
         if(getArguments()!=null){
@@ -56,7 +58,18 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         if (title == DELETE_CATEGORY && nameCategory!=null){}
-        else builder.setView(R.layout.add_category_layout);
+        else{
+            View view = getActivity().getLayoutInflater().inflate(R.layout.add_category_layout, null);
+
+            if (title == EDIT_CATEGORY && nameCategory!=null ){
+                EditText etName = view.findViewById(R.id.name);
+                etName.setText(nameCategory);
+            }
+
+            builder.setView(view);
+
+        }
+
 
         builder.setTitle(title)
 //                .setIcon(R.drawable.ic_launcher_cat)
@@ -78,11 +91,9 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
                         else if (title == EDIT_CATEGORY && nameCategory!=null ){
 
-                            etName.setText(nameCategory);
-
                             if (!etName.getText().toString().isEmpty()) {
                                 String text = etName.getText().toString();
-                                CategoriesRealmController.editCategory(text);
+                                CategoriesRealmController.editCategory(nameCategory, text);
                                 Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
                             }else {Toast.makeText(getContext(), "can't be empty", Toast.LENGTH_SHORT).show();}
 
@@ -90,10 +101,10 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
 
                         else if (title == DELETE_CATEGORY && nameCategory!=null){
-                            CategoriesRealmController.deleteCategory(nameCategory);
+                            CategoriesRealmController.deleteCategoryAndChilds(nameCategory);
                         }
 
-//                        notify
+//                            CategoryActivity.notifyDataSetChanged();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -106,4 +117,6 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
         return builder.create();
     }
+
+
 }

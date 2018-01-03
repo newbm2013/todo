@@ -1,5 +1,7 @@
 package com.shumidub.todoapprealm.realmcontrollers;
 
+import android.util.Log;
+
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.model.ListModel;
 import com.shumidub.todoapprealm.model.TaskModel;
@@ -106,4 +108,30 @@ public class TasksRealmController {
 //        }
         return id;
     }
+
+
+    public static void deleteTask(long taskId){
+        App.initRealm();
+        TaskModel task = App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst();
+        String taskText = task.getText();
+        task.deleteFromRealm();
+        if (App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst() == null){
+            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " DELETED" );
+        }else{
+            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " NOT DELETED !!!" );
+        }
+    }
+
+    public static void deleteTask(TaskModel task){
+        App.initRealm();
+        long taskId = task.getId();
+        String taskText = task.getText();
+        task.deleteFromRealm();
+        if (App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst() == null){
+            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " DELETED" );
+        }else{
+            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " NOT DELETED !!!" );
+        }
+    }
+
 }

@@ -22,13 +22,16 @@ public class CategoriesAndListsAdapter {
 
     static final String GROUPS = "groups";
     static final String CHILDS = "childs";
-    SimpleExpandableListAdapter simpleExpandableListAdapter;
+    static SimpleExpandableListAdapter simpleExpandableListAdapter;
 
     public CategoriesAndListsAdapter(Context context) {
+
 
         Map<String, String> map;
         List<CategoryModel> categories = CategoriesRealmController.getCategories();
         List<ListModel> lists = ListsRealmController.getLists();
+
+
 
         ArrayList<Map<String, String>> groups = new ArrayList<>();
 

@@ -4,6 +4,8 @@ import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.model.CategoryModel;
 import com.shumidub.todoapprealm.model.ListModel;
 
+import java.util.ArrayList;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -83,5 +85,30 @@ public class ListsRealmController {
         App.initRealm();
         long id = App.realm.where(CategoryModel.class).equalTo("name", nameCategory).findFirst().getId();
         addTasksLists(name,isDefault,isCycling, id);
+    }
+
+    public static void deleteLists(long idList){
+        App.initRealm();
+        App.realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                ListModel item = getListsQuery().equalTo("id", idList).findFirst();
+                item.deleteFromRealm();
+            }
+        });
+    }
+
+    public static boolean listIsExist(ListModel list){
+        App.initRealm();
+        return list.isValid();
+    }
+
+    public static boolean listIsExist(long idList){
+        App.initRealm();
+        if ( App.realm.where(ListModel.class).equalTo("id", idList).findFirst() == null){
+            return false;
+        }else {
+            return App.realm.where(ListModel.class).equalTo("id", idList).findFirst().isValid();
+        }
     }
 }
