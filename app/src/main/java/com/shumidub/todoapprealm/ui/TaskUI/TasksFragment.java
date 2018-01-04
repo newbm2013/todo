@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
@@ -31,6 +32,9 @@ public class TasksFragment extends Fragment {
     public TasksRecyclerViewAdapter tasksRecyclerViewAdapter;
     TasksRealmController realmController;
     RecyclerView rvItems;
+    List<TaskModel> tasks;
+
+
 
 
     public static TasksFragment newInstance(long listId){
@@ -67,20 +71,37 @@ public class TasksFragment extends Fragment {
         if (realmController == null) realmController = new TasksRealmController();
         rvItems = view.findViewById(R.id.rv_items);
 
+
         Log.d(TAG, "onViewCreated: listId = " + listId);
 
-        List<TaskModel> items;
-        if (listId == 0) items = realmController.getNotDoneTasks();
-        else items = realmController.getNotDoneTasks(listId);
+        if (listId == 0) tasks = realmController.getNotDoneTasks();
+        else tasks = realmController.getNotDoneTasks(listId);
+
+        List<TaskModel> doneTasks;
+        if (listId == 0) doneTasks = realmController.getNotDoneTasks();
+        else doneTasks = realmController.getNotDoneTasks(listId);
+
+
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+
+        rvItems.setLayoutManager(llm);
+
+        rvItems.setAdapter(new TasksRecyclerViewAdapter(tasks));
 
 
 
 
 
-        rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
-        tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(items);
 
-        rvItems.setAdapter(tasksRecyclerViewAdapter);
+
+
+
+
+
+
+
+
+
 
 
 

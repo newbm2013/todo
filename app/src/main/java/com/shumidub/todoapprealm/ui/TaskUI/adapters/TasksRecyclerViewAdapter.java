@@ -28,6 +28,10 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     private boolean isNotEmpty;
 
 
+    private static final int FOOTER_VIEW = 123;
+
+
+
     public TasksRecyclerViewAdapter(List<TaskModel> items){
         this.tasks = items;
     }
@@ -37,13 +41,22 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         View view;
         if (tasks != null && !tasks.isEmpty() && tasks.size() > 0) {
             isNotEmpty = true;
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, null, false);
+
+            if(viewType!=FOOTER_VIEW) {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, null, false);
+                return new NormalViewHolder(view);
+            }else{
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.textview_done_tasks, parent, false);
+                return new FooterViewHolder(view);
+            }
+
+
         }else{
             isNotEmpty = false;
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_empty_state, parent, false);
+            return new ViewHolder(view);
         }
 
-        return new ViewHolder(view);
     }
 
     private void setTasksTextColor(ViewHolder holder, boolean isDone){
@@ -57,49 +70,51 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (isNotEmpty) {
+        if (isNotEmpty ) {
 
-            TaskModel item = tasks.get(position);
+            if (holder instanceof NormalViewHolder) {
 
-            long taskId = item.getId();
-            String text = item.getText();
+                TaskModel item = tasks.get(position);
 
-
-            holder.textView.setText(text);
-            holder.textView.setTag(taskId);
+                long taskId = item.getId();
+                String text = item.getText();
 
 
-            holder.checkBox.setChecked(item.isDone());
-            setTasksTextColor(holder, item.isDone());
-
-            holder.checkBox.setOnClickListener(
-                    (cb) -> {
-
-                        TasksRealmController.setTaskDone(item, holder.checkBox.isChecked());
-                        notifyDataSetChanged();
-
-                        try {
-                            Log.d(TAG + "1", "SET_DONE: " +
-                                    "\n " +
-                                    "\nitem text = " + item.getText() +
-                                    "\nitems.get(position).getText() = " + tasks.get(position).getText() +
-                                    "\n " +
-                                    "\nitem = " + item.hashCode() +
-                                    "\nitems.get(position) =" + tasks.get(position).hashCode() +
-                                    "\n " +
-                                    "\nitem.taskID = " + item.getId() +
-                                    "\nitems.get(position).taskID = " + tasks.get(position).getId() +
-                                    "\ntaskID = " + taskId +
-                                    "\n " +
-                                    "\nitem.isDone =" + item.isDone() +
-                                    "\nitemsget(position).isDone =" + tasks.get(position).isDone());
-                        }catch (ArrayIndexOutOfBoundsException e){
-                            e.printStackTrace();
-                        }
+                holder.textView.setText(text);
+                holder.textView.setTag(taskId);
 
 
-                        setTasksTextColor(holder, item.isDone());
-                    });
+                holder.checkBox.setChecked(item.isDone());
+                setTasksTextColor(holder, item.isDone());
+
+                holder.checkBox.setOnClickListener(
+                        (cb) -> {
+
+                            TasksRealmController.setTaskDone(item, holder.checkBox.isChecked());
+                            notifyDataSetChanged();
+
+                            try {
+                                Log.d(TAG + "1", "SET_DONE: " +
+                                        "\n " +
+                                        "\nitem text = " + item.getText() +
+                                        "\nitems.get(position).getText() = " + tasks.get(position).getText() +
+                                        "\n " +
+                                        "\nitem = " + item.hashCode() +
+                                        "\nitems.get(position) =" + tasks.get(position).hashCode() +
+                                        "\n " +
+                                        "\nitem.taskID = " + item.getId() +
+                                        "\nitems.get(position).taskID = " + tasks.get(position).getId() +
+                                        "\ntaskID = " + taskId +
+                                        "\n " +
+                                        "\nitem.isDone =" + item.isDone() +
+                                        "\nitemsget(position).isDone =" + tasks.get(position).isDone());
+                            } catch (ArrayIndexOutOfBoundsException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            setTasksTextColor(holder, item.isDone());
+                        });
 //
 //
 //
@@ -126,18 +141,44 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 //                    + " =" + taskId  +"/" + items.get(position).getId()
 //                   );
 //                return true;});
+            }
+
+            else if (holder instanceof FooterViewHolder){
+
+                holder.textViewDoneTask.setText("Done " + tasks.size() + "tasks");
+
+                holder.textViewDoneTask.setOnClickListener((v) -> {
+//                if (listId == 0) tasks = realmController.getTasks();
+//                else tasks = realmController.getTasks(listId);
+//                tasksRecyclerViewAdapter.notifyDataSetChanged();
+                    holder.textViewDoneTask.setVisibility(View.INVISIBLE);
+                });
+
+            }
+
+
         }
+    }
+    @Override
+    public int getItemViewType(int position) {
+        if (position == tasks.size() && tasks.size() > 0) {
+            // This is where we'll add footer.
+            return FOOTER_VIEW;
+        }
+
+        return super.getItemViewType(position);
     }
 
     @Override
     public int getItemCount() {
-        return (tasks != null && !tasks.isEmpty() && tasks.size() > 0) ? tasks.size() : 1;
+        return (tasks != null && !tasks.isEmpty() && tasks.size() > 0) ? tasks.size()+1 : 1;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView textView;
         CheckBox checkBox;
+        TextView textViewDoneTask;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -145,7 +186,73 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             if(isNotEmpty) {
                 textView = itemView.findViewById(R.id.tv);
                 checkBox = itemView.findViewById(R.id.checkbox);
+                textViewDoneTask = itemView.findViewById(R.id.tv_done_tasks);
             }
         }
     }
+
+//    class FooterViewHolder extends RecyclerView.ViewHolder {
+//
+//        TextView textViewDoneTask;
+//
+//        public FooterViewHolder(View itemView) {
+//            super(itemView);
+//
+//            if(isNotEmpty) {
+//                textViewDoneTask = itemView.findViewById(R.id.tv_done_tasks);
+//            }
+//        }
+//    }
+
+    public class FooterViewHolder extends ViewHolder {
+
+//        TextView textViewDoneTask;
+
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+
+//            if(isNotEmpty) {
+//                textViewDoneTask = itemView.findViewById(R.id.tv_done_tasks);
+//
+//                textViewDoneTask.setText("Done " + tasks.size() + "tasks");
+//
+//                textViewDoneTask.setOnClickListener((v) -> {
+////                if (listId == 0) tasks = realmController.getTasks();
+////                else tasks = realmController.getTasks(listId);
+////                tasksRecyclerViewAdapter.notifyDataSetChanged();
+//                    textViewDoneTask.setVisibility(View.INVISIBLE);
+//                });
+//            }
+
+
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Do whatever you want on clicking the item
+//                }
+//            });
+        }
+    }
+
+
+    public class NormalViewHolder extends ViewHolder {
+        public NormalViewHolder(View itemView) {
+            super(itemView);
+
+//            if (isNotEmpty) {
+//                CheckBox checkBox;
+//                TextView textViewDoneTask;
+//                checkBox = itemView.findViewById(R.id.checkbox);
+//                textViewDoneTask = itemView.findViewById(R.id.tv_done_tasks);
+//            }
+
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Do whatever you want on clicking the normal items
+//                }
+//            });
+        }
+    }
+
 }
