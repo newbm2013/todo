@@ -24,7 +24,7 @@ public class ActionModeCategoryCallback {
 
 
 
-    public ActionMode.Callback getCategoryActionModeCallback(CategoryActivity activity) {
+    public ActionMode.Callback getCategoryActionModeCallback(CategoryActivity activity, long idOnTag) {
 
         mCategoryCallback = new ActionMode.Callback() {
             @Override
@@ -42,7 +42,7 @@ public class ActionModeCategoryCallback {
                 editCategory.setOnMenuItemClickListener((MenuItem a) -> {
 
                     DialogAddEditDelCategory editCategoryDialog =
-                            DialogAddEditDelCategory.newInstance(textCategoryName, DialogAddEditDelCategory.EDIT_CATEGORY);
+                            DialogAddEditDelCategory.newInstance(idOnTag, DialogAddEditDelCategory.EDIT_CATEGORY);
                     editCategoryDialog.show(activity.getSupportFragmentManager(), "editcategory");
                     return true;
                 });
@@ -53,7 +53,7 @@ public class ActionModeCategoryCallback {
                 deleteCategore.setOnMenuItemClickListener((MenuItem a) -> {
 
                     DialogAddEditDelCategory deleteCategoryDialog =
-                            DialogAddEditDelCategory.newInstance(textCategoryName, DialogAddEditDelCategory.DELETE_CATEGORY);
+                            DialogAddEditDelCategory.newInstance(idOnTag, DialogAddEditDelCategory.DELETE_CATEGORY);
                     deleteCategoryDialog.show(activity.getSupportFragmentManager(), "deletecategory");
                     return true;
                 });

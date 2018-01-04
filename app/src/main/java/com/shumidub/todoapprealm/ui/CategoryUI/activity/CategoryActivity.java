@@ -53,12 +53,15 @@ public class CategoryActivity extends AppCompatActivity {
     ActionMode.Callback listCallback;
 
     public static String textCategoryName;
+    public static String titleList;
     public static long idCategory;
     public static String listName;
     public static long listId;
 
     static final int CATEGORY_ACTIONMODE = 1;
-    static final int LIST_ACTIONMODE = 1;
+    static final int LIST_ACTIONMODE = 2;
+
+    public static Long idOnTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +123,7 @@ public class CategoryActivity extends AppCompatActivity {
             longListener = (adapterView, view, i,l) -> {
 
                 String type = ((Pair<String, Long>) view.getTag()).first;
-                Long idOnTag = ((Pair<String, Long>) view.getTag()).second;
+                idOnTag = ((Pair<String, Long>) view.getTag()).second;
                 Log.d("DEBUG_TAG", "onItemLongClick: view " + type + " /" + idOnTag );
 
                 if (view.getId() == R.id.parent_text1) {
@@ -132,8 +135,8 @@ public class CategoryActivity extends AppCompatActivity {
                     Log.d("DEBUG_TAG", "onItemLongClick: parent");
                 }else if (view.getId() == android.R.id.text1) {
                     try {
-                        //todo parent and child constants, maybe name of item from tag ...
-                        //
+                        titleList = ListsRealmController.getListById(idOnTag).getName();
+                        actionMode = null;
                         actionMode = startActionMode(getCallback(LIST_ACTIONMODE));
                     } catch (IndexOutOfBoundsException ignored) { }
                 }
@@ -145,16 +148,15 @@ public class CategoryActivity extends AppCompatActivity {
 
     private ActionMode.Callback getCallback(int callbackType){
          if(callbackType == CATEGORY_ACTIONMODE){
-             if ( categoryCallback == null) {
-                 categoryCallback = new ActionModeCategoryCallback().getCategoryActionModeCallback(this);
-             }
+//             if ( categoryCallback == null) {
+             categoryCallback = new ActionModeCategoryCallback().getCategoryActionModeCallback(this, idOnTag);
              return categoryCallback;
-         } else {
-             if ( listCallback == null) {
-                 listCallback = new ActionModeListCallback().getCategoryActionModeCallback(this);
-             }
+         } else if (callbackType == LIST_ACTIONMODE) {
+//             if ( listCallback == null) {
+             listCallback = new ActionModeListCallback().getListActionModeCallback(this, idOnTag);
              return listCallback;
          }
+         else return null;
     }
 
     private ExpandableListView.OnChildClickListener getChildClickListener(){

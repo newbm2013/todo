@@ -46,13 +46,13 @@ public class App extends Application {
     private void addContent() {
         initRealm();
         for (int i = 0; i<20; i++) {
-            long idCategory = CategoriesRealmController.addCategory("Categoty " + i);
+            long idCategory = CategoriesRealmController.addCategory("Categoty ");
             if(i%2==0){
                 for (int i2 =0; i2<10; i2++) {
-                    long idList = ListsRealmController.addTasksLists("List " + i2, false, false, idCategory);
+                    long idList = ListsRealmController.addTasksLists("List " , false, false, idCategory);
                     if (i2%2==0){
                         for (int i3=0; i3<100; i3++){
-                            TasksRealmController.insertItems("Task " + i3, false, false, idList);
+                            TasksRealmController.insertItems("Task ", false, false, idList);
                         }
                     }
                 }

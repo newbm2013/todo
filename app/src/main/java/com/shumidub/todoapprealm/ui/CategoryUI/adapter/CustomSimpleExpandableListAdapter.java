@@ -8,7 +8,9 @@ import android.widget.SimpleExpandableListAdapter;
 import java.util.List;
 import java.util.Map;
 
+import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.CHILD_ID;
 import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.GROUP_ID;
+import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.childs;
 import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.groups;
 
 /**
@@ -16,6 +18,9 @@ import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndLists
  */
 
 public class CustomSimpleExpandableListAdapter extends SimpleExpandableListAdapter{
+
+    public static final String CATEGOTY_TYPE = "CATEGOTY_TYPE";
+    public static final String LIST_TYPE = "LIST_TYPE";
 
     CustomSimpleExpandableListAdapter(Context context, List<? extends Map<String,
              ?>> groupData, int groupLayout, String[] groupFrom, int[] groupTo,
@@ -30,7 +35,7 @@ public class CustomSimpleExpandableListAdapter extends SimpleExpandableListAdapt
         View v;
         v = super.getGroupView(groupPosition, isExpanded, convertView, parent);
         Long tagId =  Long.valueOf(groups.get(groupPosition).get(GROUP_ID));
-        Pair<String, Long> pair = new Pair<String, Long>("parent", tagId);
+        Pair<String, Long> pair = new Pair<String, Long>(CATEGOTY_TYPE, tagId);
         v.setTag(pair);
         return v;
     }
@@ -38,7 +43,8 @@ public class CustomSimpleExpandableListAdapter extends SimpleExpandableListAdapt
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View v = super.getChildView(groupPosition, childPosition, isLastChild, convertView, parent);
-        Pair<String, Long> pair = new Pair<String, Long>("child", 330l);
+        Long tagId =  Long.valueOf(childs.get(groupPosition).get(childPosition).get(CHILD_ID));
+        Pair<String, Long> pair = new Pair<String, Long>(LIST_TYPE, tagId);
         v.setTag(pair);
         return v;
     }

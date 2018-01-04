@@ -35,7 +35,7 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
                         boolean isDefault = ((Switch) getDialog().findViewById(R.id.switch_default)).isChecked();
                         boolean isCycling = ((Switch) getDialog().findViewById(R.id.switch_cycling)).isChecked();
                         if (!text.isEmpty() && !categoryName.isEmpty()){
-                            ListsRealmController.addTasksLists(text, isDefault, isCycling, categoryName );
+                            ListsRealmController.addTasksLists(text, isDefault, isCycling, CategoryActivity.idOnTag );
                         }
                     }
                 })

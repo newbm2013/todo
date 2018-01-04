@@ -19,20 +19,20 @@ import io.reactivex.annotations.NonNull;
 
 public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragment{
 
-    public static String NAME_CATEGORY = "nameCategory";
+    public static String ID_CATEGORY = "nameCategory";
     public static String MODE_CATEGORY = "ModeCategory";
 
     public static String ADD_CATEGORY = "Add new Category";
     public static String EDIT_CATEGORY = "Edit Category";
     public static String DELETE_CATEGORY = "Delete Category";
 
-    String nameCategory;
+    Long idCategory;
     String title;
 
-    public static DialogAddEditDelCategory newInstance(String nameCategory, String mode){
+    public static DialogAddEditDelCategory newInstance(Long idCategory, String mode){
         DialogAddEditDelCategory dialogAddCategoty = new DialogAddEditDelCategory();
         Bundle arg = new Bundle();
-        arg.putString(NAME_CATEGORY, nameCategory);
+        arg.putLong(ID_CATEGORY, idCategory);
         arg.putString(MODE_CATEGORY, mode);
         dialogAddCategoty.setArguments(arg);
         return dialogAddCategoty;
@@ -47,7 +47,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
         String textButton = "Add";
 
         if(getArguments()!=null){
-            nameCategory = getArguments().getString(NAME_CATEGORY);
+            idCategory = getArguments().getLong(ID_CATEGORY);
             title = getArguments().getString(MODE_CATEGORY);
             if (title == DELETE_CATEGORY) textButton = "DELETE";
             if (title == EDIT_CATEGORY) textButton = "Done";
@@ -56,17 +56,15 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        if (title == DELETE_CATEGORY && nameCategory!=null){}
+        if (title == DELETE_CATEGORY && idCategory!=null){}
         else{
             View view = getActivity().getLayoutInflater().inflate(R.layout.add_category_layout, null);
 
-            if (title == EDIT_CATEGORY && nameCategory!=null ){
+            if (title == EDIT_CATEGORY && idCategory!=null ){
                 EditText etName = view.findViewById(R.id.name);
-                etName.setText(nameCategory);
+                etName.setText(CategoriesRealmController.getCategory(idCategory).getName());
             }
-
             builder.setView(view);
-
         }
 
 
@@ -87,20 +85,19 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
                         }
 
-
-                        else if (title == EDIT_CATEGORY && nameCategory!=null ){
+                        else if (title == EDIT_CATEGORY && idCategory!=null ){
 
                             if (!etName.getText().toString().isEmpty()) {
                                 String text = etName.getText().toString();
-                                CategoriesRealmController.editCategory(nameCategory, text);
+                                CategoriesRealmController.editCategory(idCategory, text);
                                 Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
                             }else {Toast.makeText(getContext(), "can't be empty", Toast.LENGTH_SHORT).show();}
 
                         }
 
 
-                        else if (title == DELETE_CATEGORY && nameCategory!=null){
-                            CategoriesRealmController.deleteCategoryAndChilds(nameCategory);
+                        else if (title == DELETE_CATEGORY && idCategory!=null){
+                            CategoriesRealmController.deleteCategoryAndChilds(idCategory);
                         }
 
 //                            CategoryActivity.notifyDataSetChanged();
@@ -111,11 +108,6 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                         dialog.cancel();
                     }
                 });
-
-
-
         return builder.create();
     }
-
-
 }

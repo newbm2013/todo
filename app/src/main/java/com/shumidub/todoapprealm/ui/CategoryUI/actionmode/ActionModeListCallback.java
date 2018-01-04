@@ -8,9 +8,13 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
 import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddEditDelCategory;
 import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddList;
+import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList;
 
 import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.listName;
 import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.textCategoryName;
+import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.titleList;
+import static com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList.DELETE_LIST;
+import static com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList.EDIT_LIST;
 
 
 /**
@@ -23,39 +27,34 @@ public class ActionModeListCallback {
 
 
 
-    public ActionMode.Callback getCategoryActionModeCallback(CategoryActivity activity) {
+    public ActionMode.Callback getListActionModeCallback(CategoryActivity activity, long idOnTag) {
 
         mListCallback = new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
 
-                MenuItem editCategory = menu.add("edit ");
-                editCategory.setIcon(R.drawable.ic_launcher_foreground);
-                editCategory.setOnMenuItemClickListener((MenuItem a) -> {
-
-//                    DialogAddEditDelCategory editCategoryDialog =
-//                            DialogAddEditDelCategory.newInstance(textCategoryName, DialogAddEditDelCategory.EDIT_CATEGORY);
-//                    editCategoryDialog.show(activity.getSupportFragmentManager(), "editcategory");
+                MenuItem editList = menu.add("edit ");
+                editList.setIcon(R.drawable.ic_launcher_foreground);
+                editList.setOnMenuItemClickListener((MenuItem a) -> {
+                    DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, EDIT_LIST);
+                    dialog.show(activity.getSupportFragmentManager(), "editlist");
                     return true;
                 });
 
 
-                MenuItem deleteCategore = menu.add("delete ");
-                deleteCategore.setIcon(R.drawable.ic_launcher_foreground);
-                deleteCategore.setOnMenuItemClickListener((MenuItem a) -> {
-
-//                    DialogAddEditDelCategory deleteCategoryDialog =
-//                            DialogAddEditDelCategory.newInstance(textCategoryName, DialogAddEditDelCategory.DELETE_CATEGORY);
-//                    deleteCategoryDialog.show(activity.getSupportFragmentManager(), "deletecategory");
+                MenuItem deleteList = menu.add("delete ");
+                deleteList.setIcon(R.drawable.ic_launcher_foreground);
+                deleteList.setOnMenuItemClickListener((MenuItem a) -> {
+                    DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, DELETE_LIST);
+                    dialog.show(activity.getSupportFragmentManager(), "deletelist");
                     return true;
                 });
-
                 return true;
             }
 
             @Override
             public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                actionMode.setTitle(listName);
+                actionMode.setTitle(titleList);
                 return false;
             }
 
@@ -69,7 +68,6 @@ public class ActionModeListCallback {
 
             }
         };
-
         return mListCallback;
     }
 }

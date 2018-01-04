@@ -19,12 +19,16 @@ public class CategoriesAndListsAdapter {
 
     public static final String GROUPS = "groups";
     public static final String GROUP_ID = "group_id";
+    public static final String CHILD_ID = "child_id";
     public static final String CHILDS = "childs";
     static CustomSimpleExpandableListAdapter simpleExpandableListAdapter;
 
-    public static ArrayList<Map<String, String>> groups = new ArrayList<>();
+    public static ArrayList<Map<String, String>> groups;
+    public static ArrayList<ArrayList<Map<String, String>>> childs;
 
     public CategoriesAndListsAdapter(Context context) {
+
+        groups = new ArrayList<>();
 
         Map<String, String> map;
         List<CategoryModel> categories = CategoriesRealmController.getCategories();
@@ -40,7 +44,7 @@ public class CategoriesAndListsAdapter {
         String groupFrom[] = new String[] { GROUPS };
         int groupTo[] = new int[] {R.id.parent_text1};
 
-        ArrayList<ArrayList<Map<String, String>>> childs = new ArrayList<>();
+        childs = new ArrayList<>();
 
         ArrayList<Map<String, String>> arrayList;
 
@@ -51,6 +55,7 @@ public class CategoriesAndListsAdapter {
             for (ListModel item : tasksList){
                 map = new HashMap<>();
                 map.put(CHILDS, item.getName());
+                map.put(CHILD_ID, String.valueOf(item.getId()));
                 arrayList.add(map);
             }
             childs.add(arrayList);

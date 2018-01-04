@@ -71,11 +71,29 @@ public class ListsRealmController {
             public void execute(Realm realm) {
                 ListModel item = realm.createObject(ListModel.class);
                 item.setId(id);
-                item.setName(name);
+                item.setName(name + id);
                 item.setCycling(isCycling);
                 item.setIdCategory(idCategory);
                 realm.insert(item);
 //                if (isDefault) new SharedPrefHelper(null).setDefauiltListId(id);
+            }
+        });
+        return id;
+    }
+
+
+    public static long editList(long id, String name, boolean isDefault, boolean isCycling, long idCategory ){
+
+        App.initRealm();
+        App.realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                ListModel item = getListById(id);
+                item.setName(name + id);
+//              item.setCycling(isCycling);
+//              if (idCategory != 0) item.setIdCategory(idCategory);
+//
+//              if (isDefault) new SharedPrefHelper(null).setDefauiltListId(id);
             }
         });
         return id;

@@ -34,6 +34,11 @@ public class CategoriesRealmController {
         return categoriesQuery;
     }
 
+    public static CategoryModel getCategory(long id){
+        return getcategoriesQuery().equalTo("id", id).findFirst();
+    }
+
+
     public static List<CategoryModel>  getCategories(){
         categories = getcategoriesQuery().findAll();
         return categories;
@@ -52,7 +57,7 @@ public class CategoriesRealmController {
             public void execute(Realm realm) {
                 CategoryModel item = realm.createObject(CategoryModel.class);
                 item.setId(idAddedindCategory);
-                item.setName(name);
+                item.setName(name + idAddedindCategory);
                 realm.insert(item);
             }
         });
@@ -60,13 +65,13 @@ public class CategoriesRealmController {
         return idAddedindCategory;
     }
 
-    public static void editCategory(String oldName, String newName){
+    public static void editCategory(long id, String newName){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
 
-                CategoryModel task = getcategoriesQuery().equalTo("name", oldName).findFirst();
+                CategoryModel task = getcategoriesQuery().equalTo("id", id).findFirst();
 //                CategoryModel copyTask = App.realm.copyFromRealm(task);
                 task.setName(newName);
 //                copyTask.setName(name);
@@ -76,12 +81,12 @@ public class CategoriesRealmController {
         });
     }
 
-    public static void deleteCategoryAndChilds(String name){
+    public static void deleteCategoryAndChilds(long id){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                CategoryModel category = getcategoriesQuery().equalTo("name", name).findFirst();
+                CategoryModel category = getcategoriesQuery().equalTo("id", id).findFirst();
                 long idCategory = category.getId();
                 RealmResults<ListModel> realmResultsListsModel = ListsRealmController.getListsByCategoryId(idCategory);
                 ArrayList<Long> arrayList = new ArrayList<>();
