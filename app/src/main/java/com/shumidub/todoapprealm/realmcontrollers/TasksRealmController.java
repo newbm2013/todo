@@ -31,6 +31,13 @@ public class TasksRealmController {
     public static List<TaskModel> getTasks(){
         App.initRealm();
         return App.realm.where(TaskModel.class)
+                .findAll()
+                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+    }
+
+    public static List<TaskModel> getNotDoneTasks(){
+        App.initRealm();
+        return App.realm.where(TaskModel.class)
                 .equalTo("done", false)
                 .findAll()
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
@@ -45,6 +52,14 @@ public class TasksRealmController {
     }
 
     public static List<TaskModel> getTasks(long listId){
+        App.initRealm();
+        return App.realm.where(TaskModel.class)
+                .equalTo("taskListId", listId)
+                .findAll()
+                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+    }
+
+    public static List<TaskModel> getNotDoneTasks(long listId){
         App.initRealm();
         return App.realm.where(TaskModel.class)
                 .equalTo("taskListId", listId)

@@ -29,11 +29,9 @@ public class TasksFragment extends Fragment {
 
     long listId;
     public TasksRecyclerViewAdapter tasksRecyclerViewAdapter;
-    public DoneTasksRecyclerViewAdapter doneTasksRecyclerViewAdapter;
     TasksRealmController realmController;
-
     RecyclerView rvItems;
-    RecyclerView rvDoneTasks;
+
 
     public static TasksFragment newInstance(long listId){
         TasksFragment itemFragment = new TasksFragment();
@@ -42,12 +40,6 @@ public class TasksFragment extends Fragment {
         itemFragment.setArguments(arg);
         return itemFragment;
     }
-
-//    public static TasksFragment newInstance(){
-//        TasksFragment itemFragment = new TasksFragment();
-//        return itemFragment;
-//    }
-
 
 
     @Override
@@ -74,26 +66,24 @@ public class TasksFragment extends Fragment {
 
         if (realmController == null) realmController = new TasksRealmController();
         rvItems = view.findViewById(R.id.rv_items);
-        rvDoneTasks = view.findViewById(R.id.rv_done_task);
 
         Log.d(TAG, "onViewCreated: listId = " + listId);
 
         List<TaskModel> items;
+        if (listId == 0) items = realmController.getNotDoneTasks();
+        else items = realmController.getNotDoneTasks(listId);
 
-        if (listId == 0) items = realmController.getTasks();
-        else items = realmController.getTasks(listId);
+
+
+
 
         rvItems.setLayoutManager(new LinearLayoutManager(getContext()));
         tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(items);
+
         rvItems.setAdapter(tasksRecyclerViewAdapter);
 
-        List<TaskModel> doneTasks;
 
-        if (listId == 0) doneTasks = realmController.getDoneTasks();
-        else doneTasks = realmController.getDoneTasks(listId);
 
-        rvDoneTasks.setLayoutManager(new LinearLayoutManager(getContext()));
-        doneTasksRecyclerViewAdapter = new DoneTasksRecyclerViewAdapter(doneTasks);
-        rvDoneTasks.setAdapter(tasksRecyclerViewAdapter);
+
     }
 }
