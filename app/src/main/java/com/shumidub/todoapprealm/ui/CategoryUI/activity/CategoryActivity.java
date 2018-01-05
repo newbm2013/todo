@@ -2,6 +2,7 @@ package com.shumidub.todoapprealm.ui.CategoryUI.activity;
 
 import android.content.Intent;
 import android.support.v4.util.Pair;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -78,7 +79,16 @@ public class CategoryActivity extends AppCompatActivity {
         expandableListView.setOnItemLongClickListener(getLongListener());
         expandableListView.setOnChildClickListener(getChildClickListener());
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Categories");
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+
     }
+
+
 
     @Override
     protected void onResume() {
@@ -97,10 +107,18 @@ public class CategoryActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+
 
     private void findViews(){
         expandableListView = findViewById(R.id.expandedable_list_view);
@@ -126,20 +144,34 @@ public class CategoryActivity extends AppCompatActivity {
                 idOnTag = ((Pair<String, Long>) view.getTag()).second;
                 Log.d("DEBUG_TAG", "onItemLongClick: view " + type + " /" + idOnTag );
 
+                String subtitle = "";
+
                 if (view.getId() == R.id.parent_text1) {
                     try {
                         Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getGroup(i));
                         textCategoryName = map.get(GROUPS);
+
+                        subtitle = "Category";
+
                         actionMode = startActionMode(getCallback(CATEGORY_ACTIONMODE));
+
                     } catch (IndexOutOfBoundsException ignored) { }
                     Log.d("DEBUG_TAG", "onItemLongClick: parent");
                 }else if (view.getId() == android.R.id.text1) {
                     try {
                         titleList = ListsRealmController.getListById(idOnTag).getName();
                         actionMode = null;
+                        subtitle = "List";
                         actionMode = startActionMode(getCallback(LIST_ACTIONMODE));
+
+
+
                     } catch (IndexOutOfBoundsException ignored) { }
                 }
+
+
+                actionMode.setSubtitle(subtitle);
+
                 return true;
             };
         }

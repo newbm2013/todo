@@ -98,6 +98,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
                             TasksRealmController.setTaskDone(item, holder.checkBox.isChecked());
                             notifyDataSetChanged();
+                            tasksFragment.getActivity().invalidateOptionsMenu();
 
 //                            try {
 //                                Log.d(TAG + "1", "SET_DONE: " +

@@ -9,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -63,6 +66,8 @@ public class TasksFragment extends Fragment {
         Log.d(TAG, "onCreate: listId = " + listId);
 
         isAllTaskShowing = false;
+
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -105,17 +110,7 @@ public class TasksFragment extends Fragment {
     }
 
     public void showAllTasks(){
-
-
-
-
-
-
-//        int position = tasks.size() - 1;
         int position = llm.findFirstVisibleItemPosition();
-
-
-
 
         if (listId == 0) tasks = realmController.getTasks();
         else tasks = realmController.getTasks(listId);
@@ -125,8 +120,21 @@ public class TasksFragment extends Fragment {
 
         isAllTaskShowing = true;
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
 
+        int count = 0;
 
+        for (TaskModel task : doneTasks){
+            count = count + task.getCountValue();
+        }
+
+        MenuItem countMenu = menu.add("" + count);
+        countMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

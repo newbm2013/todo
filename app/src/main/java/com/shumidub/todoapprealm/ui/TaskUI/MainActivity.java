@@ -2,6 +2,7 @@ package com.shumidub.todoapprealm.ui.TaskUI;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
         container =  findViewById(R.id.container);
         fragmentManager = getSupportFragmentManager();
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Tasks");
+
+
         Intent intent = getIntent();
         long listId= intent.getLongExtra("textId", 0);
         fragmentManager.beginTransaction().replace(R.id.container,
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.add("Category");
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIntent(new Intent(this, CategoryActivity.class));
+
         return super.onCreateOptionsMenu(menu);
     }
 
