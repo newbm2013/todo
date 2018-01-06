@@ -64,6 +64,8 @@ public class CategoryActivity extends AppCompatActivity {
 
     public static Long idOnTag;
 
+    int expandedGroup = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,29 +74,78 @@ public class CategoryActivity extends AppCompatActivity {
         findViews();
         setEmptyStateIfCategoriesEmpty();
 
-        categoriesAndListsAdapter = new CategoriesAndListsAdapter(this);
-        simpleExpandableListAdapter = categoriesAndListsAdapter.getAdapter();
 
-        expandableListView.setAdapter(simpleExpandableListAdapter);
-        expandableListView.setOnItemLongClickListener(getLongListener());
-        expandableListView.setOnChildClickListener(getChildClickListener());
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Categories");
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        expandableListView.setOnItemLongClickListener(getLongListener());
+        expandableListView.setOnChildClickListener(getChildClickListener());
+
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int i) {
+
+                Log.d("DTAG", "onGroupExpand: " +i);
+                expandedGroup = i;
+
+
+//
+//                if (expandedGroup !=-1 && expandedGroup!=i) expandableListView.collapseGroup(expandedGroup);
+//
+//                expandableListView.setSelectedGroup(i);
+
+
+            }
+        });
+//
+//        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+//            @Override
+//            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+//
+//                int childCount =  ListsRealmController.getListsByCategoryId(((Pair<String,Long>)view.getTag()).second).size();
+//
+//                if (childCount>0 && expandedGroup !=-1 && expandedGroup!=i){
+//                    expandableListView.collapseGroup(expandedGroup);
+//                    expandedGroup = i;
+//                    expandableListView.setSelectedGroup(expandedGroup);
+//                }else expandedGroup =i;
+//
+//
+//
+//                Log.d("DTAG", "onGroupClick: " +expandedGroup);
+//
+//                return false;
+//            }
+//        });
 
 
     }
-
 
 
     @Override
     protected void onResume() {
+
+
+        categoriesAndListsAdapter = new CategoriesAndListsAdapter(this);
+        simpleExpandableListAdapter = categoriesAndListsAdapter.getAdapter();
+        expandableListView.setAdapter(simpleExpandableListAdapter);
+
+
+        //need scroll to child or catogory by id from child or better normal notify data set changed without on resume ...
+//        if (expandedGroup!=-1){
+//            expandableListView.expandGroup(expandedGroup);
+//            expandableListView.setSelectedGroup(expandedGroup);
+//        }
+
+
+
         super.onResume();
-        simpleExpandableListAdapter.notifyDataSetChanged();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -229,10 +280,9 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     public void dataChanged(){
-        categoriesAndListsAdapter.dataChanged();
-//        categoriesAndListsAdapter = new CategoriesAndListsAdapter(this);
-//        simpleExpandableListAdapter = categoriesAndListsAdapter.getAdapter();
-//        expandableListView.setAdapter(simpleExpandableListAdapter);
+//
+
+        onResume();
 
     }
 
