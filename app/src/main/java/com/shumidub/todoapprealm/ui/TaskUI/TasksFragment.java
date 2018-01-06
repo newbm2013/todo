@@ -14,20 +14,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-import com.shumidub.todoapprealm.ui.TaskUI.adapters.DoneTasksRecyclerViewAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.adapters.TasksRecyclerViewAdapter;
 
 import java.util.List;
 
 import static com.shumidub.todoapprealm.App.TAG;
-import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.listId;
 
 /**
  * Created by Артем on 19.12.2017.

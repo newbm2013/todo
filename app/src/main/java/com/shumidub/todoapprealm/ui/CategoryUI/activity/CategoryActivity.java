@@ -43,7 +43,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     ExpandableListView expandableListView;
 
-    static SimpleExpandableListAdapter simpleExpandableListAdapter;
+    SimpleExpandableListAdapter simpleExpandableListAdapter;
     AdapterView.OnItemLongClickListener longListener;
     ExpandableListView.OnChildClickListener childClickListener;
     CategoriesAndListsAdapter categoriesAndListsAdapter;
@@ -205,13 +205,7 @@ public class CategoryActivity extends AppCompatActivity {
                         TasksRealmController.insertItems(text, false, false, textListName);
                         et.setText("");
                     } else {
-                        long listId;
-                        if (!ListsRealmController.getTasksList(textListName).equals(null) ||
-                                ListsRealmController.getTasksList(textListName) != null) {
-                            listId = ListsRealmController.getTasksList(textListName).getId();
-                        } else {
-                            listId = 0;
-                        }
+                        long listId = ((Pair<String, Long>) view.getTag()).second;
                         Intent intent = new Intent(CategoryActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("textId", listId);
@@ -232,5 +226,17 @@ public class CategoryActivity extends AppCompatActivity {
             i=1;
         }
         ((TextView) view).setText("" + i);
+    }
+
+    public void dataChanged(){
+        categoriesAndListsAdapter.dataChanged();
+//        categoriesAndListsAdapter = new CategoriesAndListsAdapter(this);
+//        simpleExpandableListAdapter = categoriesAndListsAdapter.getAdapter();
+//        expandableListView.setAdapter(simpleExpandableListAdapter);
+
+    }
+
+    public void finishActionMode(){
+        if (actionMode!=null) actionMode.finish();
     }
 }

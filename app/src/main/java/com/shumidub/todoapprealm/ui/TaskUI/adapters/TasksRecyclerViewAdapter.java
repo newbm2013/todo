@@ -100,24 +100,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                             notifyDataSetChanged();
                             tasksFragment.getActivity().invalidateOptionsMenu();
 
-//                            try {
-//                                Log.d(TAG + "1", "SET_DONE: " +
-//                                        "\n " +
-//                                        "\nitem text = " + item.getText() +
-//                                        "\nitems.get(position).getText() = " + tasks.get(position).getText() +
-//                                        "\n " +
-//                                        "\nitem = " + item.hashCode() +
-//                                        "\nitems.get(position) =" + tasks.get(position).hashCode() +
-//                                        "\n " +
-//                                        "\nitem.taskID = " + item.getId() +
-//                                        "\nitems.get(position).taskID = " + tasks.get(position).getId() +
-//                                        "\ntaskID = " + taskId +
-//                                        "\n " +
-//                                        "\nitem.isDone =" + item.isDone() +
-//                                        "\nitemsget(position).isDone =" + tasks.get(position).isDone());
-//                            } catch (ArrayIndexOutOfBoundsException e) {
-//                                e.printStackTrace();
-//                            }
+//
 
 
                             setTasksTextColor(holder, item.isDone());

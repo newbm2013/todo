@@ -6,11 +6,17 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.SimpleExpandableListAdapter;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.model.ListModel;
 import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+import com.shumidub.todoapprealm.sharedpref.SharedPrefHelper;
+import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
 
 import io.reactivex.annotations.NonNull;
 
@@ -29,6 +35,17 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
     long idList;
     String title;
 
+    ListModel list;
+    String currentTextList;
+    boolean currentIsDefaultList;
+    boolean currentIsCyclingList;
+    long currentIdCategoryList; // for future for remove
+
+    EditText etName;
+    Switch swIsDefault;
+    Switch swIsCycling;
+
+
     public static DialogEditDelList newInstance(long idList, String mode){
         DialogEditDelList dialog = new DialogEditDelList();
         Bundle arg = new Bundle();
@@ -43,6 +60,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        SharedPrefHelper spHelper = new SharedPrefHelper(getActivity());
 
         String textButton = "Edit";
 
@@ -51,14 +69,30 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
             title = getArguments().getString(MODE_LIST);
             if (title == DELETE_LIST) textButton = "DELETE";
             if (title == EDIT_LIST) textButton = "Done";
+
+            list = ListsRealmController.getListById(idList);
+
+            currentTextList = list.getName();
+            long defaultListId = spHelper.getDefaultListId();
+            currentIsDefaultList = defaultListId == idList;  // SP, можно только выбрать тру и тогда перепишется значение, с тру на фолсе нельзя
+            currentIsCyclingList = list.isCycling();
+            currentIdCategoryList = list.getIdCategory();
+
+
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         if (title == EDIT_LIST ){
-            View view = getActivity().getLayoutInflater().inflate(R.layout.add_category_layout, null);
-            EditText etName = view.findViewById(R.id.name);
-            etName.setText(ListsRealmController.getListById(idList).getName());
+            View view = getActivity().getLayoutInflater().inflate(R.layout.add_list_layout, null);
+            etName = view.findViewById(R.id.name);
+            swIsDefault = view.findViewById(R.id.switch_default);
+            swIsCycling = view.findViewById(R.id.switch_cycling);
+
+            etName.setText(list.getName());
+            swIsDefault.setChecked(currentIsDefaultList);
+            swIsCycling.setChecked(list.isCycling());
+
             builder.setView(view);
         }
 
@@ -67,15 +101,20 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                 .setPositiveButton(textButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        EditText etName = getDialog().findViewById(R.id.name);
 
-                        if (title == EDIT_LIST ){
+                        boolean isDefault = swIsDefault.isChecked();
+                        boolean isCycling = swIsCycling.isChecked();
 
-                            if (!etName.getText().toString().isEmpty()) {
-                                String text = etName.getText().toString();
-                                ListsRealmController.editList(idList, text, false, false, 0);
-                                Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
-                            }else {Toast.makeText(getContext(), "can't be empty", Toast.LENGTH_SHORT).show();}
+                        if (title == EDIT_LIST ) {
+                            String text = etName.getText().toString();
+                            ListsRealmController.editList(list, text, isDefault, isCycling, 0);
+                            if(!currentIsDefaultList && isDefault) spHelper.setDefauiltListId(idList);
+                            Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
+
+                            CategoryActivity activity = (CategoryActivity) getActivity();
+                            activity.finishActionMode();
+                            activity.dataChanged();
+
 
                         }
 

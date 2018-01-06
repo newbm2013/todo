@@ -5,12 +5,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.App;
+import com.shumidub.todoapprealm.sharedpref.SharedPrefHelper;
 import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,9 +30,21 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Tasks");
 
+        long defaultListId = new SharedPrefHelper(this).getDefaultListId();
 
         Intent intent = getIntent();
-        long listId= intent.getLongExtra("textId", 0);
+
+        Log.d("DT", "onCreate: " + intent);
+
+        long listId;
+//        if (getIntent() == null) listId = defaultListId;
+//        else
+        listId= intent.getLongExtra("textId", defaultListId);
+
+        Log.d("DT", "dli " + defaultListId);
+
+
+
         fragmentManager.beginTransaction().replace(R.id.container,
                 TasksFragment.newInstance(listId)).commit();
     }

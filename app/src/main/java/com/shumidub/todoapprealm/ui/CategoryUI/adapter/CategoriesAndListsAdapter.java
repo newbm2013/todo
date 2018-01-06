@@ -73,4 +73,8 @@ public class CategoriesAndListsAdapter {
     public CustomSimpleExpandableListAdapter getAdapter(){
         return simpleExpandableListAdapter;
     }
+
+    public void dataChanged(){
+        simpleExpandableListAdapter.notifyDataSetChanged();
+    }
 }
