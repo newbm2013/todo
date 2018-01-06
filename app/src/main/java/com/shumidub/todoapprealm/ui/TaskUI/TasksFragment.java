@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
+import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.TaskUI.adapters.DoneTasksRecyclerViewAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.adapters.TasksRecyclerViewAdapter;
@@ -90,6 +91,11 @@ public class TasksFragment extends Fragment {
 
         if (listId == 0) tasks = realmController.getNotDoneTasks();
         else tasks = realmController.getNotDoneTasks(listId);
+
+        if (listId !=0){
+            ((MainActivity) getActivity()).getSupportActionBar()
+                    .setTitle((CharSequence) ListsRealmController.getListById(listId).getName());
+        }
 
 
         if (listId == 0) doneTasks = realmController.getDoneTasks();
