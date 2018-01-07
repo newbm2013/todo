@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.shumidub.todoapprealm.model.ListModel;
+import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+
 import static android.app.PendingIntent.getActivity;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -33,6 +36,8 @@ public class SharedPrefHelper {
 
     public long getDefaultListId(){
         long defaultListId = sharedPref.getLong(ID_LIST, 0);
+        ListModel list = ListsRealmController.getListById(defaultListId);
+        if (list == null)  defaultListId = 0;
         return defaultListId;
     }
 }
