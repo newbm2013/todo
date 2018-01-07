@@ -36,10 +36,9 @@ import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndLists
 public class CategoryActivity extends AppCompatActivity {
 
     EditText et;
-    Switch swDefault;
-    Switch swCycling;
-    Switch swDragon;
     TextView tvTaskCountValue;
+    TextView tvTaskDragon;
+    TextView tvTaskCycling;
 
     ExpandableListView expandableListView;
 
@@ -63,8 +62,10 @@ public class CategoryActivity extends AppCompatActivity {
     static final int LIST_ACTIONMODE = 2;
 
     public static Long idOnTag;
-
     int expandedGroup = -1;
+
+    int priority = 0;
+    boolean cycling = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,11 +175,15 @@ public class CategoryActivity extends AppCompatActivity {
     private void findViews(){
         expandableListView = findViewById(R.id.expandedable_list_view);
         et = findViewById(R.id.et);
-        swDefault = findViewById(R.id.switch_default);
-        swCycling = findViewById(R.id.switch_cycling);
-        swDragon = findViewById(R.id.switch_dragon);
+
+        tvTaskCycling = findViewById(R.id.task_cycling);
+        tvTaskDragon = findViewById(R.id.task_priority);
+
         tvTaskCountValue = findViewById(R.id.task_value);
         tvTaskCountValue.setOnClickListener((v) -> onTaskValueClick(tvTaskCountValue));
+
+        tvTaskDragon.setOnClickListener((v) -> onTaskPriorityClick(tvTaskDragon));
+        tvTaskCycling.setOnClickListener((v) -> onTaskCyclingClick(tvTaskCycling));
     }
 
     private void setEmptyStateIfCategoriesEmpty(){
@@ -254,6 +259,8 @@ public class CategoryActivity extends AppCompatActivity {
 
                     if (!text.isEmpty() || !text.equals("")) {
                         TasksRealmController.insertItems(text, false, false, textListName);
+                        priority = 0;
+                        cycling = false;
                         et.setText("");
                     } else {
                         long listId = ((Pair<String, Long>) view.getTag()).second;
@@ -277,7 +284,44 @@ public class CategoryActivity extends AppCompatActivity {
             i=1;
         }
         ((TextView) view).setText("" + i);
+
+        if (i<2) ((TextView) view).setTextColor(getResources().getColor(R.color.colorWhite));
+        else ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
+
     }
+
+    public void onTaskPriorityClick(View view) {
+
+        if (priority>2) priority =0;
+        else priority ++;
+
+        if (priority>1){
+            String text = "!";
+            int i = priority;
+            while (i>1){
+                text +="!";
+                i--;
+            }
+            ((TextView) view).setText(text);
+        } else ((TextView) view).setText("!");
+
+        if (priority>0) ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
+        else ((TextView) view).setTextColor(getResources().getColor(R.color.colorWhite));
+
+
+    }
+
+    public void onTaskCyclingClick(View view) {
+
+        cycling = !cycling;
+
+        if (cycling) ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
+        else ((TextView) view).setTextColor(getResources().getColor(R.color.colorWhite));
+
+    }
+
+
+
 
     public void dataChanged(){
 //
