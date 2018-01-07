@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.App;
+import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.sharedpref.SharedPrefHelper;
 import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
 
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
     FrameLayout container;
+    long listId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Log.d("DT", "onCreate: " + intent);
 
-        long listId;
+
+
 //        if (getIntent() == null) listId = defaultListId;
 //        else
         listId= intent.getLongExtra("textId", defaultListId);
 
-        Log.d("DT", "dli " + defaultListId);
+        Log.d("DTAG", "onCreate: ");
 
 
 
@@ -65,5 +67,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    protected void onRestart() {
+        if (!ListsRealmController.getListById(listId).isValid()){
+            long defaultListId = new SharedPrefHelper(this).getDefaultListId();
+            fragmentManager.beginTransaction().replace(R.id.container,
+                    TasksFragment.newInstance(defaultListId)).commit();
+        }
+        super.onRestart();
+    }
 }
 

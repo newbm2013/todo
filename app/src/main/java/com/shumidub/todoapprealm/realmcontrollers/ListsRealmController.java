@@ -115,15 +115,20 @@ public class ListsRealmController {
         addTasksLists(name,isDefault,isCycling, id);
     }
 
-    public static void deleteLists(long idList){
+    public static void deleteLists(ListModel list){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                ListModel item = getListsQuery().equalTo("id", idList).findFirst();
-                item.deleteFromRealm();
+                list.deleteFromRealm();
             }
         });
+    }
+
+    public static void deleteLists(long idList){
+        App.initRealm();
+        ListModel list = getListsQuery().equalTo("id", idList).findFirst();
+        deleteLists(list);
     }
 
     public static boolean listIsExist(ListModel list){

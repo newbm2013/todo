@@ -44,6 +44,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
     EditText etName;
     Switch swIsDefault;
     Switch swIsCycling;
+    long defaultListId;
 
 
     public static DialogEditDelList newInstance(long idList, String mode){
@@ -73,7 +74,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
             list = ListsRealmController.getListById(idList);
 
             currentTextList = list.getName();
-            long defaultListId = spHelper.getDefaultListId();
+            defaultListId = spHelper.getDefaultListId();
             currentIsDefaultList = defaultListId == idList;  // SP, можно только выбрать тру и тогда перепишется значение, с тру на фолсе нельзя
             currentIsCyclingList = list.isCycling();
             currentIdCategoryList = list.getIdCategory();
@@ -91,7 +92,14 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
 
             etName.setText(list.getName());
             swIsDefault.setChecked(currentIsDefaultList);
-            swIsCycling.setChecked(list.isCycling());
+            if (currentIsDefaultList){
+                swIsDefault.setEnabled(false);
+                swIsDefault.setTextColor(getResources().getColor(R.color.colorAccent));
+            }
+//            swIsCycling.setChecked(list.isCycling());
+            swIsCycling.setChecked(false);
+            swIsCycling.setEnabled(false);
+
 
             builder.setView(view);
         }
@@ -102,25 +110,35 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
 
-                        boolean isDefault = swIsDefault.isChecked();
-                        boolean isCycling = swIsCycling.isChecked();
+
 
                         if (title == EDIT_LIST ) {
+
+                            boolean isDefault = swIsDefault.isChecked();
+                            boolean isCycling = swIsCycling.isChecked();
+
                             String text = etName.getText().toString();
                             ListsRealmController.editList(list, text, isDefault, isCycling, 0);
                             if(!currentIsDefaultList && isDefault) spHelper.setDefauiltListId(idList);
-                            Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
 
                             CategoryActivity activity = (CategoryActivity) getActivity();
                             activity.finishActionMode();
                             activity.dataChanged();
+
+                            Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
 
 
                         }
 
 
                         else if (title == DELETE_LIST){
-                            ListsRealmController.deleteLists(idList);
+                            if (list.getId() != defaultListId ) {
+                                ListsRealmController.deleteLists(list);
+                                Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getContext(),
+                                        "Can't delete default list", Toast.LENGTH_SHORT).show();
+                            }
                         }
 
 //                            CategoryActivity.notifyDataSetChanged();

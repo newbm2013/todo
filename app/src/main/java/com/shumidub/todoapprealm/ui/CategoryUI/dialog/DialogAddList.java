@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+import com.shumidub.todoapprealm.sharedpref.SharedPrefHelper;
 import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
 
 import io.reactivex.annotations.NonNull;
@@ -19,23 +21,39 @@ import io.reactivex.annotations.NonNull;
 
 public class DialogAddList extends android.support.v4.app.DialogFragment {
 
+    EditText etName;
+    Switch swIsDefault;
+    Switch swIsCycling;
+
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        View view = getActivity().getLayoutInflater().inflate(R.layout.add_list_layout, null);
+        etName = view.findViewById(R.id.name);
+        swIsDefault = view.findViewById(R.id.switch_default);
+        swIsCycling = view.findViewById(R.id.switch_cycling);
+        swIsCycling.setEnabled(false);
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Add new list to " + CategoryActivity.textCategoryName)
-                .setView(R.layout.add_list_layout)
+                .setView(view)
 //              .setIcon(R.drawable.ic_launcher_cat)
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String text = ((EditText) getDialog().findViewById(R.id.name)).getText().toString();
                         String categoryName = CategoryActivity.textCategoryName;
-                        boolean isDefault = ((Switch) getDialog().findViewById(R.id.switch_default)).isChecked();
-                        boolean isCycling = ((Switch) getDialog().findViewById(R.id.switch_cycling)).isChecked();
+                        boolean isDefault = swIsDefault.isChecked();
+                        boolean isCycling = swIsCycling.isChecked();
                         if (!text.isEmpty() && !categoryName.isEmpty()){
-                            ListsRealmController.addTasksLists(text, isDefault, isCycling, CategoryActivity.idOnTag );
+                            long idList = ListsRealmController.addTasksLists(text, isDefault, isCycling, CategoryActivity.idOnTag );
+                            if(isDefault){
+                                SharedPrefHelper spHelper = new SharedPrefHelper(getActivity());
+                                spHelper.setDefauiltListId(idList);
+                            }
                         }
                     }
                 })
