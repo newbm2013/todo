@@ -32,7 +32,6 @@ public class CategoriesAndListsAdapter {
 
         Map<String, String> map;
         List<CategoryModel> categories = CategoriesRealmController.getCategories();
-        List<ListModel> lists = ListsRealmController.getLists();
 
         for ( CategoryModel item: categories) {
             map = new HashMap<>();
@@ -62,19 +61,16 @@ public class CategoriesAndListsAdapter {
         }
 
         String childFrom[] = new String[] { CHILDS};
-        int childTo[] = new int[] { android.R.id.text1 };
+        int childTo[] = new int[] { R.id.child_text1 };
 
             simpleExpandableListAdapter = new CustomSimpleExpandableListAdapter(
                     context,
                     groups, R.layout.group_expandable_list, groupFrom, groupTo,
-                    childs, android.R.layout.simple_list_item_1, childFrom, childTo);
+                    childs, R.layout.child_expandable_list, childFrom, childTo);
         }
 
     public CustomSimpleExpandableListAdapter getAdapter(){
         return simpleExpandableListAdapter;
     }
 
-    public void dataChanged(){
-        simpleExpandableListAdapter.notifyDataSetChanged();
-    }
 }

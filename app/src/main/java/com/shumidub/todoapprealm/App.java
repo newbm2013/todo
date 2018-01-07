@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm;
 
 import android.app.Application;
+import android.os.Build;
 import android.util.Log;
 
 import com.shumidub.todoapprealm.model.CategoryModel;
@@ -32,7 +33,7 @@ public class App extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build());
         initRealm();
-        if(CategoriesRealmController.categoriesIsEmpry()) addContent();
+        if(BuildConfig.DEBUG && CategoriesRealmController.categoriesIsEmpry()) addContent();
     }
 
     public static void initRealm() {

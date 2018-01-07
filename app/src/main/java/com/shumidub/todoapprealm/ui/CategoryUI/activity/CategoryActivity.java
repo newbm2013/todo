@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm.ui.CategoryUI.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -102,10 +103,20 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 //
-//        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//            @Override
-//            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+
+//                TextView text = view.findViewById(R.id.parent_text1);
 //
+//                if (expandableListView.isGroupExpanded(i)) {
+//                    view.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+//                    text.setTextColor(Color.BLACK);
+//                }else{
+//                    view.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLigth));
+//                    text.setTextColor(Color.WHITE);
+//                }
+
 //                int childCount =  ListsRealmController.getListsByCategoryId(((Pair<String,Long>)view.getTag()).second).size();
 //
 //                if (childCount>0 && expandedGroup !=-1 && expandedGroup!=i){
@@ -117,10 +128,12 @@ public class CategoryActivity extends AppCompatActivity {
 //
 //
 //                Log.d("DTAG", "onGroupClick: " +expandedGroup);
-//
-//                return false;
-//            }
-//        });
+
+                return false;
+            }
+        });
+
+
 
 
     }
@@ -213,8 +226,8 @@ public class CategoryActivity extends AppCompatActivity {
 
                     } catch (IndexOutOfBoundsException ignored) { }
                     Log.d("DEBUG_TAG", "onItemLongClick: parent");
-                }else if (view.getId() == android.R.id.text1) {
-                    try {
+                }else if (view.getId() == R.id.child_text1) {
+                        try {
                         titleList = ListsRealmController.getListById(idOnTag).getName();
                         actionMode = null;
                         subtitle = "List";

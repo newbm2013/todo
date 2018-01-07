@@ -60,10 +60,7 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
                             }
                             Toast.makeText(getContext(),"Done", Toast.LENGTH_SHORT).show();
 
-
-
-
-
+                            activity = (CategoryActivity) getActivity();
                             activity.finishActionMode();
                             activity.dataChanged();
 

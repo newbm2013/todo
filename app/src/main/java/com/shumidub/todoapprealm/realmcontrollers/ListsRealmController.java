@@ -73,7 +73,8 @@ public class ListsRealmController {
             public void execute(Realm realm) {
                 ListModel item = realm.createObject(ListModel.class);
                 item.setId(id);
-                item.setName(name + id);
+//                item.setName(name + id);
+                item.setName(name);
                 item.setCycling(isCycling);
                 item.setIdCategory(idCategory);
                 realm.insert(item);

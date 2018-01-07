@@ -85,7 +85,8 @@ public class TasksRealmController {
                 TaskModel item = realm.createObject(TaskModel.class);
                 long id = getIdForNextValue(TaskModel.class);
                 item.setId(id);
-                item.setText(text + id);
+//                item.setText(text + id);
+                item.setText(text);
                 item.setDone(done);
                 item.setLastDoneDate(new Date());
                 item.setImportant(important);

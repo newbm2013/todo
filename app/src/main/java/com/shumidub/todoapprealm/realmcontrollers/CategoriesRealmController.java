@@ -57,7 +57,8 @@ public class CategoriesRealmController {
             public void execute(Realm realm) {
                 CategoryModel item = realm.createObject(CategoryModel.class);
                 item.setId(idAddedindCategory);
-                item.setName(name + idAddedindCategory);
+                item.setName(name);
+//                item.setName(name + idAddedindCategory);
                 realm.insert(item);
             }
         });
