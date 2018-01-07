@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
+import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
 
 import io.reactivex.annotations.NonNull;
 
@@ -28,6 +29,8 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
     Long idCategory;
     String title;
+
+    CategoryActivity activity;
 
     public static DialogAddEditDelCategory newInstance(Long idCategory, String mode){
         DialogAddEditDelCategory dialogAddCategoty = new DialogAddEditDelCategory();
@@ -73,6 +76,9 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                 .setPositiveButton(textButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
+
+                        activity = (CategoryActivity) getActivity();
+
                         EditText etName = getDialog().findViewById(R.id.name);
 
                         if(title == ADD_CATEGORY){
@@ -81,6 +87,11 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                                 CategoriesRealmController.addCategory(text);
 
                                 Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
+
+                                activity.finishActionMode();
+                                activity.dataChanged();
+
+
                             }else {Toast.makeText(getContext(), "can't be empty", Toast.LENGTH_SHORT).show();}
 
                         }
@@ -91,6 +102,11 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                                 String text = etName.getText().toString();
                                 CategoriesRealmController.editCategory(idCategory, text);
                                 Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
+
+                                activity.finishActionMode();
+                                activity.dataChanged();
+
+
                             }else {Toast.makeText(getContext(), "can't be empty", Toast.LENGTH_SHORT).show();}
 
                         }
@@ -98,6 +114,11 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
                         else if (title == DELETE_CATEGORY && idCategory!=null){
                             CategoriesRealmController.deleteCategoryAndChilds(idCategory);
+
+                            Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
+
+                            activity.finishActionMode();
+                            activity.dataChanged();
                         }
 
 //                            CategoryActivity.notifyDataSetChanged();

@@ -46,6 +46,8 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
     Switch swIsCycling;
     long defaultListId;
 
+    CategoryActivity activity;
+
 
     public static DialogEditDelList newInstance(long idList, String mode){
         DialogEditDelList dialog = new DialogEditDelList();
@@ -110,6 +112,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
 
+                        activity = (CategoryActivity) getActivity();
 
 
                         if (title == EDIT_LIST ) {
@@ -121,7 +124,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                             ListsRealmController.editList(list, text, isDefault, isCycling, 0);
                             if(!currentIsDefaultList && isDefault) spHelper.setDefauiltListId(idList);
 
-                            CategoryActivity activity = (CategoryActivity) getActivity();
+
                             activity.finishActionMode();
                             activity.dataChanged();
 
@@ -135,6 +138,8 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                             if (list.getId() != defaultListId ) {
                                 ListsRealmController.deleteLists(list);
                                 Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                                activity.finishActionMode();
+                                activity.dataChanged();
                             }else{
                                 Toast.makeText(getContext(),
                                         "Can't delete default list", Toast.LENGTH_SHORT).show();

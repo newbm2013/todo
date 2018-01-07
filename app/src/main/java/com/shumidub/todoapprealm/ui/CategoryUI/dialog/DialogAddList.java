@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
@@ -24,6 +25,9 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
     EditText etName;
     Switch swIsDefault;
     Switch swIsCycling;
+
+    CategoryActivity activity;
+
 
 
     @NonNull
@@ -54,6 +58,15 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
                                 SharedPrefHelper spHelper = new SharedPrefHelper(getActivity());
                                 spHelper.setDefauiltListId(idList);
                             }
+                            Toast.makeText(getContext(),"Done", Toast.LENGTH_SHORT).show();
+
+
+
+
+
+                            activity.finishActionMode();
+                            activity.dataChanged();
+
                         }
                     }
                 })
