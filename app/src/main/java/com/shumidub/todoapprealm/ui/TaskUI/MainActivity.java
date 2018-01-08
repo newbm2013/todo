@@ -28,24 +28,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         container =  findViewById(R.id.container);
         fragmentManager = getSupportFragmentManager();
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Tasks");
-
         long defaultListId = new SharedPrefHelper(this).getDefaultListId();
-
         Intent intent = getIntent();
-
-
-
-
-//        if (getIntent() == null) listId = defaultListId;
-//        else
         listId= intent.getLongExtra("textId", defaultListId);
-
         Log.d("DTAG", "onCreate: ");
-
-
 
         fragmentManager.beginTransaction().replace(R.id.container,
                 TasksFragment.newInstance(listId)).commit();
@@ -56,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item = menu.add("Category");
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         item.setIntent(new Intent(this, CategoryActivity.class));
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -66,11 +53,10 @@ public class MainActivity extends AppCompatActivity {
         App.closeRealm();
     }
 
-
-
     @Override
     protected void onRestart() {
-        if (!ListsRealmController.getListById(listId).isValid()){
+        // todo try to replace to onCreate
+        if (ListsRealmController.getListById(listId)!=null){
             long defaultListId = new SharedPrefHelper(this).getDefaultListId();
             fragmentManager.beginTransaction().replace(R.id.container,
                     TasksFragment.newInstance(defaultListId)).commit();
@@ -78,4 +64,3 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
     }
 }
-
