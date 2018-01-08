@@ -9,7 +9,7 @@ android {
     }
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.shumidub.todoapprealm"
+        applicationId "com.shumidub.todoapprealm.beta01"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
@@ -52,6 +52,5 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-
 
 }
