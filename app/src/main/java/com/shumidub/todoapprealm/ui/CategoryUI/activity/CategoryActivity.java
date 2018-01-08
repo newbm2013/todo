@@ -19,6 +19,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.model.CategoryModel;
+import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.CategoryUI.actionmode.ActionModeCategoryCallback;
@@ -217,15 +219,15 @@ public class CategoryActivity extends AppCompatActivity {
 
                 if (view.getId() == R.id.parent_text1) {
                     try {
-                        Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getGroup(i));
-                        textCategoryName = map.get(GROUPS);
+                        CategoryModel categoty = CategoriesRealmController.getCategory(idOnTag);
+                        textCategoryName =categoty.getName();
 
                         subtitle = "Category";
 
                         actionMode = startActionMode(getCallback(CATEGORY_ACTIONMODE));
 
                     } catch (IndexOutOfBoundsException ignored) { }
-                    Log.d("DEBUG_TAG", "onItemLongClick: parent");
+                    Log.d("DEBUG_TAG", "onItemLongClick: parent  index out");
                 }else if (view.getId() == R.id.child_text1) {
                         try {
                         titleList = ListsRealmController.getListById(idOnTag).getName();

@@ -49,14 +49,4 @@ public class CustomSimpleExpandableListAdapter extends SimpleExpandableListAdapt
         return v;
     }
 
-    @Override
-    public void onGroupExpanded(int groupPosition) {
-//        getGroupView(groupPosition, true, null, null);
-        super.onGroupExpanded(groupPosition);
-    }
-
-    @Override
-    public void onGroupCollapsed(int groupPosition) {
-        super.onGroupCollapsed(groupPosition);
-    }
 }
