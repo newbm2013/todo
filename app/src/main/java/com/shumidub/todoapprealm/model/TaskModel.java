@@ -14,11 +14,12 @@ public class TaskModel extends RealmObject {
     private String text;
     private boolean done;
     private long taskListId;
-    private boolean important;
-    private Date lastDoneDate;
+    private int lastDoneDate;
     private boolean isCycling;
-
     private int countValue;
+
+
+    private int priority;
 
     public long getId() {return id;}
     public void setId(long id) {
@@ -42,11 +43,10 @@ public class TaskModel extends RealmObject {
     public long getTaskListId() {return taskListId; }
     public void setTaskListId(long taskListId) {this.taskListId = taskListId;}
 
-    public boolean isImportant() {return important;}
-    public void setImportant(boolean important) {this.important = important;}
 
-    public Date getLastDoneDate() { return lastDoneDate;}
-    public void setLastDoneDate(Date lastDoneDate) {this.lastDoneDate = lastDoneDate;}
+
+    public int getLastDoneDate() { return lastDoneDate;}
+    public void setLastDoneDate(int lastDoneDate) {this.lastDoneDate = lastDoneDate;}
 
     public boolean isCycling() {
         return isCycling;
@@ -62,5 +62,14 @@ public class TaskModel extends RealmObject {
     public void setCountValue(int countValue) {
         this.countValue = countValue;
     }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
 
 }

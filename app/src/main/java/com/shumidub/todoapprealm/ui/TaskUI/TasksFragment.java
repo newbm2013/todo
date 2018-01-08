@@ -1,13 +1,14 @@
 package com.shumidub.todoapprealm.ui.TaskUI;
 
-import android.os.Build;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,8 +20,10 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.ui.TaskUI.actionmode.TaskActionModeCallback;
 import com.shumidub.todoapprealm.ui.TaskUI.adapters.TasksRecyclerViewAdapter;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static com.shumidub.todoapprealm.App.TAG;
@@ -32,13 +35,19 @@ import static com.shumidub.todoapprealm.App.TAG;
 public class TasksFragment extends Fragment {
 
     long listId;
-    public TasksRecyclerViewAdapter tasksRecyclerViewAdapter;
+//    public TasksRecyclerViewAdapter tasksRecyclerViewAdapter;
+    TasksRecyclerViewAdapter adapter;
     public TasksRealmController realmController;
     RecyclerView rvItems;
     public List<TaskModel> tasks;
     public List<TaskModel> doneTasks;
     public boolean isAllTaskShowing;
     LinearLayoutManager llm;
+
+    ActionBar actionBar;
+
+    TasksRecyclerViewAdapter.OnItemLongClicked onItemLongClicked;
+    TasksRecyclerViewAdapter.OnItemClicked onItemClicked;
 
 
 
@@ -65,16 +74,49 @@ public class TasksFragment extends Fragment {
         isAllTaskShowing = false;
 
         setHasOptionsMenu(true);
+
+
+        onItemLongClicked = new TasksRecyclerViewAdapter.OnItemLongClicked() {
+            @Override
+            public void onLongClick(View view, int position) {
+
+                Log.d("DTAG", "onLongClick: ");
+
+                long idTask = (Long) view.getTag();
+                TaskModel task = TasksRealmController.getTask(idTask);
+
+                Log.d("DTAG", "onLongClick: " + idTask);
+
+                actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+                ActionMode.Callback callback = new TaskActionModeCallback().getCallback(getActivity(), TasksFragment.this, task);
+                ActionMode actionMode = getActivity().startActionMode(callback);
+
+            }
+        };
+
+
+        onItemClicked = new TasksRecyclerViewAdapter.OnItemClicked() {
+            @Override
+            public void onClick(View view, int position) {
+
+                long idTask = (Long) view.getTag();
+                TaskModel task = TasksRealmController.getTask(idTask);
+
+                Log.d("DTAG", "onClick: ");
+            }
+        };
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.item_fragment_layout, null);
+        View view = inflater.inflate(R.layout.item_fragment_layout, container, false);
         return view;
+
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -103,24 +145,45 @@ public class TasksFragment extends Fragment {
         rvItems.setLayoutManager(llm);
 
 
+        adapter = new TasksRecyclerViewAdapter(tasks, this);
+
+        rvItems.setAdapter(adapter);
+
+        adapter.setOnLongClicked(onItemLongClicked);
 
 
-        rvItems.setAdapter(new TasksRecyclerViewAdapter(tasks, this));
+
+        adapter.setOnClicked(onItemClicked);
+
+
+        
+
 
 
 
     }
 
     public void showAllTasks(){
-        int position = llm.findFirstVisibleItemPosition();
 
-        if (listId == 0) tasks = realmController.getTasks();
-        else tasks = realmController.getTasks(listId);
-        rvItems.setAdapter(new TasksRecyclerViewAdapter(tasks, this));
-
-        rvItems.scrollToPosition(position);
-
-        isAllTaskShowing = true;
+        if(!isAllTaskShowing) {
+            int position = llm.findFirstVisibleItemPosition();
+            if (listId == 0) tasks = realmController.getTasks();
+            else tasks = realmController.getTasks(listId);
+            adapter = new TasksRecyclerViewAdapter(tasks, this);
+            adapter.setOnLongClicked(onItemLongClicked);
+            adapter.setOnClicked(onItemClicked);
+            rvItems.setAdapter(adapter);
+            rvItems.scrollToPosition(position);
+            isAllTaskShowing = true;
+        } else if (isAllTaskShowing){
+            if (listId == 0) tasks = realmController.getNotDoneTasks();
+            else tasks = realmController.getNotDoneTasks(listId);
+            adapter = new TasksRecyclerViewAdapter(tasks, this);
+            adapter.setOnLongClicked(onItemLongClicked);
+            adapter.setOnClicked(onItemClicked);
+            rvItems.setAdapter(adapter);
+            isAllTaskShowing = false;
+        }
 
     }
 
@@ -131,7 +194,9 @@ public class TasksFragment extends Fragment {
         int count = 0;
 
         for (TaskModel task : doneTasks){
-            count = count + task.getCountValue();
+            String date = "" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
+                    Calendar.getInstance().get(Calendar.YEAR);
+            if (task.getLastDoneDate() == Integer.valueOf(date)) count = count + task.getCountValue();
         }
 
         MenuItem countMenu = menu.add("" + count);
@@ -139,4 +204,11 @@ public class TasksFragment extends Fragment {
 
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    public void notifyDataChanged(){
+        boolean b =adapter == null;
+        Log.d("DTAG", "notifyDataChanged: " + adapter + " " + b );
+        adapter.notifyDataSetChanged();
+    }
+
 }

@@ -1,17 +1,16 @@
 package com.shumidub.todoapprealm.ui.CategoryUI.actionmode;
 
+
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
-import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddEditDelCategory;
-import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddList;
+
 import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList;
 
-import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.listName;
-import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.textCategoryName;
+
 import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.titleList;
 import static com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList.DELETE_LIST;
 import static com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList.EDIT_LIST;
@@ -32,6 +31,7 @@ public class ActionModeListCallback {
         mListCallback = new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+
 
                 MenuItem editList = menu.add("edit ");
                 editList.setIcon(R.drawable.ic_launcher_foreground);
@@ -55,6 +55,7 @@ public class ActionModeListCallback {
             @Override
             public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
                 actionMode.setTitle(titleList);
+
                 return false;
             }
 

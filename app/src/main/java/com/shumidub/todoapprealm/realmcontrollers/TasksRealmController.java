@@ -6,9 +6,11 @@ import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.model.ListModel;
 import com.shumidub.todoapprealm.model.TaskModel;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
 import io.realm.Realm;
 import io.realm.Sort;
 
@@ -28,12 +30,18 @@ public class TasksRealmController {
 //        return App.realm.where(TaskModel.class).equalTo("taskListId", listId).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
 //    }
 
+    public static TaskModel getTask(long idTask){
+        App.initRealm();
+        return App.realm.where(TaskModel.class).equalTo("id", idTask).findFirst();
+    }
+
     public static List<TaskModel> getTasks(){
         App.initRealm();
         return App.realm.where(TaskModel.class)
                 .findAll()
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
+
 
     public static List<TaskModel> getNotDoneTasks(){
         App.initRealm();
@@ -77,36 +85,42 @@ public class TasksRealmController {
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
-    public static  void insertItems(String text, boolean done, boolean important, long taskListId ){
+    public static  void addTask(String text, boolean done, int count, boolean cycling, int priority, long taskListId ){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                TaskModel item = realm.createObject(TaskModel.class);
+                TaskModel task = realm.createObject(TaskModel.class);
                 long id = getIdForNextValue(TaskModel.class);
-                item.setId(id);
-//                item.setText(text + id);
-                item.setText(text);
-                item.setDone(done);
-                item.setLastDoneDate(new Date());
-                item.setImportant(important);
-                item.setTaskListId(taskListId);
-                item.setCountValue(1);
-                item.setCycling(false);
-                realm.insert(item);
+                task.setId(id);
+//              item.setText(text + id);
+                task.setText(text);
+                task.setDone(done);
+                task.setLastDoneDate(0);
+                task.setPriority(priority);
+                task.setTaskListId(taskListId);
+                task.setCountValue(count);
+                task.setCycling(cycling);
+                realm.insert(task);
             }
         });
     }
 
-    public static  void insertItems(String text, boolean done, boolean important, String taskListName ){
+
+    public static  void editTask(TaskModel task, String text, @NonNull int count, @NonNull boolean cycling, @NonNull int priority ){
         App.initRealm();
-        long taskListId = App.realm.where(ListModel.class).equalTo("name", taskListName).findFirst().getId();
-        insertItems(text,done,important,taskListId);
+        App.realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                if (!text.isEmpty()) task.setText(text);
+                task.setPriority(priority);
+                task.setCountValue(count);
+                task.setCycling(cycling);
+            }
+        });
     }
 
-    public void insertItems(String text){
-        insertItems(text, false, false, 0);
-    }
+
 
     public static void setTaskDone(TaskModel task, boolean done){
         App.initRealm();
@@ -114,6 +128,11 @@ public class TasksRealmController {
             @Override
             public void execute(Realm realm) {
                 task.setDone(done);
+                if (done) {
+                    Calendar cal = Calendar.getInstance();
+                    String date = "" + cal.get(Calendar.DAY_OF_YEAR) + cal.get(Calendar.YEAR);
+                    task.setLastDoneDate(Integer.valueOf(date));
+                }
             }
         });
     }
@@ -143,7 +162,15 @@ public class TasksRealmController {
         App.initRealm();
         long taskId = task.getId();
         String taskText = task.getText();
-        task.deleteFromRealm();
+
+        App.realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                task.deleteFromRealm();
+            }
+        });
+
+
         if (App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst() == null){
             Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " DELETED" );
         }else{

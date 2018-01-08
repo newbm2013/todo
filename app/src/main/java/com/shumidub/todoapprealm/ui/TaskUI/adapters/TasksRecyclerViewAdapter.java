@@ -17,6 +17,9 @@ import com.shumidub.todoapprealm.ui.TaskUI.TasksFragment;
 
 import java.util.List;
 
+import butterknife.OnItemClick;
+import butterknife.OnItemLongClick;
+
 import static com.shumidub.todoapprealm.App.TAG;
 import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.listId;
 
@@ -36,6 +39,25 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     TasksFragment tasksFragment;
 
 
+    OnItemLongClicked onItemLongClicked;
+    OnItemClicked onItemClicked;
+
+    public interface OnItemLongClicked{
+        void onLongClick (View view, int position);
+    }
+
+    public interface OnItemClicked{
+        void onClick (View view, int position);
+    }
+
+    public void setOnLongClicked(OnItemLongClicked onItemLongClicked){
+        this.onItemLongClicked = onItemLongClicked;
+    }
+
+    public void setOnClicked(OnItemClicked onItemClicked){
+        this.onItemClicked = onItemClicked;
+    }
+
 
     public TasksRecyclerViewAdapter(List<TaskModel> items, TasksFragment tasksFragment){
         this.tasks = items;
@@ -49,7 +71,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             isNotEmpty = true;
 
             if(viewType!=FOOTER_VIEW) {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, null, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, parent, false);
                 return new NormalViewHolder(view);
             }else{
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.textview_done_tasks, parent, false);
@@ -89,20 +111,21 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 holder.textView.setText(text);
                 holder.textView.setTag(taskId);
 
+                holder.tvCount.setText("" + item.getCountValue());
+                holder.tvPriority.setText( "" + item.getPriority());
+
+                int color = item.isCycling() ? Color.RED : Color.WHITE;
+                holder.tvCycling.setTextColor(color);
+
 
                 holder.checkBox.setChecked(item.isDone());
                 setTasksTextColor(holder, item.isDone());
 
                 holder.checkBox.setOnClickListener(
                         (cb) -> {
-
                             TasksRealmController.setTaskDone(item, holder.checkBox.isChecked());
                             notifyDataSetChanged();
                             tasksFragment.getActivity().invalidateOptionsMenu();
-
-//
-
-
                             setTasksTextColor(holder, item.isDone());
                         });
 //
@@ -126,22 +149,37 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 //                     });
 //
 //
-//            holder.textView.setOnLongClickListener((a)-> {
-//                Log.d(TAG+ "1", "onLongClick: taskID " +items.get(position).getText()
-//                    + " =" + taskId  +"/" + items.get(position).getId()
-//                   );
-//                return true;});
+            holder.textView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Log.d("DTAG", "onLongClick: " + view.toString() + " " + position);
+
+                    onItemLongClicked.onLongClick(view, position);
+
+                    return true;
+                }
+            });
+
+
+            holder.textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClicked.onClick(view, position);
+                }
+            });
+
             }
 
             else if (holder instanceof FooterViewHolder){
 
                 holder.textViewDoneTask.setText("Done " + tasksFragment.doneTasks.size() + " tasks");
+                holder.textViewDoneTask.setTag("footer");
+                // or holder.setTag ?
 
-                if (tasksFragment.isAllTaskShowing) holder.textViewDoneTask.setVisibility(View.INVISIBLE);
+//                if (tasksFragment.isAllTaskShowing) holder.textViewDoneTask.setVisibility(View.INVISIBLE);
 
 
                     holder.textViewDoneTask.setOnClickListener((v) -> {
-                        Toast.makeText(tasksFragment.getContext(), "+", Toast.LENGTH_SHORT).show();
                         tasksFragment.showAllTasks();
                     });
 
@@ -169,6 +207,9 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView textView;
+        TextView tvCount;
+        TextView tvPriority;
+        TextView tvCycling;
         CheckBox checkBox;
         TextView textViewDoneTask;
 
@@ -178,6 +219,12 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             if(isNotEmpty) {
                 textView = itemView.findViewById(R.id.tv);
                 checkBox = itemView.findViewById(R.id.checkbox);
+                tvCount = itemView.findViewById(R.id.task_value);
+                tvPriority = itemView.findViewById(R.id.task_priority);
+                tvCycling = itemView.findViewById(R.id.task_cycling);
+
+
+
                 textViewDoneTask = itemView.findViewById(R.id.tv_done_tasks);
             }
         }

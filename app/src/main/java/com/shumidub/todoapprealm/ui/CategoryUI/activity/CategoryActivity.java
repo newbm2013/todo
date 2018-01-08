@@ -38,7 +38,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     EditText et;
     TextView tvTaskCountValue;
-    TextView tvTaskDragon;
+    TextView tvTaskPriority;
     TextView tvTaskCycling;
 
     ExpandableListView expandableListView;
@@ -190,12 +190,12 @@ public class CategoryActivity extends AppCompatActivity {
         et = findViewById(R.id.et);
 
         tvTaskCycling = findViewById(R.id.task_cycling);
-        tvTaskDragon = findViewById(R.id.task_priority);
+        tvTaskPriority = findViewById(R.id.task_priority);
 
         tvTaskCountValue = findViewById(R.id.task_value);
         tvTaskCountValue.setOnClickListener((v) -> onTaskValueClick(tvTaskCountValue));
 
-        tvTaskDragon.setOnClickListener((v) -> onTaskPriorityClick(tvTaskDragon));
+        tvTaskPriority.setOnClickListener((v) -> onTaskPriorityClick(tvTaskPriority));
         tvTaskCycling.setOnClickListener((v) -> onTaskCyclingClick(tvTaskCycling));
     }
 
@@ -266,12 +266,14 @@ public class CategoryActivity extends AppCompatActivity {
                 @Override
                 public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                     String text = et.getText().toString();
+                    int count = Integer.valueOf(tvTaskCountValue.getText().toString());
 
-                    Map<String, String> map = (Map<String, String>) (simpleExpandableListAdapter.getChild(i, i1));
-                    String textListName = map.get(CHILDS);
+
+
 
                     if (!text.isEmpty() || !text.equals("")) {
-                        TasksRealmController.insertItems(text, false, false, textListName);
+                        TasksRealmController.addTask(text, false, count , cycling, priority,
+                                ((Pair<String, Long>) view.getTag()).second );
                         priority = 0;
                         cycling = false;
                         et.setText("");
