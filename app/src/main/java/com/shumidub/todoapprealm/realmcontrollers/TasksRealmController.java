@@ -163,12 +163,15 @@ public class TasksRealmController {
         long taskId = task.getId();
         String taskText = task.getText();
 
-        App.realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                task.deleteFromRealm();
-            }
-        });
+        if (App.realm.isInTransaction()) task.deleteFromRealm();
+        else {
+            App.realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    task.deleteFromRealm();
+                }
+            });
+        }
 
 
         if (App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst() == null){
