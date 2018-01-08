@@ -128,65 +128,32 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                             tasksFragment.getActivity().invalidateOptionsMenu();
                             setTasksTextColor(holder, item.isDone());
                         });
-//
-//
-//
-//            holder.textView.setOnClickListener( (a)->
-//                    {Log.d(TAG+ "1", "CLICK: " +
-//                            "\n " +
-//                            "\nitem text = " + item.getText() +
-//                            "\nitems.get(position).getText() = " + items.get(position).getText() +
-//                            "\n " +
-//                            "\nitem = " + item.hashCode() +
-//                            "\nitems.get(position) =" + items.get(position).hashCode() +
-//                            "\n " +
-//                            "\nitem.taskID = " + item.getId() +
-//                            "\nitems.get(position).taskID = " + items.get(position).getId() +
-//                            "\ntaskID = " + taskId +
-//                            "\n " +
-//                            "\nitem.isDone =" + item.isDone() +
-//                            "\nitemsget(position).isDone =" + items.get(position).isDone() );
-//                     });
-//
-//
-            holder.textView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    Log.d("DTAG", "onLongClick: " + view.toString() + " " + position);
 
-                    onItemLongClicked.onLongClick(view, position);
+                holder.textView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        Log.d("DTAG", "onLongClick: " + view.toString() + " " + position);
 
-                    return true;
-                }
-            });
+                        onItemLongClicked.onLongClick(view, position);
+
+                        return true;
+                    }
+                });
 
 
-            holder.textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onItemClicked.onClick(view, position);
-                }
-            });
-
+                holder.textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onItemClicked.onClick(view, position);
+                    }
+                });
             }
 
             else if (holder instanceof FooterViewHolder){
-
                 holder.textViewDoneTask.setText("Done " + tasksFragment.doneTasks.size() + " tasks");
                 holder.textViewDoneTask.setTag("footer");
-                // or holder.setTag ?
-
-//                if (tasksFragment.isAllTaskShowing) holder.textViewDoneTask.setVisibility(View.INVISIBLE);
-
-
-                    holder.textViewDoneTask.setOnClickListener((v) -> {
-                        tasksFragment.showAllTasks();
-                    });
-
-
+                holder.textViewDoneTask.setOnClickListener((v) -> tasksFragment.showAllTasks());
             }
-
-
         }
     }
     @Override
@@ -222,65 +189,14 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 tvCount = itemView.findViewById(R.id.task_value);
                 tvPriority = itemView.findViewById(R.id.task_priority);
                 tvCycling = itemView.findViewById(R.id.task_cycling);
-
-
-
                 textViewDoneTask = itemView.findViewById(R.id.tv_done_tasks);
             }
         }
     }
 
-//    class FooterViewHolder extends RecyclerView.ViewHolder {
-//
-//        TextView textViewDoneTask;
-//
-//        public FooterViewHolder(View itemView) {
-//            super(itemView);
-//
-//            if(isNotEmpty) {
-//                textViewDoneTask = itemView.findViewById(R.id.tv_done_tasks);
-//            }
-//        }
-//    }
-
     public class FooterViewHolder extends ViewHolder {
-
-//        TextView textViewDoneTask;
-
         public FooterViewHolder(View itemView) {
             super(itemView);
-
-
-
-//            if(isNotEmpty) {
-//                textViewDoneTask = itemView.findViewById(R.id.tv_done_tasks);
-//                textViewDoneTask.setText("Done " + tasks.size() + "tasks");
-//                textViewDoneTask.setOnClickListener((v) -> {
-//                    if (listId == 0) tasks = tasksFragment.realmController.getTasks();
-//                    else tasks = tasksFragment.realmController.getTasks(listId);
-//                    tasksFragment.tasksRecyclerViewAdapter.notifyDataSetChanged();
-//                    textViewDoneTask.setVisibility(View.INVISIBLE);
-//                });
-//            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Do whatever you want on clicking the item
-//                }
-//            });
         }
     }
 
