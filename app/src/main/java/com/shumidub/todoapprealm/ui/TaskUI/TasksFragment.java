@@ -127,8 +127,23 @@ public class TasksFragment extends Fragment {
 
         Log.d(TAG, "onViewCreated: listId = " + listId);
 
+
+        if (listId == 0) doneTasks = realmController.getDoneTasks();
+        else doneTasks = realmController.getDoneTasks(listId);
+
+        Calendar cal = Calendar.getInstance();
+        int date = Integer.valueOf("" + cal.get(Calendar.DAY_OF_YEAR) + cal.get(Calendar.YEAR));
+
+        for (TaskModel task : doneTasks){
+            if (task.isCycling()  && task.getLastDoneDate() != date ){
+                TasksRealmController.setTaskDone(task, false);
+            }
+        }
+
+
         if (listId == 0) tasks = realmController.getNotDoneTasks();
         else tasks = realmController.getNotDoneTasks(listId);
+
 
         if (listId !=0){
             ((MainActivity) getActivity()).getSupportActionBar()
@@ -136,14 +151,9 @@ public class TasksFragment extends Fragment {
         }
 
 
-        if (listId == 0) doneTasks = realmController.getDoneTasks();
-        else doneTasks = realmController.getDoneTasks(listId);
-
-
         llm = new LinearLayoutManager(getContext());
 
         rvItems.setLayoutManager(llm);
-
 
         adapter = new TasksRecyclerViewAdapter(tasks, this);
 
@@ -152,12 +162,7 @@ public class TasksFragment extends Fragment {
         adapter.setOnLongClicked(onItemLongClicked);
 
 
-
         adapter.setOnClicked(onItemClicked);
-
-
-        
-
 
 
 
@@ -206,8 +211,7 @@ public class TasksFragment extends Fragment {
     }
 
     public void notifyDataChanged(){
-        boolean b =adapter == null;
-        Log.d("DTAG", "notifyDataChanged: " + adapter + " " + b );
+        if (adapter==null) adapter =  new TasksRecyclerViewAdapter(tasks, this);
         adapter.notifyDataSetChanged();
     }
 
