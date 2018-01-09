@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
     String title;
 
     CategoryActivity activity;
+
+
 
     public static DialogAddEditDelCategory newInstance(Long idCategory, String mode){
         DialogAddEditDelCategory dialogAddCategoty = new DialogAddEditDelCategory();
@@ -129,6 +132,11 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                         dialog.cancel();
                     }
                 });
+
+
+        builder.setOnCancelListener(new CustomOnCancelListener(activity));
+
+
         return builder.create();
     }
 }

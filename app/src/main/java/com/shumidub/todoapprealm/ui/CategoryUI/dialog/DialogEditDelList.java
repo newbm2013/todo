@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -155,6 +156,36 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                     }
                 });
 
-        return builder.create();
+//        builder.setOnCancelListener(new CustomOnCancelListener(activity));
+
+
+
+        //todo try to set it for dialog = (builder.create());
+
+        AlertDialog dialog = builder.create();
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                Toast.makeText(activity, "dismiss",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+
+
+                Toast.makeText(activity, R.string.back_button_pressed_notify,
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        dialog.setCanceledOnTouchOutside(false);
+
+
+        return dialog;
     }
 }
