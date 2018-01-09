@@ -148,6 +148,7 @@ public class CategoryActivity extends AppCompatActivity {
         categoriesAndListsAdapter = new CategoriesAndListsAdapter(this);
         simpleExpandableListAdapter = categoriesAndListsAdapter.getAdapter();
         expandableListView.setAdapter(simpleExpandableListAdapter);
+        setEmptyStateIfCategoriesEmpty();
 
 
         //need scroll to child or catogory by id from child or better normal notify data set changed without on resume ...
@@ -204,7 +205,7 @@ public class CategoryActivity extends AppCompatActivity {
     private void setEmptyStateIfCategoriesEmpty(){
         if (categoriesIsEmpry()){
             (findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
-        }
+        } else (findViewById(R.id.tv_empty)).setVisibility(View.INVISIBLE);
     }
 
     private AdapterView.OnItemLongClickListener getLongListener(){
