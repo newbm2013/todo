@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         listId= intent.getLongExtra("textId", defaultListId);
         Log.d("DTAG", "onCreate: ");
 
+        if (ListsRealmController.getListById(listId)==null) listId=0;
+
         fragmentManager.beginTransaction().replace(R.id.container,
                 TasksFragment.newInstance(listId)).commit();
     }
@@ -55,12 +57,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onRestart() {
-        // todo try to replace to onCreate
-        if (ListsRealmController.getListById(listId)!=null){
+
+        /**Проверка на возможность загрузить список при возврате на экран.
+        * Например, после ухода с экрана, категория со списком могла быть удалена и при возврате на
+        * экран и тапе на список - была ошибка.
+        */
+
+        if (ListsRealmController.getListById(listId)==null){
+
             long defaultListId = new SharedPrefHelper(this).getDefaultListId();
+            if (ListsRealmController.getListById(defaultListId)!=null)  listId = defaultListId;
+            else listId = 0;
+
             fragmentManager.beginTransaction().replace(R.id.container,
-                    TasksFragment.newInstance(defaultListId)).commit();
+                    TasksFragment.newInstance(listId)).commit();
         }
+
         super.onRestart();
     }
 }
