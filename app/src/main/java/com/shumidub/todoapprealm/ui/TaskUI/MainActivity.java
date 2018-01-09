@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
             else listId = 0;
 
             fragmentManager.beginTransaction().replace(R.id.container,
-                    TasksFragment.newInstance(listId)).commit();
+                    TasksFragment.newInstance(listId)).commitAllowingStateLoss();
+//          try fix run method before savedInstance outStatte
+//          TasksFragment.newInstance(listId)).commit();
         }
 
         super.onRestart();
