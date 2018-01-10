@@ -57,7 +57,9 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        if (title == DELETE_CATEGORY && idCategory!=null){}
+        if (title == DELETE_CATEGORY && idCategory!=null){
+            builder.setMessage("Are you sure?");
+        }
         else{
             View view = getActivity().getLayoutInflater().inflate(R.layout.add_category_layout, null);
 

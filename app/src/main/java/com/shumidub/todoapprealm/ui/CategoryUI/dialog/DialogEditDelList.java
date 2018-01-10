@@ -92,6 +92,8 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
             swIsCycling.setEnabled(false);
 
             builder.setView(view);
+        } else if (title == DELETE_LIST ){
+            builder.setMessage("Are you sure?");
         }
 
         builder.setTitle(title)
