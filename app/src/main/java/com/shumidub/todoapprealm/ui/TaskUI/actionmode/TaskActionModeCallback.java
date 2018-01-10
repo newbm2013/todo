@@ -83,6 +83,7 @@ public class TaskActionModeCallback  {
 
 
                 MenuItem editList = menu.add("edit ");
+                editList.setIcon(R.drawable.ic_edit);
                 editList.setOnMenuItemClickListener((MenuItem a) -> {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
                     dialogBuilder.setView(view);
@@ -105,6 +106,7 @@ public class TaskActionModeCallback  {
 
 
                 MenuItem deleteList = menu.add("delete ");
+                deleteList.setIcon(R.drawable.ic_del);
                 deleteList.setOnMenuItemClickListener((MenuItem a) -> {
                     TasksRealmController.deleteTask(task);
                     tasksFragment.notifyDataChanged();

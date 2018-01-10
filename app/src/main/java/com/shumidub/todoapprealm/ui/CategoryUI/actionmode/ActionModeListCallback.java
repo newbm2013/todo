@@ -34,7 +34,7 @@ public class ActionModeListCallback {
 
 
                 MenuItem editList = menu.add("edit ");
-                editList.setIcon(R.drawable.ic_launcher_foreground);
+                editList.setIcon(R.drawable.ic_edit);
                 editList.setOnMenuItemClickListener((MenuItem a) -> {
                     DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, EDIT_LIST);
                     dialog.show(activity.getSupportFragmentManager(), "editlist");
@@ -43,7 +43,7 @@ public class ActionModeListCallback {
 
 
                 MenuItem deleteList = menu.add("delete ");
-                deleteList.setIcon(R.drawable.ic_launcher_foreground);
+                deleteList.setIcon(R.drawable.ic_del);
                 deleteList.setOnMenuItemClickListener((MenuItem a) -> {
                     DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, DELETE_LIST);
                     dialog.show(activity.getSupportFragmentManager(), "deletelist");

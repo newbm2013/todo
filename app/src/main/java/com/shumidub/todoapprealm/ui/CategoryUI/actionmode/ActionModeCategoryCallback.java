@@ -30,7 +30,7 @@ public class ActionModeCategoryCallback {
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
                 MenuItem addList = menu.add("add list to " + textCategoryName);
-                addList.setIcon(R.drawable.ic_launcher_foreground);
+                addList.setIcon(R.drawable.ic_add);
                 addList.setOnMenuItemClickListener((MenuItem a) -> {
                     DialogAddList dialogAddList = new DialogAddList();
                     dialogAddList.show(activity.getSupportFragmentManager(), "addtocategory");
@@ -38,7 +38,7 @@ public class ActionModeCategoryCallback {
                 });
 
                 MenuItem editCategory = menu.add("edit ");
-                editCategory.setIcon(R.drawable.ic_launcher_foreground);
+                editCategory.setIcon(R.drawable.ic_edit);
                 editCategory.setOnMenuItemClickListener((MenuItem a) -> {
 
                     DialogAddEditDelCategory editCategoryDialog =
@@ -49,7 +49,7 @@ public class ActionModeCategoryCallback {
 
 
                 MenuItem deleteCategore = menu.add("delete ");
-                deleteCategore.setIcon(R.drawable.ic_launcher_foreground);
+                deleteCategore.setIcon(R.drawable.ic_del);
                 deleteCategore.setOnMenuItemClickListener((MenuItem a) -> {
 
                     DialogAddEditDelCategory deleteCategoryDialog =

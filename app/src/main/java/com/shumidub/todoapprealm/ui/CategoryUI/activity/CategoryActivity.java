@@ -167,6 +167,8 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem addCategory = menu.add("add category");
+        addCategory.setIcon(R.drawable.ic_add);
+        addCategory.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         addCategory.setOnMenuItemClickListener((MenuItem a) -> {
            (new DialogAddEditDelCategory()).show(getSupportFragmentManager(), "category");
