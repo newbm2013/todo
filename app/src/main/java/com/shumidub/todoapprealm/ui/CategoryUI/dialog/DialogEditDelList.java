@@ -4,17 +4,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.ListModel;
-import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.sharedpref.SharedPrefHelper;
 import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
@@ -29,26 +26,20 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
 
     public static String ID_LIST = "idList";
     public static String MODE_LIST = "ModeList";
-
     public static String EDIT_LIST = "Edit ";
     public static String DELETE_LIST = "Delete ";
-
     long idList;
     String title;
-
     ListModel list;
     String currentTextList;
     boolean currentIsDefaultList;
     boolean currentIsCyclingList;
     long currentIdCategoryList; // for future for remove
-
     EditText etName;
     Switch swIsDefault;
     Switch swIsCycling;
     long defaultListId;
-
     CategoryActivity activity;
-
 
     public static DialogEditDelList newInstance(long idList, String mode){
         DialogEditDelList dialog = new DialogEditDelList();
@@ -57,7 +48,6 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
         arg.putString(MODE_LIST, mode);
         dialog.setArguments(arg);
         return dialog;
-
     }
 
     @NonNull
@@ -81,8 +71,6 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
             currentIsDefaultList = defaultListId == idList;  // SP, можно только выбрать тру и тогда перепишется значение, с тру на фолсе нельзя
             currentIsCyclingList = list.isCycling();
             currentIdCategoryList = list.getIdCategory();
-
-
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -99,10 +87,9 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                 swIsDefault.setEnabled(false);
                 swIsDefault.setTextColor(getResources().getColor(R.color.colorAccent));
             }
-//            swIsCycling.setChecked(list.isCycling());
+//          swIsCycling.setChecked(list.isCycling());
             swIsCycling.setChecked(false);
             swIsCycling.setEnabled(false);
-
 
             builder.setView(view);
         }
@@ -115,7 +102,6 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
 
                         activity = (CategoryActivity) getActivity();
 
-
                         if (title == EDIT_LIST ) {
 
                             boolean isDefault = swIsDefault.isChecked();
@@ -125,15 +111,11 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                             ListsRealmController.editList(list, text, isDefault, isCycling, 0);
                             if(!currentIsDefaultList && isDefault) spHelper.setDefauiltListId(idList);
 
-
                             activity.finishActionMode();
                             activity.dataChanged();
 
                             Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-
-
                         }
-
 
                         else if (title == DELETE_LIST){
                             if (list.getId() != defaultListId ) {
@@ -146,7 +128,6 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                                         "Can't delete default list", Toast.LENGTH_SHORT).show();
                             }
                         }
-
 //                            CategoryActivity.notifyDataSetChanged();
                     }
                 })
@@ -156,36 +137,19 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                     }
                 });
 
-//        builder.setOnCancelListener(new CustomOnCancelListener(activity));
-
-
-
-        //todo try to set it for dialog = (builder.create());
-
         AlertDialog dialog = builder.create();
-
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                Toast.makeText(activity, "dismiss",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-
-
-                Toast.makeText(activity, R.string.back_button_pressed_notify,
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
         dialog.setCanceledOnTouchOutside(false);
-
-
+        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode,
+                                 KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    // do nothing
+                    return true;
+                }
+                return false;
+            }
+        });
         return dialog;
     }
 }

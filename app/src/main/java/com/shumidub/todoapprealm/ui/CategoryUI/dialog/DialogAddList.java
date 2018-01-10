@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -25,10 +26,7 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
     EditText etName;
     Switch swIsDefault;
     Switch swIsCycling;
-
     CategoryActivity activity;
-
-
 
     @NonNull
     @Override
@@ -39,7 +37,6 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
         swIsDefault = view.findViewById(R.id.switch_default);
         swIsCycling = view.findViewById(R.id.switch_cycling);
         swIsCycling.setEnabled(false);
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Add new list to " + CategoryActivity.textCategoryName)
@@ -73,7 +70,20 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
                     }
                 });
 
-        builder.setOnCancelListener(new CustomOnCancelListener(activity));
-        return builder.create();
+
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode,
+                                 KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    // do nothing
+                    return true;
+                }
+                return false;
+            }
+        });
+        return dialog;
     }
 }

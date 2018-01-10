@@ -1,9 +1,12 @@
 package com.shumidub.todoapprealm.ui.TaskUI.actionmode;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.ActionMode;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,6 +87,18 @@ public class TaskActionModeCallback  {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
                     dialogBuilder.setView(view);
                     dialog = dialogBuilder.create();
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+                        @Override
+                        public boolean onKey(DialogInterface dialog, int keyCode,
+                                             KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                // do nothing
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
                     dialog.show();
                     return true;
                 });

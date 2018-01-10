@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,17 +24,12 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
     public static String ID_CATEGORY = "nameCategory";
     public static String MODE_CATEGORY = "ModeCategory";
-
     public static String ADD_CATEGORY = "Add new Category";
     public static String EDIT_CATEGORY = "Edit Category";
     public static String DELETE_CATEGORY = "Delete Category";
-
     Long idCategory;
     String title;
-
     CategoryActivity activity;
-
-
 
     public static DialogAddEditDelCategory newInstance(Long idCategory, String mode){
         DialogAddEditDelCategory dialogAddCategoty = new DialogAddEditDelCategory();
@@ -48,7 +44,6 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
 
         String textButton = "Add";
 
@@ -114,7 +109,6 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
                         }
 
-
                         else if (title == DELETE_CATEGORY && idCategory!=null){
                             CategoriesRealmController.deleteCategoryAndChilds(idCategory);
 
@@ -123,7 +117,6 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                             activity.finishActionMode();
                             activity.dataChanged();
                         }
-
 //                            CategoryActivity.notifyDataSetChanged();
                     }
                 })
@@ -134,9 +127,19 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                 });
 
 
-        builder.setOnCancelListener(new CustomOnCancelListener(activity));
-
-
-        return builder.create();
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode,
+                                 KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    // do nothing
+                    return true;
+                }
+                return false;
+            }
+        });
+        return dialog;
     }
 }
