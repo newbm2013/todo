@@ -97,6 +97,10 @@
             android:maxHeight="120dp"
 
             />
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
 
     </LinearLayout>
 

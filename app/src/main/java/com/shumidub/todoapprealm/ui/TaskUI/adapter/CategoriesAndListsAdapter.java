@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.CategoryUI.adapter;
+package com.shumidub.todoapprealm.ui.TaskUI.adapter;
 import android.content.Context;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.CategoryModel;

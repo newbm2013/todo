@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.CategoryUI.actionmode;
+package com.shumidub.todoapprealm.ui.TaskUI.actionmode;
 
 
 import android.view.ActionMode;
@@ -6,12 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
-import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddEditDelCategory;
-import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogAddList;
+import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddEditDelCategory;
+import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddList;
+import com.shumidub.todoapprealm.ui.MainActivity;
 
-
-import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.textCategoryName;
+import static com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment.textCategoryName;
 
 
 /**
@@ -24,7 +23,7 @@ public class ActionModeCategoryCallback {
 
 
 
-    public ActionMode.Callback getCategoryActionModeCallback(CategoryActivity activity, long idOnTag) {
+    public ActionMode.Callback getCategoryActionModeCallback(MainActivity activity, long idOnTag) {
 
         mCategoryCallback = new ActionMode.Callback() {
             @Override

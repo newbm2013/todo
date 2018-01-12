@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-import com.shumidub.todoapprealm.ui.TaskUI.TasksFragment;
+import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
 
 
 /**

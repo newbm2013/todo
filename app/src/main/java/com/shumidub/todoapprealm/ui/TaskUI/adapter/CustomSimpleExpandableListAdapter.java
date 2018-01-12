@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.CategoryUI.adapter;
+package com.shumidub.todoapprealm.ui.TaskUI.adapter;
 
 import android.content.Context;
 import android.support.v4.util.Pair;
@@ -7,11 +7,6 @@ import android.view.ViewGroup;
 import android.widget.SimpleExpandableListAdapter;
 import java.util.List;
 import java.util.Map;
-
-import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.CHILD_ID;
-import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.GROUP_ID;
-import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.childs;
-import static com.shumidub.todoapprealm.ui.CategoryUI.adapter.CategoriesAndListsAdapter.groups;
 
 /**
  * Created by Артем on 26.12.2017.
@@ -34,7 +29,7 @@ public class CustomSimpleExpandableListAdapter extends SimpleExpandableListAdapt
 
         View v;
         v = super.getGroupView(groupPosition, isExpanded, convertView, parent);
-        Long tagId =  Long.valueOf(groups.get(groupPosition).get(GROUP_ID));
+        Long tagId =  Long.valueOf(CategoriesAndListsAdapter.groups.get(groupPosition).get(CategoriesAndListsAdapter.GROUP_ID));
         Pair<String, Long> pair = new Pair<String, Long>(CATEGOTY_TYPE, tagId);
         v.setTag(pair);
         return v;
@@ -43,7 +38,7 @@ public class CustomSimpleExpandableListAdapter extends SimpleExpandableListAdapt
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View v = super.getChildView(groupPosition, childPosition, isLastChild, convertView, parent);
-        Long tagId =  Long.valueOf(childs.get(groupPosition).get(childPosition).get(CHILD_ID));
+        Long tagId =  Long.valueOf(CategoriesAndListsAdapter.childs.get(groupPosition).get(childPosition).get(CategoriesAndListsAdapter.CHILD_ID));
         Pair<String, Long> pair = new Pair<String, Long>(LIST_TYPE, tagId);
         v.setTag(pair);
         return v;

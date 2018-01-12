@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.TaskUI.adapters;
+package com.shumidub.todoapprealm.ui.TaskUI.adapter;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -8,20 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-import com.shumidub.todoapprealm.ui.TaskUI.TasksFragment;
+import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
 
 import java.util.List;
 
-import butterknife.OnItemClick;
-import butterknife.OnItemLongClick;
-
-import static com.shumidub.todoapprealm.App.TAG;
-import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.listId;
 
 
 /**
@@ -144,11 +138,10 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 holder.textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        onItemClicked.onClick(view, position);
+                        if (onItemClicked!=null) onItemClicked.onClick(view, position);
                     }
                 });
             }
-
             else if (holder instanceof FooterViewHolder){
                 holder.textViewDoneTask.setText("Done " + tasksFragment.doneTasks.size() + " tasks");
                 holder.textViewDoneTask.setTag("footer");
@@ -159,10 +152,8 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     @Override
     public int getItemViewType(int position) {
         if (position == tasks.size() && tasks.size() > 0) {
-            // This is where we'll add footer.
             return FOOTER_VIEW;
         }
-
         return super.getItemViewType(position);
     }
 

@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.CategoryUI.dialog;
+package com.shumidub.todoapprealm.ui.TaskUI.category_dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,7 +14,8 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.ListModel;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.sharedpref.SharedPrefHelper;
-import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
+import com.shumidub.todoapprealm.ui.MainActivity;
+import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
 
 import io.reactivex.annotations.NonNull;
 
@@ -39,9 +40,12 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
     Switch swIsDefault;
     Switch swIsCycling;
     long defaultListId;
-    CategoryActivity activity;
+    MainActivity activity;
+    static TasksFragment tasksFragment;
 
-    public static DialogEditDelList newInstance(long idList, String mode){
+
+    public static DialogEditDelList newInstance(long idList, String mode, TasksFragment fragment){
+        tasksFragment = fragment;
         DialogEditDelList dialog = new DialogEditDelList();
         Bundle arg = new Bundle();
         arg.putLong(ID_LIST, idList);
@@ -102,7 +106,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
 
-                        activity = (CategoryActivity) getActivity();
+                        activity = (MainActivity) getActivity();
 
                         if (title == EDIT_LIST ) {
 
@@ -113,8 +117,8 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                             ListsRealmController.editList(list, text, isDefault, isCycling, 0);
                             if(!currentIsDefaultList && isDefault) spHelper.setDefauiltListId(idList);
 
-                            activity.finishActionMode();
-                            activity.dataChanged();
+                            tasksFragment.finishActionMode();
+                            tasksFragment.dataChanged();
 
                             Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                         }
@@ -123,8 +127,8 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                             if (list.getId() != defaultListId ) {
                                 ListsRealmController.deleteLists(list);
                                 Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                                activity.finishActionMode();
-                                activity.dataChanged();
+                                tasksFragment.finishActionMode();
+                                tasksFragment.dataChanged();
                             }else{
                                 Toast.makeText(getContext(),
                                         "Can't delete default list", Toast.LENGTH_SHORT).show();

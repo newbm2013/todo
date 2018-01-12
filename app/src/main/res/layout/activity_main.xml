@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.shumidub.todoapprealm.ui.TaskUI.MainActivity"
+    tools:context="com.shumidub.todoapprealm.ui.MainActivity"
     android:id="@+id/constr">
 
-    <FrameLayout
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/container">
-
-    </FrameLayout>
-
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
 
 </android.support.constraint.ConstraintLayout>

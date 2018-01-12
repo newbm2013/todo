@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.CategoryUI.actionmode;
+package com.shumidub.todoapprealm.ui.TaskUI.actionmode;
 
 
 import android.view.ActionMode;
@@ -6,14 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
 
-import com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList;
+import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogEditDelList;
+import com.shumidub.todoapprealm.ui.MainActivity;
+import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
 
-
-import static com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity.titleList;
-import static com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList.DELETE_LIST;
-import static com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList.EDIT_LIST;
+import static com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogEditDelList.DELETE_LIST;
+import static com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogEditDelList.EDIT_LIST;
+import static com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment.titleList;
 
 
 /**
@@ -23,10 +23,13 @@ import static com.shumidub.todoapprealm.ui.CategoryUI.dialog.DialogEditDelList.E
 public class ActionModeListCallback {
 
     ActionMode.Callback mListCallback;
+    TasksFragment tasksFragment;
 
 
 
-    public ActionMode.Callback getListActionModeCallback(CategoryActivity activity, long idOnTag) {
+    public ActionMode.Callback getListActionModeCallback(MainActivity activity, TasksFragment tasksFragment,  long idOnTag) {
+
+        this.tasksFragment = tasksFragment;
 
         mListCallback = new ActionMode.Callback() {
             @Override
@@ -36,7 +39,7 @@ public class ActionModeListCallback {
                 MenuItem editList = menu.add("edit ");
                 editList.setIcon(R.drawable.ic_edit);
                 editList.setOnMenuItemClickListener((MenuItem a) -> {
-                    DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, EDIT_LIST);
+                    DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, EDIT_LIST, tasksFragment);
                     dialog.show(activity.getSupportFragmentManager(), "editlist");
                     return true;
                 });
@@ -45,7 +48,7 @@ public class ActionModeListCallback {
                 MenuItem deleteList = menu.add("delete ");
                 deleteList.setIcon(R.drawable.ic_del);
                 deleteList.setOnMenuItemClickListener((MenuItem a) -> {
-                    DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, DELETE_LIST);
+                    DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, DELETE_LIST, tasksFragment);
                     dialog.show(activity.getSupportFragmentManager(), "deletelist");
                     return true;
                 });

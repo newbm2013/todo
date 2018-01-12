@@ -1,10 +1,10 @@
-package com.shumidub.todoapprealm.ui.CategoryUI.dialog;
+package com.shumidub.todoapprealm.ui.TaskUI.category_dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -12,7 +12,8 @@ import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
-import com.shumidub.todoapprealm.ui.CategoryUI.activity.CategoryActivity;
+import com.shumidub.todoapprealm.ui.MainActivity;
+import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
 
 import io.reactivex.annotations.NonNull;
 
@@ -29,7 +30,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
     public static String DELETE_CATEGORY = "Delete Category";
     Long idCategory;
     String title;
-    CategoryActivity activity;
+    MainActivity activity;
 
     public static DialogAddEditDelCategory newInstance(Long idCategory, String mode){
         DialogAddEditDelCategory dialogAddCategoty = new DialogAddEditDelCategory();
@@ -77,7 +78,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
 
-                        activity = (CategoryActivity) getActivity();
+                        activity = (MainActivity) getActivity();
 
                         EditText etName = getDialog().findViewById(R.id.name);
 
@@ -88,8 +89,13 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
                                 Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
 
-                                activity.finishActionMode();
-                                activity.dataChanged();
+                                activity = (MainActivity) getActivity();
+                                for (Fragment fragment : activity.getSupportFragmentManager().getFragments()){
+                                    if (fragment instanceof TasksFragment){
+                                        ((TasksFragment) fragment).finishActionMode();
+                                        ((TasksFragment) fragment).dataChanged();
+                                    }
+                                }
 
 
                             }else {Toast.makeText(getContext(), "can't be empty", Toast.LENGTH_SHORT).show();}
@@ -102,9 +108,9 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                                 String text = etName.getText().toString();
                                 CategoriesRealmController.editCategory(idCategory, text);
                                 Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
-
-                                activity.finishActionMode();
-                                activity.dataChanged();
+//
+//                                activity.finishActionMode();
+//                                activity.dataChanged();
 
 
                             }else {Toast.makeText(getContext(), "can't be empty", Toast.LENGTH_SHORT).show();}
@@ -116,8 +122,13 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
                             Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
 
-                            activity.finishActionMode();
-                            activity.dataChanged();
+                            activity = (MainActivity) getActivity();
+                            for (Fragment fragment : activity.getSupportFragmentManager().getFragments()){
+                                if (fragment instanceof TasksFragment){
+                                    ((TasksFragment) fragment).finishActionMode();
+                                    ((TasksFragment) fragment).dataChanged();
+                                }
+                            }
                         }
 //                            CategoryActivity.notifyDataSetChanged();
                     }
