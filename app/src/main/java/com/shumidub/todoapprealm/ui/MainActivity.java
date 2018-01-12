@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(1);
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
