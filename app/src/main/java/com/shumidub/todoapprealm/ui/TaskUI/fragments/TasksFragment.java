@@ -52,6 +52,7 @@ public class TasksFragment extends Fragment {
     //MAIN
     ActionBar actionBar;
     SlidingUpPanelLayout slidingUpPanelLayout;
+    public int dayScope;
 
     //TASKS VIEW, ADAPTER
     RecyclerView rvItems;
@@ -148,16 +149,20 @@ public class TasksFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
+
+        List<TaskModel> allDoneTasks = TasksRealmController.getDoneTasks();
+
         //TASK
-        int count = 0;
-        for (TaskModel task : doneTasks) {
+        dayScope = 0;
+        for (TaskModel task : allDoneTasks) {
             String date = "" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
                     Calendar.getInstance().get(Calendar.YEAR);
             if (task.getLastDoneDate() == Integer.valueOf(date))
-                count = count + task.getCountValue();
+                dayScope = dayScope + task.getCountValue();
         }
-        MenuItem countMenu = menu.add("" + count);
+        MenuItem countMenu = menu.add("" + dayScope);
         countMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        countMenu.setOnMenuItemClickListener((v)->{dayScope=+1; return true;});
 
         //FOLDER
         MenuItem addCategory = menu.add("add category");
