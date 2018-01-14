@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.CategoryModel;
+import com.shumidub.todoapprealm.model.RealmInteger;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
@@ -73,6 +74,7 @@ public class TasksFragment extends Fragment {
 
     EditText et;
     TextView tvTaskCountValue;
+    TextView tvTaskMaxAccumulate;
     TextView tvTaskPriority;
     TextView tvTaskCycling;
 
@@ -106,6 +108,10 @@ public class TasksFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        resetTasksCountAccumulationAndSetDayScopeValue(true,false);
+
+
     }
 
     @Nullable
@@ -150,17 +156,27 @@ public class TasksFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
 
-        List<TaskModel> allDoneTasks = TasksRealmController.getDoneTasks();
+        resetTasksCountAccumulationAndSetDayScopeValue(false, true);
 
-        //TASK
-        dayScope = 0;
-        for (TaskModel task : allDoneTasks) {
-            String date = "" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
-                    Calendar.getInstance().get(Calendar.YEAR);
-            if (task.getLastDoneDate() == Integer.valueOf(date))
-                dayScope = dayScope + task.getCountValue();
-        }
-        MenuItem dayScopeMenu = menu.add("" + dayScope);
+//        for (TaskModel task : allTasks) {
+//            if(task.isDone()){
+//            String date = "" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
+//                    Calendar.getInstance().get(Calendar.YEAR);
+//            if (task.getLastDoneDate() == Integer.valueOf(date))
+//                dayScope = dayScope + task.getCountValue() * task.getCountAccumulation();
+//            }else if (!task.isDone()){
+//
+//            }
+//
+//        }
+
+
+        menu.clear();
+
+
+
+        MenuItem dayScopeMenu = menu.add(100,100,100,"" + dayScope);
+
         dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         dayScopeMenu.setOnMenuItemClickListener((v)->{dayScope=+1; return true;});
 
@@ -177,7 +193,8 @@ public class TasksFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-        private void setTasksListClickListeners(){
+
+    private void setTasksListClickListeners(){
             onItemLongClicked = new TasksRecyclerViewAdapter.OnItemLongClicked() {
                 @Override
                 public void onLongClick(View view, int position) {
@@ -205,14 +222,15 @@ public class TasksFragment extends Fragment {
             if (tasksListId == 0) doneTasks = TasksRealmController.getDoneTasks();
             else doneTasks = TasksRealmController.getDoneTasks(tasksListId);
 
+
             Calendar cal = Calendar.getInstance();
             int date = Integer.valueOf("" + cal.get(Calendar.DAY_OF_YEAR) + cal.get(Calendar.YEAR));
 
-            for (TaskModel task : doneTasks){
-                if (task.isCycling()  && task.getLastDoneDate() != date ){
-                    TasksRealmController.setTaskDone(task, false);
-                }
-            }
+
+
+
+
+
             if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
             else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
 
@@ -267,6 +285,10 @@ public class TasksFragment extends Fragment {
 
         tvTaskCountValue = view.findViewById(R.id.task_value);
         tvTaskCountValue.setOnClickListener((v) -> onTaskValueClick(tvTaskCountValue));
+
+        tvTaskMaxAccumulate = view.findViewById(R.id.task_max_accumulate);
+        tvTaskMaxAccumulate.setOnClickListener((v) -> onTaskValueClick(tvTaskMaxAccumulate));
+
 
         tvTaskPriority.setOnClickListener((v) -> onTaskPriorityClick(tvTaskPriority));
         tvTaskCycling.setOnClickListener((v) -> onTaskCyclingClick(tvTaskCycling));
@@ -327,9 +349,10 @@ public class TasksFragment extends Fragment {
                 public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                     String text = et.getText().toString();
                     int count = Integer.valueOf(tvTaskCountValue.getText().toString());
+                    int maxAccumulation = Integer.valueOf(tvTaskMaxAccumulate.getText().toString());
 
                     if (!text.isEmpty() || !text.equals("")) {
-                        TasksRealmController.addTask(text, false, count , cycling, priority,
+                        TasksRealmController.addTask(text, count , maxAccumulation, cycling, priority,
                                 ((Pair<String, Long>) view.getTag()).second );
                         priority = 0;
                         cycling = false;
@@ -346,8 +369,8 @@ public class TasksFragment extends Fragment {
         return childClickListener;
     }
 
-    public void onTaskValueClick(View view) {
-        int i = Integer.valueOf(tvTaskCountValue.getText().toString());
+    public void onTaskValueClick(TextView view) {
+        int i = Integer.valueOf(view.getText().toString());
         if (i<10){
             i++;
         }else if (i>9){
@@ -358,6 +381,7 @@ public class TasksFragment extends Fragment {
         if (i<2) ((TextView) view).setTextColor(getResources().getColor(R.color.colorWhite));
         else ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
     }
+
 
     public void onTaskPriorityClick(View view) {
 
@@ -395,4 +419,53 @@ public class TasksFragment extends Fragment {
     public void finishActionMode(){
         if (actionMode!=null) actionMode.finish();
     }
+
+
+    private void  resetTasksCountAccumulationAndSetDayScopeValue(boolean resetTasksCountAccumulation,
+                                                                 boolean setDayScopeValue){
+        // done and not done tasks but where countAccumulation more than 0
+        List<TaskModel> allDoneAndParticullaryDoneTasks = TasksRealmController.getDoneAndPartiallyDoneTasks();
+
+        //TASK
+        dayScope = 0;
+        int date = Integer.valueOf("" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
+                Calendar.getInstance().get(Calendar.YEAR));
+
+
+        for (TaskModel task : allDoneAndParticullaryDoneTasks) {
+
+
+
+            if (resetTasksCountAccumulation){
+                if (task.isCycling()  && task.getLastDoneDate() != date ){
+                    TasksRealmController.setTaskDoneOrParticullaryDone(task, false);
+                }
+            }
+
+
+
+
+            if (setDayScopeValue){
+                if (task.getLastDoneDate() == date) {
+                    int equalDateCount = 0;
+
+                    for (RealmInteger realmInteger : task.getDateCountAccumulation()) {
+                        if (realmInteger.getMyInteger() == date) {
+                            equalDateCount++;
+                        }
+                    }
+
+                    dayScope = dayScope + task.getCountValue() * equalDateCount;
+                }
+            }
+
+
+
+        }
+
+
+    }
+
+
+
 }

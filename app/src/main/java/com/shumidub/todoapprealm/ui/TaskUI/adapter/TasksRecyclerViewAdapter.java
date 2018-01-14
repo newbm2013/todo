@@ -107,6 +107,11 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
                 holder.tvCount.setText("" + item.getCountValue());
 
+
+
+                holder.tvAccumulation.setText(item.getCountAccumulation() + "/" + item.getMaxAccumulation());
+
+
                 int priority = item.getPriority();
                 String textPriority = "";
 
@@ -125,7 +130,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
                 holder.checkBox.setOnClickListener(
                         (cb) -> {
-                            TasksRealmController.setTaskDone(item, holder.checkBox.isChecked());
+                            TasksRealmController.setTaskDoneOrParticullaryDone(item, holder.checkBox.isChecked());
                             notifyDataSetChanged();
                             tasksFragment.getActivity().invalidateOptionsMenu();
                             setTasksTextColor(holder, item.isDone());
@@ -178,6 +183,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         TextView tvCycling;
         CheckBox checkBox;
         TextView textViewDoneTask;
+        TextView tvAccumulation;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -189,6 +195,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 tvPriority = itemView.findViewById(R.id.task_priority);
                 tvCycling = itemView.findViewById(R.id.task_cycling);
                 textViewDoneTask = itemView.findViewById(R.id.tv_done_tasks);
+                tvAccumulation = itemView.findViewById(R.id.task_accumulation);
             }
         }
     }

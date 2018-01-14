@@ -59,7 +59,9 @@ public class App extends Application {
 
                             boolean b = i3%4 ==0;
 
-                            TasksRealmController.addTask("Task " +i3,false, i4, b, 2, idList);
+                            int maxAccumulation = i4/2 > 0 ? i4/2 : 1;
+
+                            TasksRealmController.addTask("Task " +i3, i4, maxAccumulation  , b, 2, idList);
                         }
                     }
                 }

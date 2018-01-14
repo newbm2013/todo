@@ -63,6 +63,18 @@
                 android:paddingRight="12dp"/>
 
             <TextView
+                android:id="@+id/task_max_accumulate"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/colorWhite"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"/>
+
+            <TextView
                 android:id="@+id/task_priority"
                 android:layout_marginTop="6dp"
                 android:layout_marginRight="8dp"

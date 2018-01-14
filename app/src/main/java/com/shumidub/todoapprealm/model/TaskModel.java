@@ -1,5 +1,8 @@
 package com.shumidub.todoapprealm.model;
 
+import java.util.ArrayList;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -15,15 +18,49 @@ public class TaskModel extends RealmObject {
     private int lastDoneDate;
     private boolean isCycling;
     private int countValue;
-//    private int maxAccumulation;
-//
-//    public int getMaxAccumulation() {
-//        return maxAccumulation;
-//    }
-//
-//    public void setMaxAccumulation(int maxAccumulation) {
-//        this.maxAccumulation = maxAccumulation;
-//    }
+    private int maxAccumulation;
+    private int countAccumulation;
+    private RealmList<RealmInteger> dateCountAccumulation;
+
+
+    public int getCountAccumulation() {
+        return countAccumulation;
+    }
+
+    public void setCountAccumulation(int countAccumulation) {
+        this.countAccumulation = countAccumulation;
+    }
+
+
+
+    public int getMaxAccumulation() {
+        return maxAccumulation;
+    }
+
+    public void setMaxAccumulation(int maxAccumulation) {
+        this.maxAccumulation = maxAccumulation;
+    }
+
+    public  RealmList<RealmInteger> getDateCountAccumulation() {
+        return dateCountAccumulation;
+    }
+
+    public void clearDateCountAccumulation() {
+        setCountAccumulation(0);
+        dateCountAccumulation.clear();
+    }
+
+    public void addDateCountAccumulation(int lastDateCount) {
+        if (dateCountAccumulation.size()<maxAccumulation){
+            RealmInteger realmInteger = new RealmInteger();
+            realmInteger.setMyInteger(lastDateCount);
+            dateCountAccumulation.add(realmInteger);
+        }
+
+        setCountAccumulation(dateCountAccumulation.size());
+
+    }
+
 
     private int priority;
 

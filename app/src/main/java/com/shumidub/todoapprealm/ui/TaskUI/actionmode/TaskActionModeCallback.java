@@ -52,7 +52,9 @@ public class TaskActionModeCallback  {
                 TextView tvEditTaskCycling = view.findViewById(R.id.task_cycling);
                 TextView tvEditTaskPriority = view.findViewById(R.id.task_priority);
                 TextView tvEditTaskCountValue = view.findViewById(R.id.task_value);
+                TextView tvEditTaskMaxAccumulate = view.findViewById(R.id.task_max_accumulate);
                 TextView tvEditTaskEdit = view.findViewById(R.id.tvEdit);
+                TextView tvEditTaskCancel = view.findViewById(R.id.tvCancel);
 
                 taskText = task.getText();
                 taskCount = task.getCountValue();
@@ -67,17 +69,21 @@ public class TaskActionModeCallback  {
                 etEditTask.setText(taskText);
                 tvEditTaskCycling.setTextColor(tvTaskCyclingColor);
                 tvEditTaskCountValue.setText("" + taskCount);
+                tvEditTaskMaxAccumulate.setText("" + task.getMaxAccumulation());
                 setEditTaskValueColor(tvEditTaskCountValue);
                 setPriorityTextAndColor(tvEditTaskPriority);
 
                 tvEditTaskCountValue.setOnClickListener((v) -> onEditTaskValueClick(tvEditTaskCountValue));
                 tvEditTaskPriority.setOnClickListener((v) -> onEditTaskPriorityClick(tvEditTaskPriority));
                 tvEditTaskCycling.setOnClickListener((v) -> onEditTaskCyclingClick(tvEditTaskCycling));
+                tvEditTaskMaxAccumulate.setOnClickListener((v) -> onEditTaskValueClick(tvEditTaskMaxAccumulate));
+                tvEditTaskCancel.setOnClickListener((x)-> {dialog.dismiss();actionMode.finish();});
                 tvEditTaskEdit.setOnClickListener((v) -> {
                     String text = etEditTask.getText().toString();
                     int value = Integer.valueOf(tvEditTaskCountValue.getText().toString());
+                    int maxAccumulation = Integer.valueOf(tvEditTaskMaxAccumulate.getText().toString());
                     onEditTaskEditClick(activity, tasksFragment, actionMode,
-                            task, text, value , taskCycling, taskPriority );
+                            task, text, value, maxAccumulation , taskCycling, taskPriority );
                 });
 
 
@@ -185,9 +191,8 @@ public class TaskActionModeCallback  {
     }
 
     public void onEditTaskEditClick(Context context, TasksFragment tasksFragment, ActionMode actionMode,
-        TaskModel task, String taskText, int count, boolean taskCycling, int priority) {
-
-        TasksRealmController.editTask(task, taskText, count, taskCycling, priority);
+        TaskModel task, String taskText, int count, int maxAccumulation, boolean taskCycling, int priority) {
+        TasksRealmController.editTask(task, taskText, count, maxAccumulation, taskCycling, priority);
         dialog.dismiss();
         actionMode.finish();
         tasksFragment.notifyDataChanged();

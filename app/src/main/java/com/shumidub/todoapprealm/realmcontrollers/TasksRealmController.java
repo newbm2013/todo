@@ -51,10 +51,20 @@ public class TasksRealmController {
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
+
     public static List<TaskModel> getDoneTasks(){
         App.initRealm();
         return App.realm.where(TaskModel.class)
                 .equalTo("done", true)
+                .findAll()
+                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+    }
+
+    //done and not done tasks but where countAccumulation more than 0
+    public static List<TaskModel> getDoneAndPartiallyDoneTasks(){
+        App.initRealm();
+        return App.realm.where(TaskModel.class)
+                .notEqualTo("countAccumulation", 0)
                 .findAll()
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
@@ -76,6 +86,7 @@ public class TasksRealmController {
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
+
     public static List<TaskModel> getDoneTasks(long listId){
         App.initRealm();
         return App.realm.where(TaskModel.class)
@@ -85,7 +96,20 @@ public class TasksRealmController {
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
-    public static  void addTask(String text, boolean done, int count, boolean cycling, int priority, long taskListId ){
+    //done and not done tasks but where countAccumulation more than 0
+    public static List<TaskModel> getDoneAndPartiallyDoneTasks(long listId){
+        App.initRealm();
+        return App.realm.where(TaskModel.class)
+                .equalTo("taskListId", listId)
+                .notEqualTo("countAccumulation", 0)
+                .findAll()
+                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+    }
+
+
+
+
+    public static  void addTask(String text, int count, int maxAccumulation, boolean cycling, int priority, long taskListId ){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -95,11 +119,12 @@ public class TasksRealmController {
                 task.setId(id);
 //              item.setText(text + id);
                 task.setText(text);
-                task.setDone(done);
                 task.setLastDoneDate(0);
                 task.setPriority(priority);
                 task.setTaskListId(taskListId);
                 task.setCountValue(count);
+                task.setMaxAccumulation(maxAccumulation);
+                task.setCountAccumulation(0);
                 task.setCycling(cycling);
                 realm.insert(task);
             }
@@ -107,7 +132,7 @@ public class TasksRealmController {
     }
 
 
-    public static  void editTask(TaskModel task, String text, @NonNull int count, @NonNull boolean cycling, @NonNull int priority ){
+    public static  void editTask(TaskModel task, String text, @NonNull int count, @NonNull int maxAccumulation, @NonNull boolean cycling, @NonNull int priority ){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -115,6 +140,7 @@ public class TasksRealmController {
                 if (!text.isEmpty()) task.setText(text);
                 task.setPriority(priority);
                 task.setCountValue(count);
+                task.setMaxAccumulation(maxAccumulation);
                 task.setCycling(cycling);
             }
         });
@@ -122,16 +148,29 @@ public class TasksRealmController {
 
 
 
-    public static void setTaskDone(TaskModel task, boolean done){
+    public static void setTaskDoneOrParticullaryDone(TaskModel task, boolean done){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                task.setDone(done);
+
+                if(done == false){
+                    task.setDone(done);
+                    task.clearDateCountAccumulation();
+                    task.setLastDoneDate(0);
+                }
+
                 if (done) {
+
                     Calendar cal = Calendar.getInstance();
-                    String date = "" + cal.get(Calendar.DAY_OF_YEAR) + cal.get(Calendar.YEAR);
-                    task.setLastDoneDate(Integer.valueOf(date));
+                    int date = Integer.valueOf("" + cal.get(Calendar.DAY_OF_YEAR) + cal.get(Calendar.YEAR));
+
+                    task.addDateCountAccumulation(date);
+                    task.setLastDoneDate(date);
+
+                    if (task.getCountAccumulation() >= task.getMaxAccumulation()){
+                        task.setDone(done);
+                    }
                 }
             }
         });
@@ -145,29 +184,34 @@ public class TasksRealmController {
         return id;
     }
 
-
-    public static void deleteTask(long taskId){
-        App.initRealm();
-        TaskModel task = App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst();
-        String taskText = task.getText();
-        task.deleteFromRealm();
-        if (App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst() == null){
-            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " DELETED" );
-        }else{
-            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " NOT DELETED !!!" );
-        }
-    }
+//
+//    public static void deleteTask(long taskId){
+//        App.initRealm();
+//        TaskModel task = App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst();
+//        String taskText = task.getText();
+//
+//        task.deleteFromRealm();
+//        if (App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst() == null){
+//            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " DELETED" );
+//        }else{
+//            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " NOT DELETED !!!" );
+//        }
+//    }
 
     public static void deleteTask(TaskModel task){
         App.initRealm();
         long taskId = task.getId();
         String taskText = task.getText();
 
-        if (App.realm.isInTransaction()) task.deleteFromRealm();
+        if (App.realm.isInTransaction()){
+            task.getDateCountAccumulation().clear();
+            task.deleteFromRealm();
+        }
         else {
             App.realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
+                    task.getDateCountAccumulation().clear();
                     task.deleteFromRealm();
                 }
             });
