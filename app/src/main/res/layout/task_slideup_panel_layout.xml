@@ -9,7 +9,7 @@
     android:gravity="bottom"
     sothree:umanoPanelHeight="24dp"
     sothree:umanoDragView="@+id/ll"
-    sothree:umanoOverlay="true"
+    sothree:umanoOverlay="false"
     sothree:umanoShadowHeight="4dp"
     sothree:umanoScrollableView="@id/rv_items">
 
