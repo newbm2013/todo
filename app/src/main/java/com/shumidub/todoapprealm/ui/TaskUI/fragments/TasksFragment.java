@@ -160,9 +160,9 @@ public class TasksFragment extends Fragment {
             if (task.getLastDoneDate() == Integer.valueOf(date))
                 dayScope = dayScope + task.getCountValue();
         }
-        MenuItem countMenu = menu.add("" + dayScope);
-        countMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        countMenu.setOnMenuItemClickListener((v)->{dayScope=+1; return true;});
+        MenuItem dayScopeMenu = menu.add("" + dayScope);
+        dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        dayScopeMenu.setOnMenuItemClickListener((v)->{dayScope=+1; return true;});
 
         //FOLDER
         MenuItem addCategory = menu.add("add category");

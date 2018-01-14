@@ -106,7 +106,15 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 holder.textView.setTag(taskId);
 
                 holder.tvCount.setText("" + item.getCountValue());
-                holder.tvPriority.setText( "" + item.getPriority());
+
+                int priority = item.getPriority();
+                String textPriority = "";
+
+                while (priority>0){
+                    textPriority += "!";
+                    priority-=1;
+                }
+                holder.tvPriority.setText(textPriority);
 
                 int color = item.isCycling() ? Color.RED : Color.WHITE;
                 holder.tvCycling.setTextColor(color);

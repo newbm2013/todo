@@ -15,15 +15,15 @@ public class TaskModel extends RealmObject {
     private int lastDoneDate;
     private boolean isCycling;
     private int countValue;
-    private int maxAccumulation;
-
-    public int getMaxAccumulation() {
-        return maxAccumulation;
-    }
-
-    public void setMaxAccumulation(int maxAccumulation) {
-        this.maxAccumulation = maxAccumulation;
-    }
+//    private int maxAccumulation;
+//
+//    public int getMaxAccumulation() {
+//        return maxAccumulation;
+//    }
+//
+//    public void setMaxAccumulation(int maxAccumulation) {
+//        this.maxAccumulation = maxAccumulation;
+//    }
 
     private int priority;
 

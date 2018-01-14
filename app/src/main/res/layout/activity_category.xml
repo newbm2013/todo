@@ -66,12 +66,12 @@
                 android:id="@+id/task_priority"
                 android:layout_marginTop="6dp"
                 android:layout_marginRight="8dp"
-                android:text="!"
+                android:text="!!!"
+                android:gravity="center"
                 android:textColor="@color/colorWhite"
-                android:layout_width="wrap_content"
+                android:layout_width="28dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"/>
+                />
 
             <TextView
                 android:id="@+id/task_cycling"
