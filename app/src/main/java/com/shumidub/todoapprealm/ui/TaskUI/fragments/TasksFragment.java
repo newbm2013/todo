@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -212,6 +213,8 @@ public class TasksFragment extends Fragment {
                    if (view!=null){
                        long idTask = (Long) view.getTag();
                        TaskModel task = TasksRealmController.getTask(idTask);
+                       AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                       builder.setMessage(task.getText()).create().show();
                    }
                 }
             };
@@ -221,13 +224,6 @@ public class TasksFragment extends Fragment {
         public void setTasks(){
             if (tasksListId == 0) doneTasks = TasksRealmController.getDoneTasks();
             else doneTasks = TasksRealmController.getDoneTasks(tasksListId);
-
-
-            Calendar cal = Calendar.getInstance();
-            int date = Integer.valueOf("" + cal.get(Calendar.DAY_OF_YEAR) + cal.get(Calendar.YEAR));
-
-
-
 
 
 
@@ -251,8 +247,13 @@ public class TasksFragment extends Fragment {
 
             //adapter, reset task and done task
 
-        if (adapter==null) adapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
-        adapter.notifyDataSetChanged();
+        if (adapter==null){
+            adapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+        }
+        else{
+//            setTasks(); or bellow
+            adapter.notifyDataSetChanged();
+        }
     }
 
     //Show Done and Not done Tasks
@@ -379,10 +380,10 @@ public class TasksFragment extends Fragment {
         }else if (i>9){
             i=1;
         }
-        ((TextView) view).setText("" + i);
+        view.setText("" + i);
 
-        if (i<2) ((TextView) view).setTextColor(getResources().getColor(R.color.colorWhite));
-        else ((TextView) view).setTextColor(getResources().getColor(R.color.colorAccent));
+        if (i<2) view.setTextColor(getResources().getColor(R.color.colorWhite));
+        else view.setTextColor(getResources().getColor(R.color.colorAccent));
     }
 
 
@@ -433,6 +434,7 @@ public class TasksFragment extends Fragment {
         dayScope = 0;
         int date = Integer.valueOf("" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
                 Calendar.getInstance().get(Calendar.YEAR));
+
 
 
         for (TaskModel task : allDoneAndParticullaryDoneTasks) {

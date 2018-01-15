@@ -117,6 +117,7 @@ public class TaskActionModeCallback  {
                     TasksRealmController.deleteTask(task);
                     tasksFragment.notifyDataChanged();
                     actionMode.finish();
+                    tasksFragment.getActivity().invalidateOptionsMenu();
                     Toast.makeText(activity, "done", Toast.LENGTH_SHORT).show();
                     return true;
                 });
@@ -196,6 +197,7 @@ public class TaskActionModeCallback  {
         dialog.dismiss();
         actionMode.finish();
         tasksFragment.notifyDataChanged();
+        tasksFragment.getActivity().invalidateOptionsMenu();
         Toast.makeText(context, "done", Toast.LENGTH_SHORT).show();
     }
 
