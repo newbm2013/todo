@@ -240,7 +240,7 @@ public class TasksFragment extends Fragment {
             }
             llm = new LinearLayoutManager(getContext());
             rvItems.setLayoutManager(llm);
-            adapter = new TasksRecyclerViewAdapter(tasks, this);
+            adapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
             rvItems.setAdapter(adapter);
 
             adapter.setOnLongClicked(onItemLongClicked);
@@ -248,7 +248,10 @@ public class TasksFragment extends Fragment {
         }
 
     public void notifyDataChanged(){
-        if (adapter==null) adapter =  new TasksRecyclerViewAdapter(tasks, this);
+
+            //adapter, reset task and done task
+
+        if (adapter==null) adapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
         adapter.notifyDataSetChanged();
     }
 
@@ -258,7 +261,7 @@ public class TasksFragment extends Fragment {
             int position = llm.findFirstVisibleItemPosition();
             if (tasksListId == 0) tasks = TasksRealmController.getTasks();
             else tasks = TasksRealmController.getTasks(tasksListId);
-            adapter = new TasksRecyclerViewAdapter(tasks, this);
+            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
             adapter.setOnLongClicked(onItemLongClicked);
             adapter.setOnClicked(onItemClicked);
             rvItems.setAdapter(adapter);
@@ -267,7 +270,7 @@ public class TasksFragment extends Fragment {
         } else if (isAllTaskShowing){
             if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
             else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
-            adapter = new TasksRecyclerViewAdapter(tasks, this);
+            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
             adapter.setOnLongClicked(onItemLongClicked);
             adapter.setOnClicked(onItemClicked);
             rvItems.setAdapter(adapter);
