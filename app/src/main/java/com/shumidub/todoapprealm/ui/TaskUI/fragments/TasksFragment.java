@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm.ui.TaskUI.fragments;
 
 
+import android.animation.StateListAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
@@ -54,6 +56,7 @@ public class TasksFragment extends Fragment {
     //MAIN
     ActionBar actionBar;
     SlidingUpPanelLayout slidingUpPanelLayout;
+    LinearLayout llBottomFooter;
     public int dayScope;
 
     //TASKS VIEW, ADAPTER
@@ -131,8 +134,36 @@ public class TasksFragment extends Fragment {
         actionBar.setTitle("Tasks");
         setHasOptionsMenu(true);
 
+        llBottomFooter = view.findViewById(R.id.ll_footer);
+
         slidingUpPanelLayout = view.findViewById(R.id.slidingup_panel_layout);
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+        llBottomFooter.setAlpha(0.0f);
+        llBottomFooter.setVisibility(View.GONE);
+
+        //todo realise
+        slidingUpPanelLayout.setStateListAnimator(new StateListAnimator());
+
+
+
+
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                llBottomFooter.setAlpha(1.0f - slideOffset);
+                if (slideOffset > 0.85){
+                    llBottomFooter.setVisibility(View.GONE);
+                }
+                if (slideOffset<0.77){
+                    llBottomFooter.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+
+            }
+        });
 
         //FOLDER
         findFolderViews(view);
