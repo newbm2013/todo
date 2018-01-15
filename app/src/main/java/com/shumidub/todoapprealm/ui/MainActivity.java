@@ -71,19 +71,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-        }if (currentFragmentItem == 2){
-            for (Fragment fragment: getSupportFragmentManager ().getFragments()){
-                if (fragment instanceof TasksFragment2){
-                    SlidingUpPanelLayout slidingUpPanelLayout = ((TasksFragment2) fragment).slidingUpPanelLayout;
-                    if ( slidingUpPanelLayout.getPanelState()== SlidingUpPanelLayout.PanelState.EXPANDED){
-                        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                        return;
-                    } else{
-                        onBackPressedWithTimer();
-                        return;
-                    }
-                }
-            }
         }else{
             onBackPressedWithTimer();
         }

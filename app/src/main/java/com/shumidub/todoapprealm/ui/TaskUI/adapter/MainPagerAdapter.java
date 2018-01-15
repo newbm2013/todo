@@ -20,16 +20,13 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position == 1){
             return new TasksFragment();
-        }
-        else if (position == 2){
-            return new TasksFragment2();
         }
         else {
             return new CustomFragment();
