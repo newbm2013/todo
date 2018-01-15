@@ -55,7 +55,7 @@ public class TasksFragment extends Fragment {
 
     //MAIN
     ActionBar actionBar;
-    SlidingUpPanelLayout slidingUpPanelLayout;
+    public SlidingUpPanelLayout slidingUpPanelLayout;
     LinearLayout llBottomFooter;
     public int dayScope;
 
