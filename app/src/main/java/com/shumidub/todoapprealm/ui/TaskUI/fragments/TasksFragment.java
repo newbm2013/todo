@@ -137,9 +137,11 @@ public class TasksFragment extends Fragment {
         llBottomFooter = view.findViewById(R.id.ll_footer);
 
         slidingUpPanelLayout = view.findViewById(R.id.slidingup_panel_layout);
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-        llBottomFooter.setAlpha(0.0f);
-        llBottomFooter.setVisibility(View.GONE);
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+
+
+        llBottomFooter.setVisibility(View.VISIBLE);
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
         //todo realise
         slidingUpPanelLayout.setStateListAnimator(new StateListAnimator());
@@ -151,10 +153,10 @@ public class TasksFragment extends Fragment {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
                 llBottomFooter.setAlpha(1.0f - slideOffset);
-                if (slideOffset > 0.85){
+                if (slideOffset > 0.87){
                     llBottomFooter.setVisibility(View.GONE);
                 }
-                if (slideOffset<0.77){
+                if (slideOffset<0.85){
                     llBottomFooter.setVisibility(View.VISIBLE);
                 }
             }
@@ -172,6 +174,12 @@ public class TasksFragment extends Fragment {
         expandableListView.setOnChildClickListener(getChildClickListener());
         setTasksListClickListeners();
         setEmptyStateIfCategoriesEmpty(view);
+        try {
+            expandableListView.expandGroup(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         //TASK
         isAllTaskShowing = false;

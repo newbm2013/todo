@@ -37,7 +37,8 @@
                 android:id="@+id/bottom_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="text2"
+                android:text="Lists"
+                android:textColor="@color/colorWhite"
                 android:layout_gravity="center"
                 android:gravity="center" />
 
