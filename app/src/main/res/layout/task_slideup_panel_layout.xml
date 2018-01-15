@@ -45,7 +45,7 @@
         </LinearLayout>
 
         <!--sliding side two-->
-        <include layout="@layout/item_fragment_layout"/>
+        <include layout="@layout/task_frag_viewpager_layout"/>
 
     </LinearLayout>
 
