@@ -455,7 +455,7 @@ public class TasksFragment extends Fragment {
         onResume();
     }
 
-    private void tasksDataChanged(){
+    protected void tasksDataChanged(){
         setTasks();
     }
 
