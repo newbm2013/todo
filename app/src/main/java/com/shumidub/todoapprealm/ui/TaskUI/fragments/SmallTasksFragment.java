@@ -92,7 +92,7 @@ public class SmallTasksFragment extends Fragment {
                 long idTask = (Long) view.getTag();
                 TaskModel task = TasksRealmController.getTask(idTask);
 
-                ActionMode.Callback callback = new TaskActionModeCallback().getCallback(getActivity(), TasksFragment.this, task);
+                ActionMode.Callback callback = new TaskActionModeCallback().getCallback(getActivity(), SmallTasksFragment.this, task);
                 actionMode = getActivity().startActionMode(callback);
             }
         };

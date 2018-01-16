@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.ui.TaskUI.fragments.SmallTasksFragment;
 import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
     private static final int FOOTER_VIEW = 123;
 
-    TasksFragment tasksFragment;
+    SmallTasksFragment smallTasksFragment;
 
 
     OnItemLongClicked onItemLongClicked;
@@ -54,10 +55,10 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     }
 
 
-    public TasksRecyclerViewAdapter(List<TaskModel> tasks, List<TaskModel> doneTasks, TasksFragment tasksFragment){
+    public TasksRecyclerViewAdapter(List<TaskModel> tasks, List<TaskModel> doneTasks, SmallTasksFragment smallTasksFragment){
         this.tasks = tasks;
         this.doneTasks = doneTasks;
-        this.tasksFragment = tasksFragment;
+        this.smallTasksFragment = smallTasksFragment;
     }
 
     @Override
@@ -139,7 +140,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                         (cb) -> {
                             TasksRealmController.setTaskDoneOrParticullaryDone(item, holder.checkBox.isChecked());
                             notifyDataSetChanged();
-                            tasksFragment.getActivity().invalidateOptionsMenu();
+                            smallTasksFragment.getActivity().invalidateOptionsMenu();
                             setTasksTextColor(holder, item.isDone());
                         });
 
@@ -163,9 +164,9 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 });
             }
             else if (holder instanceof FooterViewHolder){
-                holder.textViewDoneTask.setText("Done " + tasksFragment.doneTasks.size() + " tasks");
+                holder.textViewDoneTask.setText("Done " + smallTasksFragment.doneTasks.size() + " tasks");
                 holder.textViewDoneTask.setTag("footer");
-                holder.textViewDoneTask.setOnClickListener((v) -> tasksFragment.showAllTasks());
+                holder.textViewDoneTask.setOnClickListener((v) -> smallTasksFragment.showAllTasks());
             }
         }
     }

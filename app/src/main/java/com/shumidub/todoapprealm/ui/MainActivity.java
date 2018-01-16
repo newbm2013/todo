@@ -1,10 +1,9 @@
 package com.shumidub.todoapprealm.ui;
 
-import android.arch.lifecycle.Lifecycle;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,21 +12,45 @@ import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.TaskUI.adapter.MainPagerAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment2;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     long time = 0;
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        actionBar = getSupportActionBar();
+
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         viewPager.setCurrentItem(1);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position==1){
+                    actionBar.setTitle(TasksFragment.getTitle());
+                }else {
+                    actionBar.setTitle("Notes/Reports");
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override

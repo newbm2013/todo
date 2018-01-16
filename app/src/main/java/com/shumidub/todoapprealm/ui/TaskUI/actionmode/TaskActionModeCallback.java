@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.ui.TaskUI.fragments.SmallTasksFragment;
 import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
 
 
@@ -37,7 +38,7 @@ public class TaskActionModeCallback  {
     int defaultColor;
     int accentColor;
 
-    public ActionMode.Callback getCallback(Activity activity, TasksFragment tasksFragment, TaskModel task){
+    public ActionMode.Callback getCallback(Activity activity, SmallTasksFragment smallTasksFragment, TaskModel task){
 
         callback = new ActionMode.Callback() {
             @Override
@@ -82,7 +83,7 @@ public class TaskActionModeCallback  {
                     String text = etEditTask.getText().toString();
                     int value = Integer.valueOf(tvEditTaskCountValue.getText().toString());
                     int maxAccumulation = Integer.valueOf(tvEditTaskMaxAccumulate.getText().toString());
-                    onEditTaskEditClick(activity, tasksFragment, actionMode,
+                    onEditTaskEditClick(activity, smallTasksFragment, actionMode,
                             task, text, value, maxAccumulation , taskCycling, taskPriority );
                 });
 
@@ -115,9 +116,9 @@ public class TaskActionModeCallback  {
                 deleteList.setIcon(R.drawable.ic_del);
                 deleteList.setOnMenuItemClickListener((MenuItem a) -> {
                     TasksRealmController.deleteTask(task);
-                    tasksFragment.notifyDataChanged();
+                    smallTasksFragment.notifyDataChanged();
                     actionMode.finish();
-                    tasksFragment.getActivity().invalidateOptionsMenu();
+                    smallTasksFragment.getActivity().invalidateOptionsMenu();
                     Toast.makeText(activity, "done", Toast.LENGTH_SHORT).show();
                     return true;
                 });
@@ -191,13 +192,13 @@ public class TaskActionModeCallback  {
         else view.setTextColor(defaultColor);
     }
 
-    public void onEditTaskEditClick(Context context, TasksFragment tasksFragment, ActionMode actionMode,
+    public void onEditTaskEditClick(Context context, SmallTasksFragment smallTasksFragment, ActionMode actionMode,
         TaskModel task, String taskText, int count, int maxAccumulation, boolean taskCycling, int priority) {
         TasksRealmController.editTask(task, taskText, count, maxAccumulation, taskCycling, priority);
         dialog.dismiss();
         actionMode.finish();
-        tasksFragment.notifyDataChanged();
-        tasksFragment.getActivity().invalidateOptionsMenu();
+        smallTasksFragment.notifyDataChanged();
+        smallTasksFragment.getActivity().invalidateOptionsMenu();
         Toast.makeText(context, "done", Toast.LENGTH_SHORT).show();
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ import com.shumidub.todoapprealm.ui.MainActivity;
 import com.shumidub.todoapprealm.ui.TaskUI.actionmode.ActionModeCategoryCallback;
 import com.shumidub.todoapprealm.ui.TaskUI.actionmode.ActionModeListCallback;
 import com.shumidub.todoapprealm.ui.TaskUI.adapter.CategoriesAndListsAdapter;
+import com.shumidub.todoapprealm.ui.TaskUI.adapter.SmallTaskFragmentPagerAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddEditDelCategory;
 import com.shumidub.todoapprealm.ui.TaskUI.actionmode.TaskActionModeCallback;
 import com.shumidub.todoapprealm.ui.TaskUI.adapter.TasksRecyclerViewAdapter;
@@ -59,6 +61,7 @@ public class TasksFragment extends Fragment {
     LinearLayout llBottomFooter;
     public int dayScope;
 
+
 //    //TASKS VIEW, ADAPTER
 //    RecyclerView rvItems;
 //    LinearLayoutManager llm;
@@ -72,6 +75,7 @@ public class TasksFragment extends Fragment {
 //    public boolean isAllTaskShowing;
 //
 //    //TASKS
+    ViewPager smallTasksViewPager;
     long tasksListId;
 
     //FOLDERS VIEW
@@ -105,6 +109,8 @@ public class TasksFragment extends Fragment {
 
     public static Long idOnTag;
 
+    private static String title;
+
 
     int priority = 0;
     boolean cycling = false;
@@ -131,7 +137,6 @@ public class TasksFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         actionBar = ((MainActivity)getActivity()).getSupportActionBar();
-        actionBar.setTitle("Tasks");
         setHasOptionsMenu(true);
 
         llBottomFooter = view.findViewById(R.id.ll_footer);
@@ -142,6 +147,7 @@ public class TasksFragment extends Fragment {
 
         llBottomFooter.setVisibility(View.VISIBLE);
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        setTitle("Tasks");
 
         //todo realise
         slidingUpPanelLayout.setStateListAnimator(new StateListAnimator());
@@ -163,7 +169,8 @@ public class TasksFragment extends Fragment {
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-
+                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) setTitle("Tasks");
+//                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) setTitle(ListsRealmController.getListById(tasksListId).getName());
             }
         });
 
@@ -179,6 +186,12 @@ public class TasksFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+        //SmallTAsks
+        smallTasksViewPager = view.findViewById(R.id.view_pager_small_tasks);
+        smallTasksViewPager.setAdapter(new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager()));
 
 
 //        //TASK
@@ -402,9 +415,11 @@ public class TasksFragment extends Fragment {
                         et.setText("");
                     } else {
                         tasksListId = ((Pair<String, Long>) view.getTag()).second;
-                        //todo realise
+                        //todo realise expandable replace recycler + hasFixedSize + getPosition + onclick set smallFragmentPosition(recyclerView item position )
+                        //todo set right title
 //                        tasksDataChanged();
                         slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                        setTitle(ListsRealmController.getListById(tasksListId).getName());
                     }
                     return false;
                 }
@@ -511,7 +526,15 @@ public class TasksFragment extends Fragment {
 
     }
 
+    public static String getTitle(){
+        if (title != null && !title.isEmpty()) return title;
 
+        else return "Tasks";
+    }
+
+    private void setTitle(String title){
+        this.title = title;
+    }
 
 
 

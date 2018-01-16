@@ -25,7 +25,7 @@ import io.realm.RealmResults;
 public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
 
     RealmResults<ListModel> listModels;
-    ArrayList <Long> listModelId;
+    ArrayList <Long> listModelId = new ArrayList<>();
 
 
 
