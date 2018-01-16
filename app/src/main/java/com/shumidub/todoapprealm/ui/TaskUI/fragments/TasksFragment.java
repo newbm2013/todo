@@ -59,19 +59,19 @@ public class TasksFragment extends Fragment {
     LinearLayout llBottomFooter;
     public int dayScope;
 
-    //TASKS VIEW, ADAPTER
-    RecyclerView rvItems;
-    LinearLayoutManager llm;
-    TasksRecyclerViewAdapter adapter;
-
-    TasksRecyclerViewAdapter.OnItemLongClicked onItemLongClicked;
-    TasksRecyclerViewAdapter.OnItemClicked onItemClicked;
-
-    public List<TaskModel> tasks;
-    public List<TaskModel> doneTasks;
-    public boolean isAllTaskShowing;
-
-    //TASKS
+//    //TASKS VIEW, ADAPTER
+//    RecyclerView rvItems;
+//    LinearLayoutManager llm;
+//    TasksRecyclerViewAdapter adapter;
+//
+//    TasksRecyclerViewAdapter.OnItemLongClicked onItemLongClicked;
+//    TasksRecyclerViewAdapter.OnItemClicked onItemClicked;
+//
+//    public List<TaskModel> tasks;
+//    public List<TaskModel> doneTasks;
+//    public boolean isAllTaskShowing;
+//
+//    //TASKS
     long tasksListId;
 
     //FOLDERS VIEW
@@ -172,7 +172,7 @@ public class TasksFragment extends Fragment {
         expandableListView.setAdapter(new CategoriesAndListsAdapter(getContext()).getAdapter());
         expandableListView.setOnItemLongClickListener(getLongListener());
         expandableListView.setOnChildClickListener(getChildClickListener());
-        setTasksListClickListeners();
+//        setTasksListClickListeners();
         setEmptyStateIfCategoriesEmpty(view);
         try {
             expandableListView.expandGroup(0);
@@ -181,15 +181,15 @@ public class TasksFragment extends Fragment {
         }
 
 
-        //TASK
-        isAllTaskShowing = false;
-        long defaultListId = new SharedPrefHelper(getActivity()).getDefaultListId();
-        tasksListId = defaultListId;
-        if (ListsRealmController.getListById(tasksListId)==null) tasksListId=0;
-
-        rvItems = view.findViewById(R.id.rv_items);
-
-        setTasks();
+//        //TASK
+//        isAllTaskShowing = false;
+//        long defaultListId = new SharedPrefHelper(getActivity()).getDefaultListId();
+//        tasksListId = defaultListId;
+//        if (ListsRealmController.getListById(tasksListId)==null) tasksListId=0;
+//
+//        rvItems = view.findViewById(R.id.rv_items);
+//
+//        setTasks();
     }
 
     @Override
@@ -234,89 +234,89 @@ public class TasksFragment extends Fragment {
     }
 
 
-    private void setTasksListClickListeners(){
-            onItemLongClicked = new TasksRecyclerViewAdapter.OnItemLongClicked() {
-                @Override
-                public void onLongClick(View view, int position) {
-                    long idTask = (Long) view.getTag();
-                    TaskModel task = TasksRealmController.getTask(idTask);
-
-                    ActionMode.Callback callback = new TaskActionModeCallback().getCallback(getActivity(), TasksFragment.this, task);
-                    ActionMode actionMode = getActivity().startActionMode(callback);
-                }
-            };
-
-            onItemClicked = new TasksRecyclerViewAdapter.OnItemClicked() {
-                @Override
-                public void onClick(View view, int position) {
-                   if (view!=null){
-                       long idTask = (Long) view.getTag();
-                       TaskModel task = TasksRealmController.getTask(idTask);
-                       AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                       builder.setMessage(task.getText()).create().show();
-                   }
-                }
-            };
-        }
-
-
-        public void setTasks(){
-            if (tasksListId == 0) doneTasks = TasksRealmController.getDoneTasks();
-            else doneTasks = TasksRealmController.getDoneTasks(tasksListId);
-
-
-
-            if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
-            else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
-
-            if (tasksListId !=0){
-                ((MainActivity) getActivity()).getSupportActionBar()
-                        .setTitle((CharSequence) ListsRealmController.getListById(tasksListId).getName());
-            }
-            llm = new LinearLayoutManager(getContext());
-            rvItems.setLayoutManager(llm);
-            adapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
-            rvItems.setAdapter(adapter);
-
-            adapter.setOnLongClicked(onItemLongClicked);
-            adapter.setOnClicked(onItemClicked);
-        }
-
-    public void notifyDataChanged(){
-
-            //adapter, reset task and done task
-
-        if (adapter==null){
-            adapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
-        }
-        else{
-//            setTasks(); or bellow
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    //Show Done and Not done Tasks
-    public void showAllTasks(){
-        if(!isAllTaskShowing) {
-            int position = llm.findFirstVisibleItemPosition();
-            if (tasksListId == 0) tasks = TasksRealmController.getTasks();
-            else tasks = TasksRealmController.getTasks(tasksListId);
-            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
-            adapter.setOnLongClicked(onItemLongClicked);
-            adapter.setOnClicked(onItemClicked);
-            rvItems.setAdapter(adapter);
-            rvItems.scrollToPosition(position);
-            isAllTaskShowing = true;
-        } else if (isAllTaskShowing){
-            if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
-            else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
-            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
-            adapter.setOnLongClicked(onItemLongClicked);
-            adapter.setOnClicked(onItemClicked);
-            rvItems.setAdapter(adapter);
-            isAllTaskShowing = false;
-        }
-    }
+//    private void setTasksListClickListeners(){
+//            onItemLongClicked = new TasksRecyclerViewAdapter.OnItemLongClicked() {
+//                @Override
+//                public void onLongClick(View view, int position) {
+//                    long idTask = (Long) view.getTag();
+//                    TaskModel task = TasksRealmController.getTask(idTask);
+//
+//                    ActionMode.Callback callback = new TaskActionModeCallback().getCallback(getActivity(), TasksFragment.this, task);
+//                    ActionMode actionMode = getActivity().startActionMode(callback);
+//                }
+//            };
+//
+//            onItemClicked = new TasksRecyclerViewAdapter.OnItemClicked() {
+//                @Override
+//                public void onClick(View view, int position) {
+//                   if (view!=null){
+//                       long idTask = (Long) view.getTag();
+//                       TaskModel task = TasksRealmController.getTask(idTask);
+//                       AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//                       builder.setMessage(task.getText()).create().show();
+//                   }
+//                }
+//            };
+//        }
+//
+//
+//        public void setTasks(){
+//            if (tasksListId == 0) doneTasks = TasksRealmController.getDoneTasks();
+//            else doneTasks = TasksRealmController.getDoneTasks(tasksListId);
+//
+//
+//
+//            if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
+//            else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
+//
+//            if (tasksListId !=0){
+//                ((MainActivity) getActivity()).getSupportActionBar()
+//                        .setTitle((CharSequence) ListsRealmController.getListById(tasksListId).getName());
+//            }
+//            llm = new LinearLayoutManager(getContext());
+//            rvItems.setLayoutManager(llm);
+//            adapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+//            rvItems.setAdapter(adapter);
+//
+//            adapter.setOnLongClicked(onItemLongClicked);
+//            adapter.setOnClicked(onItemClicked);
+//        }
+//
+//    public void notifyDataChanged(){
+//
+//            //adapter, reset task and done task
+//
+//        if (adapter==null){
+//            adapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+//        }
+//        else{
+////            setTasks(); or bellow
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
+//
+//    //Show Done and Not done Tasks
+//    public void showAllTasks(){
+//        if(!isAllTaskShowing) {
+//            int position = llm.findFirstVisibleItemPosition();
+//            if (tasksListId == 0) tasks = TasksRealmController.getTasks();
+//            else tasks = TasksRealmController.getTasks(tasksListId);
+//            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
+//            adapter.setOnLongClicked(onItemLongClicked);
+//            adapter.setOnClicked(onItemClicked);
+//            rvItems.setAdapter(adapter);
+//            rvItems.scrollToPosition(position);
+//            isAllTaskShowing = true;
+//        } else if (isAllTaskShowing){
+//            if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
+//            else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
+//            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
+//            adapter.setOnLongClicked(onItemLongClicked);
+//            adapter.setOnClicked(onItemClicked);
+//            rvItems.setAdapter(adapter);
+//            isAllTaskShowing = false;
+//        }
+//    }
 
     //FOLDER
     private void findFolderViews(View view){
@@ -402,8 +402,9 @@ public class TasksFragment extends Fragment {
                         et.setText("");
                     } else {
                         tasksListId = ((Pair<String, Long>) view.getTag()).second;
-                        tasksDataChanged();
-                        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                        //todo realise
+//                        tasksDataChanged();
+                        slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                     }
                     return false;
                 }
@@ -455,9 +456,9 @@ public class TasksFragment extends Fragment {
         onResume();
     }
 
-    protected void tasksDataChanged(){
-        setTasks();
-    }
+//    protected void tasksDataChanged(){
+//        setTasks();
+//    }
 
     public void finishActionMode(){
         if (actionMode!=null) actionMode.finish();
@@ -509,6 +510,8 @@ public class TasksFragment extends Fragment {
 
 
     }
+
+
 
 
 
