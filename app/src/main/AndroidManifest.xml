@@ -13,9 +13,13 @@
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait">
+            </activity>
+        <activity android:name=".ui.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
