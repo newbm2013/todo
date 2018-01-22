@@ -1,9 +1,7 @@
 package com.shumidub.todoapprealm.ui.TaskUI.adapter;
 import android.content.Context;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.CategoryModel;
 import com.shumidub.todoapprealm.model.ListModel;
-import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import java.util.ArrayList;
 import java.util.HashMap;

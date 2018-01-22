@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.CategoriesRealmController;
 import com.shumidub.todoapprealm.ui.MainActivity;
 import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
 

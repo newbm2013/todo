@@ -8,8 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -41,13 +39,14 @@ import java.util.Calendar;
 import java.util.List;
 
 
-import static com.shumidub.todoapprealm.realmcontrollers.ListsRealmController.listsIsEmpty;
 
 /**
  * Created by Артем on 19.12.2017.
  */
 
-public class TasksFragment extends Fragment {
+public class TasksFragmentOldUnused extends Fragment {
+
+    /*
 
     //MAIN
     ActionBar actionBar;
@@ -55,7 +54,20 @@ public class TasksFragment extends Fragment {
     LinearLayout llBottomFooter;
     public int dayScope;
 
-    //TASKS
+
+//    //TASKS VIEW, ADAPTER
+//    RecyclerView rvItems;
+//    LinearLayoutManager llm;
+//    TasksRecyclerViewAdapter adapter;
+//
+//    TasksRecyclerViewAdapter.OnItemLongClicked onItemLongClicked;
+//    TasksRecyclerViewAdapter.OnItemClicked onItemClicked;
+//
+//    public List<TaskModel> tasks;
+//    public List<TaskModel> doneTasks;
+//    public boolean isAllTaskShowing;
+//
+//    //TASKS
     ViewPager smallTasksViewPager;
     long tasksListId;
 
@@ -67,9 +79,7 @@ public class TasksFragment extends Fragment {
     TextView tvTaskPriority;
     TextView tvTaskCycling;
 
-//    ExpandableListView expandableListView;
-
-    RecyclerView rvLists;
+    ExpandableListView expandableListView;
 
     AdapterView.OnItemLongClickListener longListener;
     ExpandableListView.OnChildClickListener childClickListener;
@@ -79,10 +89,11 @@ public class TasksFragment extends Fragment {
     ActionMode.Callback categoryCallback;
     ActionMode.Callback listCallback;
 
-    //FOLDERS (LISTS)
+    //FOLDERS
 
     public static String textCategoryName;
     public static String titleList;
+    public static long idCategory;
     public static String listName;
     public static long listId;
 
@@ -102,6 +113,8 @@ public class TasksFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         resetTasksCountAccumulationAndSetDayScopeValue(true,false);
+
+
     }
 
     @Nullable
@@ -156,23 +169,16 @@ public class TasksFragment extends Fragment {
 
         //FOLDER
         findFolderViews(view);
-
-        rvLists.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-        rvLists.setAdapter(null);
-
-
-
-
-
-
-
-//        expandableListView.setAdapter(new CategoriesAndListsAdapter(getContext()).getAdapter());
-//        expandableListView.setOnItemLongClickListener(getLongListener());
-//        expandableListView.setOnChildClickListener(getChildClickListener());
-
-        setEmptyStateIfListsIsEmpty(view);
+        expandableListView.setAdapter(new CategoriesAndListsAdapter(getContext()).getAdapter());
+        expandableListView.setOnItemLongClickListener(getLongListener());
+        expandableListView.setOnChildClickListener(getChildClickListener());
+//        setTasksListClickListeners();
+        setEmptyStateIfCategoriesEmpty(view);
+        try {
+            expandableListView.expandGroup(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
 
@@ -181,6 +187,15 @@ public class TasksFragment extends Fragment {
         smallTasksViewPager.setAdapter(new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager()));
 
 
+//        //TASK
+//        isAllTaskShowing = false;
+//        long defaultListId = new SharedPrefHelper(getActivity()).getDefaultListId();
+//        tasksListId = defaultListId;
+//        if (ListsRealmController.getListById(tasksListId)==null) tasksListId=0;
+//
+//        rvItems = view.findViewById(R.id.rv_items);
+//
+//        setTasks();
     }
 
     @Override
@@ -189,7 +204,22 @@ public class TasksFragment extends Fragment {
 
         resetTasksCountAccumulationAndSetDayScopeValue(false, true);
 
+//        for (TaskModel task : allTasks) {
+//            if(task.isDone()){
+//            String date = "" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
+//                    Calendar.getInstance().get(Calendar.YEAR);
+//            if (task.getLastDoneDate() == Integer.valueOf(date))
+//                dayScope = dayScope + task.getCountValue() * task.getCountAccumulation();
+//            }else if (!task.isDone()){
+//
+//            }
+//
+//        }
+
+
         menu.clear();
+
+
 
         MenuItem dayScopeMenu = menu.add(100,100,100,"" + dayScope);
 
@@ -209,9 +239,94 @@ public class TasksFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+
+//    private void setTasksListClickListeners(){
+//            onItemLongClicked = new TasksRecyclerViewAdapter.OnItemLongClicked() {
+//                @Override
+//                public void onLongClick(View view, int position) {
+//                    long idTask = (Long) view.getTag();
+//                    TaskModel task = TasksRealmController.getTask(idTask);
+//
+//                    ActionMode.Callback callback = new TaskActionModeCallback().getCallback(getActivity(), TasksFragment.this, task);
+//                    ActionMode actionMode = getActivity().startActionMode(callback);
+//                }
+//            };
+//
+//            onItemClicked = new TasksRecyclerViewAdapter.OnItemClicked() {
+//                @Override
+//                public void onClick(View view, int position) {
+//                   if (view!=null){
+//                       long idTask = (Long) view.getTag();
+//                       TaskModel task = TasksRealmController.getTask(idTask);
+//                       AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//                       builder.setMessage(task.getText()).create().show();
+//                   }
+//                }
+//            };
+//        }
+//
+//
+//        public void setTasks(){
+//            if (tasksListId == 0) doneTasks = TasksRealmController.getDoneTasks();
+//            else doneTasks = TasksRealmController.getDoneTasks(tasksListId);
+//
+//
+//
+//            if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
+//            else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
+//
+//            if (tasksListId !=0){
+//                ((MainActivity) getActivity()).getSupportActionBar()
+//                        .setTitle((CharSequence) ListsRealmController.getListById(tasksListId).getName());
+//            }
+//            llm = new LinearLayoutManager(getContext());
+//            rvItems.setLayoutManager(llm);
+//            adapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+//            rvItems.setAdapter(adapter);
+//
+//            adapter.setOnLongClicked(onItemLongClicked);
+//            adapter.setOnClicked(onItemClicked);
+//        }
+//
+//    public void notifyDataChanged(){
+//
+//            //adapter, reset task and done task
+//
+//        if (adapter==null){
+//            adapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+//        }
+//        else{
+////            setTasks(); or bellow
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
+//
+//    //Show Done and Not done Tasks
+//    public void showAllTasks(){
+//        if(!isAllTaskShowing) {
+//            int position = llm.findFirstVisibleItemPosition();
+//            if (tasksListId == 0) tasks = TasksRealmController.getTasks();
+//            else tasks = TasksRealmController.getTasks(tasksListId);
+//            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
+//            adapter.setOnLongClicked(onItemLongClicked);
+//            adapter.setOnClicked(onItemClicked);
+//            rvItems.setAdapter(adapter);
+//            rvItems.scrollToPosition(position);
+//            isAllTaskShowing = true;
+//        } else if (isAllTaskShowing){
+//            if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
+//            else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
+//            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
+//            adapter.setOnLongClicked(onItemLongClicked);
+//            adapter.setOnClicked(onItemClicked);
+//            rvItems.setAdapter(adapter);
+//            isAllTaskShowing = false;
+//        }
+//    }
+
     //FOLDER
     private void findFolderViews(View view){
-        rvLists = view.findViewById(R.id.expandedable_list_view);
+        expandableListView = view.findViewById(R.id.expandedable_list_view);
         et = view.findViewById(R.id.et);
 
         tvTaskCycling = view.findViewById(R.id.task_cycling);
@@ -228,42 +343,42 @@ public class TasksFragment extends Fragment {
         tvTaskCycling.setOnClickListener((v) -> onTaskCyclingClick(tvTaskCycling));
     }
 
-    private void setEmptyStateIfListsIsEmpty(View view){
-        if (listsIsEmpty()){
+    private void setEmptyStateIfCategoriesEmpty(View view){
+        if (categoriesIsEmpry()){
             (view.findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
         } else (view.findViewById(R.id.tv_empty)).setVisibility(View.INVISIBLE);
     }
 
-//    private AdapterView.OnItemLongClickListener getLongListener(){
-//        if (longListener == null) {
-//            longListener = (adapterView, view, i,l) -> {
-//
-//                String type = ((Pair<String, Long>) view.getTag()).first;
-//                idOnTag = ((Pair<String, Long>) view.getTag()).second;
-//                String subtitle = "";
-//
-//                if (view.getId() == R.id.parent_text1) {
-//                    try {
-//                        CategoryModel categoty = CategoriesRealmController.getCategory(idOnTag);
-//                        textCategoryName =categoty.getName();
-//                        subtitle = "Category";
-//                        actionMode = getActivity().startActionMode(getCallback(CATEGORY_ACTIONMODE));
-//                    } catch (IndexOutOfBoundsException ignored) { }
-//                    Log.d("DEBUG_TAG", "onItemLongClick: parent  index out");
-//                }else if (view.getId() == R.id.child_text1) {
-//                    try {
-//                        titleList = ListsRealmController.getListById(idOnTag).getName();
-//                        actionMode = null;
-//                        subtitle = "List";
-//                        actionMode = getActivity().startActionMode(getCallback(LIST_ACTIONMODE));
-//                    } catch (IndexOutOfBoundsException ignored) { }
-//                }
-//                actionMode.setSubtitle(subtitle);
-//                return true;
-//            };
-//        }
-//        return longListener;
-//    }
+    private AdapterView.OnItemLongClickListener getLongListener(){
+        if (longListener == null) {
+            longListener = (adapterView, view, i,l) -> {
+
+                String type = ((Pair<String, Long>) view.getTag()).first;
+                idOnTag = ((Pair<String, Long>) view.getTag()).second;
+                String subtitle = "";
+
+                if (view.getId() == R.id.parent_text1) {
+                    try {
+                        CategoryModel categoty = CategoriesRealmController.getCategory(idOnTag);
+                        textCategoryName =categoty.getName();
+                        subtitle = "Category";
+                        actionMode = getActivity().startActionMode(getCallback(CATEGORY_ACTIONMODE));
+                    } catch (IndexOutOfBoundsException ignored) { }
+                    Log.d("DEBUG_TAG", "onItemLongClick: parent  index out");
+                }else if (view.getId() == R.id.child_text1) {
+                    try {
+                        titleList = ListsRealmController.getListById(idOnTag).getName();
+                        actionMode = null;
+                        subtitle = "List";
+                        actionMode = getActivity().startActionMode(getCallback(LIST_ACTIONMODE));
+                    } catch (IndexOutOfBoundsException ignored) { }
+                }
+                actionMode.setSubtitle(subtitle);
+                return true;
+            };
+        }
+        return longListener;
+    }
 
     private ActionMode.Callback getCallback(int callbackType){
         if(callbackType == CATEGORY_ACTIONMODE){
@@ -276,35 +391,35 @@ public class TasksFragment extends Fragment {
         else return null;
     }
 
-//    protected ExpandableListView.OnChildClickListener getChildClickListener(){
-//        if (childClickListener == null) {
-//            childClickListener = new ExpandableListView.OnChildClickListener() {
-//                @Override
-//                public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-//                    String text = et.getText().toString();
-//                    int count = Integer.valueOf(tvTaskCountValue.getText().toString());
-//                    int maxAccumulation = Integer.valueOf(tvTaskMaxAccumulate.getText().toString());
-//
-//                    if (!text.isEmpty() || !text.equals("")) {
-//                        TasksRealmController.addTask(text, count , maxAccumulation, cycling, priority,
-//                                ((Pair<String, Long>) view.getTag()).second );
-//                        priority = 0;
-//                        cycling = false;
-//                        et.setText("");
-//                    } else {
-//                        tasksListId = ((Pair<String, Long>) view.getTag()).second;
-//                        //todo realise expandable replace recycler + hasFixedSize + getPosition + onclick set smallFragmentPosition(recyclerView item position )
-//                        //todo set right title
-////                        tasksDataChanged();
-//                        slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-//                        setTitle(ListsRealmController.getListById(tasksListId).getName());
-//                    }
-//                    return false;
-//                }
-//            };
-//        }
-//        return childClickListener;
-//    }
+    protected ExpandableListView.OnChildClickListener getChildClickListener(){
+        if (childClickListener == null) {
+            childClickListener = new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                    String text = et.getText().toString();
+                    int count = Integer.valueOf(tvTaskCountValue.getText().toString());
+                    int maxAccumulation = Integer.valueOf(tvTaskMaxAccumulate.getText().toString());
+
+                    if (!text.isEmpty() || !text.equals("")) {
+                        TasksRealmController.addTask(text, count , maxAccumulation, cycling, priority,
+                                ((Pair<String, Long>) view.getTag()).second );
+                        priority = 0;
+                        cycling = false;
+                        et.setText("");
+                    } else {
+                        tasksListId = ((Pair<String, Long>) view.getTag()).second;
+                        //todo realise expandable replace recycler + hasFixedSize + getPosition + onclick set smallFragmentPosition(recyclerView item position )
+                        //todo set right title
+//                        tasksDataChanged();
+                        slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                        setTitle(ListsRealmController.getListById(tasksListId).getName());
+                    }
+                    return false;
+                }
+            };
+        }
+        return childClickListener;
+    }
 
     public void onTaskValueClick(TextView view) {
         int i = Integer.valueOf(view.getText().toString());
@@ -415,5 +530,6 @@ public class TasksFragment extends Fragment {
     }
 
 
+*/
 
 }

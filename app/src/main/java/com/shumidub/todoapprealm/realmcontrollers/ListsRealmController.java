@@ -1,12 +1,7 @@
 package com.shumidub.todoapprealm.realmcontrollers;
 
-import android.widget.Toast;
-
 import com.shumidub.todoapprealm.App;
-import com.shumidub.todoapprealm.model.CategoryModel;
 import com.shumidub.todoapprealm.model.ListModel;
-
-import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -65,7 +60,7 @@ public class ListsRealmController {
         return App.realm.where(ListModel.class).equalTo("name", nameList).findFirst();
     }
 
-    public static long addTasksLists(String name, boolean isDefault, boolean isCycling, long idCategory ){
+    public static long addTasksLists(String name, boolean isDefault, boolean isCycling){
         long id = TasksRealmController.getIdForNextValue(ListModel.class);
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
@@ -76,7 +71,6 @@ public class ListsRealmController {
 //                item.setName(name + id);
                 item.setName(name);
                 item.setCycling(isCycling);
-                item.setIdCategory(idCategory);
                 realm.insert(item);
 //                if (isDefault) new SharedPrefHelper(null).setDefauiltListId(id);
             }
@@ -85,14 +79,14 @@ public class ListsRealmController {
     }
 
 
-    public static long editList(long id, String name, boolean isDefault, boolean isCycling, long idCategory ){
+    public static long editList(long id, String name, boolean isDefault, boolean isCycling ){
         App.initRealm();
         ListModel list = getListById(id);
-        return editList(list, name, isDefault, isCycling, idCategory);
+        return editList(list, name, isDefault, isCycling);
     }
 
 
-    public static long editList(ListModel list, String name, boolean isDefault, boolean isCycling, long idCategory ){
+    public static long editList(ListModel list, String name, boolean isDefault, boolean isCycling){
 
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
@@ -110,11 +104,6 @@ public class ListsRealmController {
         return list.getId();
     }
 
-    public static void addTasksLists(String name,boolean isDefault, boolean isCycling, String nameCategory ){
-        App.initRealm();
-        long id = App.realm.where(CategoryModel.class).equalTo("name", nameCategory).findFirst().getId();
-        addTasksLists(name,isDefault,isCycling, id);
-    }
 
     public static void deleteLists(ListModel list){
         App.initRealm();
@@ -145,4 +134,10 @@ public class ListsRealmController {
             return App.realm.where(ListModel.class).equalTo("id", idList).findFirst().isValid();
         }
     }
+
+    public static boolean listsIsEmpty(){
+        App.initRealm();
+        return !(App.realm.where(ListModel.class).findFirst() == null);
+    }
+
 }
