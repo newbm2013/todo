@@ -34,6 +34,7 @@ import com.shumidub.todoapprealm.ui.TaskUI.actionmode.ActionModeCategoryCallback
 import com.shumidub.todoapprealm.ui.TaskUI.actionmode.ActionModeListCallback;
 import com.shumidub.todoapprealm.ui.TaskUI.adapter.CategoriesAndListsAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.adapter.SmallTaskFragmentPagerAdapter;
+import com.shumidub.todoapprealm.ui.TaskUI.adapter.TasksListRecyclerViewAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddEditDelCategory;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -67,6 +68,7 @@ public class TasksFragment extends Fragment {
     TextView tvTaskPriority;
     TextView tvTaskCycling;
 
+    TasksListRecyclerViewAdapter tasksListRecyclerViewAdapter;
 //    ExpandableListView expandableListView;
 
     RecyclerView rvLists;
@@ -156,11 +158,9 @@ public class TasksFragment extends Fragment {
 
         //FOLDER
         findFolderViews(view);
-
         rvLists.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-        rvLists.setAdapter(null);
+        tasksListRecyclerViewAdapter = new TasksListRecyclerViewAdapter(ListsRealmController.getLists(), getActivity());
+        rvLists.setAdapter(tasksListRecyclerViewAdapter);
 
 
 
@@ -211,7 +211,7 @@ public class TasksFragment extends Fragment {
 
     //FOLDER
     private void findFolderViews(View view){
-        rvLists = view.findViewById(R.id.expandedable_list_view);
+        rvLists = view.findViewById(R.id.rv_lists);
         et = view.findViewById(R.id.et);
 
         tvTaskCycling = view.findViewById(R.id.task_cycling);

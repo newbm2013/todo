@@ -74,7 +74,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
             defaultListId = spHelper.getDefaultListId();
             currentIsDefaultList = defaultListId == idList;  // SP, можно только выбрать тру и тогда перепишется значение, с тру на фолсе нельзя
             currentIsCyclingList = list.isCycling();
-            currentIdCategoryList = list.getIdCategory();
+
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -114,7 +114,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                             boolean isCycling = swIsCycling.isChecked();
 
                             String text = etName.getText().toString();
-                            ListsRealmController.editList(list, text, isDefault, isCycling, 0);
+                            ListsRealmController.editList(list, text, isDefault, isCycling);
                             if(!currentIsDefaultList && isDefault) spHelper.setDefauiltListId(idList);
 
                             tasksFragment.finishActionMode();

@@ -137,7 +137,7 @@ public class ListsRealmController {
 
     public static boolean listsIsEmpty(){
         App.initRealm();
-        return !(App.realm.where(ListModel.class).findFirst() == null);
+        return (App.realm.where(ListModel.class).findAll() == null
+                || App.realm.where(ListModel.class).findAll().size() == 0);
     }
-
 }

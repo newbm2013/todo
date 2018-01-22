@@ -56,7 +56,7 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
                         boolean isDefault = swIsDefault.isChecked();
                         boolean isCycling = swIsCycling.isChecked();
                         if (!text.isEmpty()){
-                            long idList = ListsRealmController.addTasksLists(text, isDefault, isCycling, idOnTag );
+                            long idList = ListsRealmController.addTasksLists(text, isDefault, isCycling);
                             if(isDefault){
                                 SharedPrefHelper spHelper = new SharedPrefHelper(getActivity());
                                 spHelper.setDefauiltListId(idList);

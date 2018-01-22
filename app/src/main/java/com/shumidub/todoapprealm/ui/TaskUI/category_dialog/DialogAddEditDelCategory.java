@@ -65,7 +65,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
             if (title == EDIT_CATEGORY && idCategory!=null ){
                 EditText etName = view.findViewById(R.id.name);
-                etName.setText(CategoriesRealmController.getCategory(idCategory).getName());
+//                etName.setText(CategoriesRealmController.getCategory(idCategory).getName());
             }
             builder.setView(view);
         }
@@ -84,7 +84,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                         if(title == ADD_CATEGORY){
                             if (!etName.getText().toString().isEmpty()) {
                                 String text = etName.getText().toString();
-                                CategoriesRealmController.addCategory(text);
+//                                CategoriesRealmController.addCategory(text);
 
                                 Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
 
@@ -105,7 +105,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
 
                             if (!etName.getText().toString().isEmpty()) {
                                 String text = etName.getText().toString();
-                                CategoriesRealmController.editCategory(idCategory, text);
+//                                CategoriesRealmController.editCategory(idCategory, text);
                                 Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
 //
 //                                activity.finishActionMode();
@@ -117,7 +117,7 @@ public class DialogAddEditDelCategory extends android.support.v4.app.DialogFragm
                         }
 
                         else if (title == DELETE_CATEGORY && idCategory!=null){
-                            CategoriesRealmController.deleteCategoryAndChilds(idCategory);
+//                            CategoriesRealmController.deleteCategoryAndChilds(idCategory);
 
                             Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
 
