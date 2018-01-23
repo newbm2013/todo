@@ -36,6 +36,7 @@ import com.shumidub.todoapprealm.ui.TaskUI.adapter.CategoriesAndListsAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.adapter.SmallTaskFragmentPagerAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.adapter.TasksListRecyclerViewAdapter;
 import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddEditDelCategory;
+import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddList;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Calendar;
@@ -191,6 +192,13 @@ public class TasksFragment extends Fragment {
                     setTitle(ListsRealmController.getListById(tasksListId).getName());
                     slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
+            }
+        });
+        tasksListRecyclerViewAdapter.setOnFooterTextViewSetOnClickListener(new TasksListRecyclerViewAdapter.OnFooterTextViewSetOnClickListener() {
+            @Override
+            public void onClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
+                DialogAddList dialogAddList = new DialogAddList();
+                dialogAddList.show(getActivity().getSupportFragmentManager(), "addtocategory");
             }
         });
 
@@ -476,10 +484,6 @@ public class TasksFragment extends Fragment {
 
 
 
-
-
-
-//  rvLists.addView(getActivity().getLayoutInflater().inflate(R.layout.item_card_add_new_list, rvLists, false));
 
 
 
