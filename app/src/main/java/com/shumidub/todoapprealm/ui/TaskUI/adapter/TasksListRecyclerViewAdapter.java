@@ -23,6 +23,11 @@ public class TasksListRecyclerViewAdapter
         extends RecyclerView.Adapter<TasksListRecyclerViewAdapter.ViewHolder> {
 
     RealmResults<ListModel> realmResults;
+    OnHolderTextViewSetOnClickListener onHolderTextViewSetOnClickListener;
+
+    public interface OnHolderTextViewSetOnClickListener{
+       void onClick(ViewHolder holder, int position);
+    };
 
 
     public TasksListRecyclerViewAdapter(RealmResults<ListModel> realmResults, Activity activity){
@@ -43,6 +48,12 @@ public class TasksListRecyclerViewAdapter
         holder.textView.setText("" + realmResults.get(position).getName());
 //        holder.itemView
         holder.textView.setTag(realmResults.get(position).getId());
+        holder.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onHolderTextViewSetOnClickListener.onClick(holder, position);
+            }
+        });
     }
 
     @Override
@@ -50,7 +61,7 @@ public class TasksListRecyclerViewAdapter
         return realmResults.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView textView;
 
@@ -58,5 +69,10 @@ public class TasksListRecyclerViewAdapter
             super(itemView);
             textView = itemView.findViewById(R.id.item_text);
         }
+    }
+
+
+    public void setOnHolderTextViewSetOnClickListener(OnHolderTextViewSetOnClickListener onHolderTextViewSetOnClickListener){
+        this.onHolderTextViewSetOnClickListener = onHolderTextViewSetOnClickListener;
     }
 }

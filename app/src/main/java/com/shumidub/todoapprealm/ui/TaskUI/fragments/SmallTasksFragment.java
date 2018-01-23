@@ -28,7 +28,6 @@ import java.util.List;
 
 public class SmallTasksFragment extends Fragment {
 
-
     //TASKS VIEW, ADAPTER
     RecyclerView rvItems;
     LinearLayoutManager llm;
@@ -81,8 +80,6 @@ public class SmallTasksFragment extends Fragment {
         setTasks();
         setTasksListClickListeners();
 
-
-
     }
 
     private void setTasksListClickListeners(){
@@ -114,8 +111,6 @@ public class SmallTasksFragment extends Fragment {
     public void setTasks(){
         if (tasksListId == 0) doneTasks = TasksRealmController.getDoneTasks();
         else doneTasks = TasksRealmController.getDoneTasks(tasksListId);
-
-
 
         if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
         else tasks = TasksRealmController.getNotDoneTasks(tasksListId);

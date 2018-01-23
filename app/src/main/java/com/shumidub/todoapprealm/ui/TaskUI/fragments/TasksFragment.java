@@ -68,6 +68,8 @@ public class TasksFragment extends Fragment {
     TextView tvTaskPriority;
     TextView tvTaskCycling;
 
+    SmallTaskFragmentPagerAdapter smallTaskFragmentPagerAdapter;
+
     TasksListRecyclerViewAdapter tasksListRecyclerViewAdapter;
 //    ExpandableListView expandableListView;
 
@@ -126,17 +128,12 @@ public class TasksFragment extends Fragment {
         slidingUpPanelLayout = view.findViewById(R.id.slidingup_panel_layout);
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
-
         llBottomFooter.setVisibility(View.VISIBLE);
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         setTitle("Tasks");
 
         //todo realise
         slidingUpPanelLayout.setStateListAnimator(new StateListAnimator());
-
-
-
-
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -160,7 +157,50 @@ public class TasksFragment extends Fragment {
         findFolderViews(view);
         rvLists.setLayoutManager(new LinearLayoutManager(getContext()));
         tasksListRecyclerViewAdapter = new TasksListRecyclerViewAdapter(ListsRealmController.getLists(), getActivity());
+        tasksListRecyclerViewAdapter.setOnHolderTextViewSetOnClickListener(new TasksListRecyclerViewAdapter.OnHolderTextViewSetOnClickListener() {
+            @Override
+            public void onClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
+
+                String text = et.getText().toString();
+                int count = Integer.valueOf(tvTaskCountValue.getText().toString());
+                int maxAccumulation = Integer.valueOf(tvTaskMaxAccumulate.getText().toString());
+
+                if (!text.isEmpty() || !text.equals("")) {
+
+
+
+                    TasksRealmController.addTask(text, count , maxAccumulation, cycling, priority,
+                            ((Long) holder.itemView.findViewById(R.id.item_text).getTag()) );
+
+                    //todo reset view
+                    priority = 0;
+                    cycling = false;
+                    et.setText("");
+                } else {
+                    tasksListId = (Long) holder.itemView.findViewById(R.id.item_text).findViewById(R.id.item_text).getTag();
+
+                    // setTasks();
+
+                    Fragment currentFragment = smallTaskFragmentPagerAdapter.getItem(position);
+                    if (currentFragment instanceof SmallTasksFragment){
+                        ((SmallTasksFragment) currentFragment).notifyDataChanged();
+                    }
+
+                    smallTasksViewPager.setCurrentItem(position);
+
+                    setTitle(ListsRealmController.getListById(tasksListId).getName());
+                    slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                }
+            }
+        });
+
         rvLists.setAdapter(tasksListRecyclerViewAdapter);
+
+
+
+
+
+
 
 
 
@@ -178,9 +218,8 @@ public class TasksFragment extends Fragment {
 
         //SmallTAsks
         smallTasksViewPager = view.findViewById(R.id.view_pager_small_tasks);
-        smallTasksViewPager.setAdapter(new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager()));
-
-
+        smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+        smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
     }
 
     @Override
@@ -412,8 +451,35 @@ public class TasksFragment extends Fragment {
 
     private void setTitle(String title){
         this.title = title;
+        ((MainActivity) getActivity()).getSupportActionBar()
+                        .setTitle(title);
     }
+
+//    public void setTasks(){
+//            if (tasksListId == 0) return;
+//            else{
+//                tasks = TasksRealmController.getNotDoneTasks(tasksListId);
+//                doneTasks = TasksRealmController.getDoneTasks(tasksListId);
+//                ((MainActivity) getActivity()).getSupportActionBar()
+//                        .setTitle((CharSequence) ListsRealmController.getListById(tasksListId).getName());
+//            }
+//            adapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+//            rvItems.setAdapter(adapter);
+//            adapter.setOnLongClicked(onItemLongClicked);
+//            adapter.setOnClicked(onItemClicked);
+//    }
 
 
 
 }
+
+
+
+
+
+
+
+//  rvLists.addView(getActivity().getLayoutInflater().inflate(R.layout.item_card_add_new_list, rvLists, false));
+
+
+
