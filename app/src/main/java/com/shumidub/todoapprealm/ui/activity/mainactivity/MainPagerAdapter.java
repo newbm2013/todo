@@ -1,11 +1,11 @@
-package com.shumidub.todoapprealm.ui.TaskUI.adapter;
+package com.shumidub.todoapprealm.ui.activity.mainactivity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.CustomFragment;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
+import com.shumidub.todoapprealm.ui.fragment.custom_fragment.CustomFragment;
+import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
 
 /**
  * Created by user on 12.01.18.

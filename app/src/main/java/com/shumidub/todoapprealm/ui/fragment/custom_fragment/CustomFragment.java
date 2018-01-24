@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.TaskUI.fragments;
+package com.shumidub.todoapprealm.ui.fragment.custom_fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.ui.MainActivity;
 
 /**
  * Created by Артем on 19.12.2017.

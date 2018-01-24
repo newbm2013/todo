@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.model;
+package com.shumidub.todoapprealm.ui.unused;
 
 import io.realm.RealmObject;
 

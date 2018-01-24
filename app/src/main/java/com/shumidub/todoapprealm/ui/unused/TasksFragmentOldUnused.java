@@ -1,43 +1,7 @@
-package com.shumidub.todoapprealm.ui.TaskUI.fragments;
+package com.shumidub.todoapprealm.ui.unused;
 
 
-import android.animation.StateListAnimator;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
-import android.view.ActionMode;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.RealmInteger;
-import com.shumidub.todoapprealm.model.TaskModel;
-import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
-import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-import com.shumidub.todoapprealm.ui.MainActivity;
-import com.shumidub.todoapprealm.ui.TaskUI.actionmode.ActionModeCategoryCallback;
-import com.shumidub.todoapprealm.ui.TaskUI.actionmode.ActionModeListCallback;
-import com.shumidub.todoapprealm.ui.TaskUI.adapter.CategoriesAndListsAdapter;
-import com.shumidub.todoapprealm.ui.TaskUI.adapter.SmallTaskFragmentPagerAdapter;
-import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddEditDelCategory;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import java.util.Calendar;
-import java.util.List;
-
 
 
 /**

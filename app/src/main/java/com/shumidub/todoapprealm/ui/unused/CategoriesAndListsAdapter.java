@@ -1,12 +1,4 @@
-package com.shumidub.todoapprealm.ui.TaskUI.adapter;
-import android.content.Context;
-import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.ListModel;
-import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package com.shumidub.todoapprealm.ui.unused;
 
 
 /**

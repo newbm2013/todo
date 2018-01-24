@@ -10,8 +10,7 @@ public class ListModel extends RealmObject {
 
     private String name;
     private long id;
-    private boolean isCycling;
-//  private boolean isDefault; no field only view for DefaultTaskList setDefault
+
 
     public String getName() {
         return name;
@@ -29,12 +28,6 @@ public class ListModel extends RealmObject {
         this.id = id;
     }
 
-    public boolean isCycling() {
-        return isCycling;
-    }
 
-    public void setCycling(boolean cycling) {
-        isCycling = cycling;
-    }
 
 }

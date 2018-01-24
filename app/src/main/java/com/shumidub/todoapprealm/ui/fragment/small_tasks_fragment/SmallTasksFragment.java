@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.TaskUI.fragments;
+package com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +15,8 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-import com.shumidub.todoapprealm.sharedpref.SharedPrefHelper;
-import com.shumidub.todoapprealm.ui.MainActivity;
-import com.shumidub.todoapprealm.ui.TaskUI.actionmode.TaskActionModeCallback;
-import com.shumidub.todoapprealm.ui.TaskUI.adapter.TasksRecyclerViewAdapter;
+import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
+import com.shumidub.todoapprealm.ui.actionmode.TaskActionModeCallback;
 
 import java.util.List;
 

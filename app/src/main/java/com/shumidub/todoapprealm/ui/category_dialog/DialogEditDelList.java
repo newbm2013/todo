@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.TaskUI.category_dialog;
+package com.shumidub.todoapprealm.ui.category_dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,9 +13,9 @@ import android.widget.Toast;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.ListModel;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
-import com.shumidub.todoapprealm.sharedpref.SharedPrefHelper;
-import com.shumidub.todoapprealm.ui.MainActivity;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
+import com.shumidub.todoapprealm.ui.unused.SharedPrefHelper;
+import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
+import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
 
 import io.reactivex.annotations.NonNull;
 
@@ -71,9 +71,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
             list = ListsRealmController.getListById(idList);
 
             currentTextList = list.getName();
-            defaultListId = spHelper.getDefaultListId();
-            currentIsDefaultList = defaultListId == idList;  // SP, можно только выбрать тру и тогда перепишется значение, с тру на фолсе нельзя
-            currentIsCyclingList = list.isCycling();
+
 
         }
 
@@ -82,18 +80,10 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
         if (title == EDIT_LIST ){
             View view = getActivity().getLayoutInflater().inflate(R.layout.add_list_layout, null);
             etName = view.findViewById(R.id.name);
-            swIsDefault = view.findViewById(R.id.switch_default);
-            swIsCycling = view.findViewById(R.id.switch_cycling);
 
             etName.setText(list.getName());
-            swIsDefault.setChecked(currentIsDefaultList);
-            if (currentIsDefaultList){
-                swIsDefault.setEnabled(false);
-                swIsDefault.setTextColor(getResources().getColor(R.color.colorAccent));
-            }
-//          swIsCycling.setChecked(list.isCycling());
-            swIsCycling.setChecked(false);
-            swIsCycling.setEnabled(false);
+
+
 
             builder.setView(view);
         } else if (title == DELETE_LIST ){
@@ -110,15 +100,13 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
 
                         if (title == EDIT_LIST ) {
 
-                            boolean isDefault = swIsDefault.isChecked();
-                            boolean isCycling = swIsCycling.isChecked();
 
                             String text = etName.getText().toString();
-                            ListsRealmController.editList(list, text, isDefault, isCycling);
-                            if(!currentIsDefaultList && isDefault) spHelper.setDefauiltListId(idList);
+                            ListsRealmController.editList(list, text);
+
 
                             tasksFragment.finishActionMode();
-                            tasksFragment.dataChanged();
+                            tasksFragment.notifyListsDataChanged();
 
                             Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                         }
@@ -128,7 +116,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
                                 ListsRealmController.deleteLists(list);
                                 Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                                 tasksFragment.finishActionMode();
-                                tasksFragment.dataChanged();
+                                tasksFragment.notifyListsDataChanged();
                             }else{
                                 Toast.makeText(getContext(),
                                         "Can't delete default list", Toast.LENGTH_SHORT).show();

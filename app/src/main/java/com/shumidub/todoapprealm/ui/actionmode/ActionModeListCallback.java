@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.TaskUI.actionmode;
+package com.shumidub.todoapprealm.ui.actionmode;
 
 
 import android.view.ActionMode;
@@ -7,13 +7,13 @@ import android.view.MenuItem;
 
 import com.shumidub.todoapprealm.R;
 
-import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogEditDelList;
-import com.shumidub.todoapprealm.ui.MainActivity;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
+import com.shumidub.todoapprealm.ui.category_dialog.DialogEditDelList;
+import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
+import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
 
-import static com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogEditDelList.DELETE_LIST;
-import static com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogEditDelList.EDIT_LIST;
-import static com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment.titleList;
+import static com.shumidub.todoapprealm.ui.category_dialog.DialogEditDelList.DELETE_LIST;
+import static com.shumidub.todoapprealm.ui.category_dialog.DialogEditDelList.EDIT_LIST;
+import static com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment.titleList;
 
 
 /**

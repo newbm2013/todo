@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui;
+package com.shumidub.todoapprealm.ui.activity.mainactivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,8 +10,7 @@ import android.widget.Toast;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.ui.TaskUI.adapter.MainPagerAdapter;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
+import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {

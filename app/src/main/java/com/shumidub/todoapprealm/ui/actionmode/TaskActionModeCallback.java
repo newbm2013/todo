@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.TaskUI.actionmode;
+package com.shumidub.todoapprealm.ui.actionmode;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -18,8 +18,7 @@ import android.widget.Toast;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.SmallTasksFragment;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
+import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
 
 
 /**

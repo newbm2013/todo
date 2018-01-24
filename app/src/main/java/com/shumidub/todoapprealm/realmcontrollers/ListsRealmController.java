@@ -15,9 +15,6 @@ public class ListsRealmController {
 
     private static RealmQuery<ListModel> listsQuery;
     private static RealmResults<ListModel> lists;
-    static long currentListId; //for TaskActivity
-    static long defaultListId; //for TaskActivity, if getExtraLong=0 + when set defaultId, find other and set
-    //false or better save in one olace
 
 
     public static RealmQuery<ListModel> getListsQuery(){
@@ -42,25 +39,14 @@ public class ListsRealmController {
         return getListsQuery().equalTo("id", listId).findFirst();
     }
 
-    public static void setCurrentListId(long listId){
-        currentListId = listId;
-    }
-
-    public static long getDefaultListId(long listId){
-        return defaultListId = getListsQuery().equalTo("isDefault", true).findFirst().getId();
-    }
 
     // need to delete
     public static ListModel getTasksList(String nameList){
-//        Log.d(TAG, "getTasksList: "
-//                + App.realm.toString()
-//                + " "
-//                + App.realm.where(ListModel.class).toString());
         App.initRealm();
         return App.realm.where(ListModel.class).equalTo("name", nameList).findFirst();
     }
 
-    public static long addTasksLists(String name, boolean isDefault, boolean isCycling){
+    public static long addTasksLists(String name){
         long id = TasksRealmController.getIdForNextValue(ListModel.class);
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
@@ -68,37 +54,28 @@ public class ListsRealmController {
             public void execute(Realm realm) {
                 ListModel item = realm.createObject(ListModel.class);
                 item.setId(id);
-//                item.setName(name + id);
                 item.setName(name);
-                item.setCycling(isCycling);
                 realm.insert(item);
-//                if (isDefault) new SharedPrefHelper(null).setDefauiltListId(id);
             }
         });
         return id;
     }
 
 
-    public static long editList(long id, String name, boolean isDefault, boolean isCycling ){
+    public static long editList(long id, String name){
         App.initRealm();
         ListModel list = getListById(id);
-        return editList(list, name, isDefault, isCycling);
+        return editList(list, name);
     }
 
 
-    public static long editList(ListModel list, String name, boolean isDefault, boolean isCycling){
+    public static long editList(ListModel list, String name){
 
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 list.setName(name);
-                list.setCycling(isCycling);
-
-//              if (idCategory != 0) item.setIdCategory(idCategory);
-//              if (curentIdCategory!=idCategory) {} need to add in te future
-//
-
             }
         });
         return list.getId();

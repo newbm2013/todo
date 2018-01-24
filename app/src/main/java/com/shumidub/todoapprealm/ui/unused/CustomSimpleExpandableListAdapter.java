@@ -1,12 +1,4 @@
-package com.shumidub.todoapprealm.ui.TaskUI.adapter;
-
-import android.content.Context;
-import android.support.v4.util.Pair;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.SimpleExpandableListAdapter;
-import java.util.List;
-import java.util.Map;
+package com.shumidub.todoapprealm.ui.unused;
 
 /**
  * Created by Артем on 26.12.2017.

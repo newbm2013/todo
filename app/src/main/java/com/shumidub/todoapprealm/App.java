@@ -42,7 +42,7 @@ public class App extends Application {
     private void addContent() {
         initRealm();
         for (int i2 =0; i2<40; i2++) {
-            long idList = ListsRealmController.addTasksLists("List "+i2 , false, false);
+            long idList = ListsRealmController.addTasksLists("List "+i2);
             if (i2%3!=0){
                 int i4 = 0;
                 for (int i3=0; i3<30; i3++){

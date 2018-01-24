@@ -1,20 +1,13 @@
-package com.shumidub.todoapprealm.ui.TaskUI.adapter;
+package com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.shumidub.todoapprealm.model.ListModel;
-import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
-import com.shumidub.todoapprealm.ui.TaskUI.adapter.TasksRecyclerViewAdapter;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.SmallTasksFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.realm.RealmResults;
 

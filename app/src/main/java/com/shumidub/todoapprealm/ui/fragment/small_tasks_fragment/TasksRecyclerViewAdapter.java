@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.TaskUI.adapter;
+package com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.SmallTasksFragment;
-import com.shumidub.todoapprealm.ui.TaskUI.fragments.TasksFragment;
 
 import java.util.List;
 

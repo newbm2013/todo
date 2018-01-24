@@ -1,7 +1,6 @@
-package com.shumidub.todoapprealm.ui.TaskUI.adapter;
+package com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,9 +10,6 @@ import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.ListModel;
-import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddList;
-
-import java.util.ArrayList;
 
 import io.realm.RealmResults;
 

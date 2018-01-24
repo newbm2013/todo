@@ -11,20 +11,4 @@
         android:focusedByDefault="true"/>
 
 
-    <Switch
-        android:id="@+id/switch_cycling"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cycling "/>
-
-    <Switch
-        android:id="@+id/switch_default"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Default "/>
-
-
-
-
-
 </LinearLayout>

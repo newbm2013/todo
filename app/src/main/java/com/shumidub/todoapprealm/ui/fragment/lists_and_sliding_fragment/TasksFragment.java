@@ -1,16 +1,14 @@
-package com.shumidub.todoapprealm.ui.TaskUI.fragments;
+package com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment;
 
 
 import android.animation.StateListAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,23 +23,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.RealmInteger;
+import com.shumidub.todoapprealm.model.ListModel;
+import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
+import com.shumidub.todoapprealm.ui.unused.RealmInteger;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-import com.shumidub.todoapprealm.ui.MainActivity;
-import com.shumidub.todoapprealm.ui.TaskUI.actionmode.ActionModeCategoryCallback;
-import com.shumidub.todoapprealm.ui.TaskUI.actionmode.ActionModeListCallback;
-import com.shumidub.todoapprealm.ui.TaskUI.adapter.CategoriesAndListsAdapter;
-import com.shumidub.todoapprealm.ui.TaskUI.adapter.SmallTaskFragmentPagerAdapter;
-import com.shumidub.todoapprealm.ui.TaskUI.adapter.TasksListRecyclerViewAdapter;
-import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddEditDelCategory;
-import com.shumidub.todoapprealm.ui.TaskUI.category_dialog.DialogAddList;
+import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
+import com.shumidub.todoapprealm.ui.actionmode.ActionModeListCallback;
+import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTaskFragmentPagerAdapter;
+import com.shumidub.todoapprealm.ui.category_dialog.DialogAddList;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Calendar;
 import java.util.List;
 
+
+import io.realm.RealmResults;
 
 import static com.shumidub.todoapprealm.realmcontrollers.ListsRealmController.listsIsEmpty;
 
@@ -69,6 +67,10 @@ public class TasksFragment extends Fragment {
     TextView tvTaskPriority;
     TextView tvTaskCycling;
 
+
+    TasksListRecyclerViewAdapter.OnHolderTextViewSetOnClickListener onHolderTextViewSetOnClickListener;
+    TasksListRecyclerViewAdapter.OnFooterTextViewSetOnClickListener onFooterTextViewSetOnClickListener;
+
     SmallTaskFragmentPagerAdapter smallTaskFragmentPagerAdapter;
 
     TasksListRecyclerViewAdapter tasksListRecyclerViewAdapter;
@@ -81,17 +83,17 @@ public class TasksFragment extends Fragment {
 
     ActionMode actionMode;
 
-    ActionMode.Callback categoryCallback;
     ActionMode.Callback listCallback;
 
     //FOLDERS (LISTS)
+    RealmResults<ListModel> lists;
 
-    public static String textCategoryName;
+
     public static String titleList;
     public static String listName;
     public static long listId;
 
-    static final int CATEGORY_ACTIONMODE = 1;
+
     static final int LIST_ACTIONMODE = 2;
 
     public static Long idOnTag;
@@ -157,50 +159,58 @@ public class TasksFragment extends Fragment {
         //FOLDER
         findFolderViews(view);
         rvLists.setLayoutManager(new LinearLayoutManager(getContext()));
-        tasksListRecyclerViewAdapter = new TasksListRecyclerViewAdapter(ListsRealmController.getLists(), getActivity());
-        tasksListRecyclerViewAdapter.setOnHolderTextViewSetOnClickListener(new TasksListRecyclerViewAdapter.OnHolderTextViewSetOnClickListener() {
-            @Override
-            public void onClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
-
-                String text = et.getText().toString();
-                int count = Integer.valueOf(tvTaskCountValue.getText().toString());
-                int maxAccumulation = Integer.valueOf(tvTaskMaxAccumulate.getText().toString());
-
-                if (!text.isEmpty() || !text.equals("")) {
+        lists = ListsRealmController.getLists();
+        tasksListRecyclerViewAdapter = new TasksListRecyclerViewAdapter(lists, getActivity());
 
 
+        onHolderTextViewSetOnClickListener =
+                new TasksListRecyclerViewAdapter.OnHolderTextViewSetOnClickListener() {
+                    @Override
+                    public void onClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
 
-                    TasksRealmController.addTask(text, count , maxAccumulation, cycling, priority,
-                            ((Long) holder.itemView.findViewById(R.id.item_text).getTag()) );
+                        String text = et.getText().toString();
+                        int count = Integer.valueOf(tvTaskCountValue.getText().toString());
+                        int maxAccumulation = Integer.valueOf(tvTaskMaxAccumulate.getText().toString());
 
-                    //todo reset view
-                    priority = 0;
-                    cycling = false;
-                    et.setText("");
-                } else {
-                    tasksListId = (Long) holder.itemView.findViewById(R.id.item_text).findViewById(R.id.item_text).getTag();
+                        if (!text.isEmpty() || !text.equals("")) {
 
-                    // setTasks();
 
-                    Fragment currentFragment = smallTaskFragmentPagerAdapter.getItem(position);
-                    if (currentFragment instanceof SmallTasksFragment){
-                        ((SmallTasksFragment) currentFragment).notifyDataChanged();
+
+                            TasksRealmController.addTask(text, count , maxAccumulation, cycling, priority,
+                                    ((Long) holder.itemView.findViewById(R.id.item_text).getTag()) );
+
+                            //todo reset view
+                            priority = 0;
+                            cycling = false;
+                            et.setText("");
+                        } else {
+                            tasksListId = (Long) holder.itemView.findViewById(R.id.item_text).findViewById(R.id.item_text).getTag();
+
+                            // setTasks();
+
+                            Fragment currentFragment = smallTaskFragmentPagerAdapter.getItem(position);
+                            if (currentFragment instanceof SmallTasksFragment){
+                                ((SmallTasksFragment) currentFragment).notifyDataChanged();
+                            }
+
+                            smallTasksViewPager.setCurrentItem(position);
+
+                            setTitle(ListsRealmController.getListById(tasksListId).getName());
+                            slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                        }
                     }
+                };
 
-                    smallTasksViewPager.setCurrentItem(position);
-
-                    setTitle(ListsRealmController.getListById(tasksListId).getName());
-                    slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                }
-            }
-        });
-        tasksListRecyclerViewAdapter.setOnFooterTextViewSetOnClickListener(new TasksListRecyclerViewAdapter.OnFooterTextViewSetOnClickListener() {
+        onFooterTextViewSetOnClickListener = new TasksListRecyclerViewAdapter.OnFooterTextViewSetOnClickListener() {
             @Override
             public void onClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
                 DialogAddList dialogAddList = new DialogAddList();
                 dialogAddList.show(getActivity().getSupportFragmentManager(), "addtocategory");
             }
-        });
+        };
+
+        tasksListRecyclerViewAdapter.setOnHolderTextViewSetOnClickListener(onHolderTextViewSetOnClickListener);
+        tasksListRecyclerViewAdapter.setOnFooterTextViewSetOnClickListener(onFooterTextViewSetOnClickListener);
 
         rvLists.setAdapter(tasksListRecyclerViewAdapter);
 
@@ -243,16 +253,7 @@ public class TasksFragment extends Fragment {
         dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         dayScopeMenu.setOnMenuItemClickListener((v)->{dayScope=+1; return true;});
 
-        //FOLDER
-        MenuItem addCategory = menu.add("add category");
-        addCategory.setIcon(R.drawable.ic_add);
-        addCategory.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        addCategory.setOnMenuItemClickListener((MenuItem a) -> {
-            (new DialogAddEditDelCategory()).show(getActivity().getSupportFragmentManager(), "category");
-            dataChanged();
-            return true;
-        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -313,10 +314,8 @@ public class TasksFragment extends Fragment {
 //    }
 
     private ActionMode.Callback getCallback(int callbackType){
-        if(callbackType == CATEGORY_ACTIONMODE){
-            categoryCallback = new ActionModeCategoryCallback().getCategoryActionModeCallback((MainActivity) getActivity(), idOnTag);
-            return categoryCallback;
-        } else if (callbackType == LIST_ACTIONMODE) {
+
+        if (callbackType == LIST_ACTIONMODE) {
             listCallback = new ActionModeListCallback().getListActionModeCallback((MainActivity) getActivity(), this, idOnTag);
             return listCallback;
         }
@@ -394,6 +393,20 @@ public class TasksFragment extends Fragment {
 
     public void dataChanged(){
         onResume();
+    }
+
+    public void notifyListsDataChanged(){
+        lists = ListsRealmController.getLists();
+        tasksListRecyclerViewAdapter = new TasksListRecyclerViewAdapter(lists, getActivity());
+        tasksListRecyclerViewAdapter.setOnHolderTextViewSetOnClickListener(onHolderTextViewSetOnClickListener);
+        tasksListRecyclerViewAdapter.setOnFooterTextViewSetOnClickListener(onFooterTextViewSetOnClickListener);
+        rvLists.setAdapter(tasksListRecyclerViewAdapter);
+
+//        smallTaskFragmentPagerAdapter.notifyDataSetChanged();
+        smallTasksViewPager.getAdapter().notifyDataSetChanged();
+        smallTasksViewPager.setAdapter(new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager()));
+
+//        tasksListRecyclerViewAdapter.notifyDataSetChanged();
     }
 
 //    protected void tasksDataChanged(){

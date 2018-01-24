@@ -1,7 +1,6 @@
-package com.shumidub.todoapprealm.sharedpref;
+package com.shumidub.todoapprealm.ui.unused;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.shumidub.todoapprealm.model.ListModel;
