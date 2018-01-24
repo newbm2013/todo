@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.ListModel;
 import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
-import com.shumidub.todoapprealm.ui.unused.RealmInteger;
+import com.shumidub.todoapprealm.unused.RealmInteger;
 import com.shumidub.todoapprealm.model.TaskModel;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
@@ -68,8 +68,9 @@ public class TasksFragment extends Fragment {
     TextView tvTaskCycling;
 
 
-    TasksListRecyclerViewAdapter.OnHolderTextViewSetOnClickListener onHolderTextViewSetOnClickListener;
-    TasksListRecyclerViewAdapter.OnFooterTextViewSetOnClickListener onFooterTextViewSetOnClickListener;
+    TasksListRecyclerViewAdapter.OnHolderTextViewOnClickListener onHolderTextViewOnClickListener;
+    TasksListRecyclerViewAdapter.OnHolderTextViewOnLongClickListener onHolderTextViewOnLongClickListener;
+    TasksListRecyclerViewAdapter.OnFooterTextViewOnClickListener onFooterTextViewOnClickListener;
 
     SmallTaskFragmentPagerAdapter smallTaskFragmentPagerAdapter;
 
@@ -163,8 +164,8 @@ public class TasksFragment extends Fragment {
         tasksListRecyclerViewAdapter = new TasksListRecyclerViewAdapter(lists, getActivity());
 
 
-        onHolderTextViewSetOnClickListener =
-                new TasksListRecyclerViewAdapter.OnHolderTextViewSetOnClickListener() {
+        onHolderTextViewOnClickListener =
+                new TasksListRecyclerViewAdapter.OnHolderTextViewOnClickListener() {
                     @Override
                     public void onClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
 
@@ -201,7 +202,24 @@ public class TasksFragment extends Fragment {
                     }
                 };
 
-        onFooterTextViewSetOnClickListener = new TasksListRecyclerViewAdapter.OnFooterTextViewSetOnClickListener() {
+
+        onHolderTextViewOnLongClickListener = new TasksListRecyclerViewAdapter.OnHolderTextViewOnLongClickListener() {
+            @Override
+            public void onLongClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
+
+                idOnTag = (Long) holder.itemView.findViewById(R.id.item_text).getTag();
+                titleList = ListsRealmController.getListById(idOnTag).getName();
+                actionMode = null;
+                actionMode = getActivity().startActionMode(getCallback(LIST_ACTIONMODE));
+
+                /*
+                todo need delete smalltaskfragment after delete list and need reset actionmode
+                 and запрет открытия слайдин панели если нулл или может быть удален лист
+                */
+            }
+        };
+
+        onFooterTextViewOnClickListener = new TasksListRecyclerViewAdapter.OnFooterTextViewOnClickListener() {
             @Override
             public void onClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
                 DialogAddList dialogAddList = new DialogAddList();
@@ -209,19 +227,12 @@ public class TasksFragment extends Fragment {
             }
         };
 
-        tasksListRecyclerViewAdapter.setOnHolderTextViewSetOnClickListener(onHolderTextViewSetOnClickListener);
-        tasksListRecyclerViewAdapter.setOnFooterTextViewSetOnClickListener(onFooterTextViewSetOnClickListener);
+        tasksListRecyclerViewAdapter.setOnHolderTextViewOnClickListener(onHolderTextViewOnClickListener);
+        tasksListRecyclerViewAdapter.setOnHolderTextViewOnLongClickListener(onHolderTextViewOnLongClickListener);
+        tasksListRecyclerViewAdapter.setOnFooterTextViewSetOnClickListener(onFooterTextViewOnClickListener);
+
 
         rvLists.setAdapter(tasksListRecyclerViewAdapter);
-
-
-
-
-
-
-
-
-
 
 
 

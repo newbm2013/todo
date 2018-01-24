@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.ListModel;
 import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
-import com.shumidub.todoapprealm.ui.unused.SharedPrefHelper;
+import com.shumidub.todoapprealm.unused.SharedPrefHelper;
 import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
 

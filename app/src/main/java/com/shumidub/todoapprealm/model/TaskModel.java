@@ -1,6 +1,6 @@
 package com.shumidub.todoapprealm.model;
 
-import com.shumidub.todoapprealm.ui.unused.RealmInteger;
+import com.shumidub.todoapprealm.unused.RealmInteger;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

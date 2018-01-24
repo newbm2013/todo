@@ -24,14 +24,18 @@ public class TasksListRecyclerViewAdapter
     private static final int TYPE_ITEM = 0;
 
     RealmResults<ListModel> realmResults;
-    OnHolderTextViewSetOnClickListener onHolderTextViewSetOnClickListener;
-    OnFooterTextViewSetOnClickListener onFooterTextViewSetOnClickListener;
+    OnHolderTextViewOnClickListener onHolderTextViewOnClickListener;
+    OnHolderTextViewOnLongClickListener onHolderTextViewOnLongClickListener;
+    OnFooterTextViewOnClickListener onFooterTextViewOnClickListener;
 
-    public interface OnHolderTextViewSetOnClickListener{
+    public interface OnHolderTextViewOnClickListener {
        void onClick(ViewHolder holder, int position);
     }
+    public interface OnHolderTextViewOnLongClickListener {
+       void onLongClick(ViewHolder holder, int position);
+    }
 
-    public interface OnFooterTextViewSetOnClickListener{
+    public interface OnFooterTextViewOnClickListener {
        void onClick(ViewHolder holder, int position);
     }
 
@@ -62,14 +66,24 @@ public class TasksListRecyclerViewAdapter
             ((ItemViewHolder) holder).textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onHolderTextViewSetOnClickListener.onClick(holder, position);
+                    onHolderTextViewOnClickListener.onClick(holder, position);
                 }
             });
+
+
+            ((ItemViewHolder) holder).textView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    onHolderTextViewOnLongClickListener.onLongClick(holder, position);
+                    return true;
+                }
+            });
+
         } else if(holder.getItemViewType() == TYPE_FOOTER){
             ((FooterViewHolder) holder).footerTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onFooterTextViewSetOnClickListener.onClick(holder, position);
+                    onFooterTextViewOnClickListener.onClick(holder, position);
                 }
             });
         }
@@ -115,12 +129,16 @@ public class TasksListRecyclerViewAdapter
         }
     }
 
-    public void setOnHolderTextViewSetOnClickListener(OnHolderTextViewSetOnClickListener onHolderTextViewSetOnClickListener){
-        this.onHolderTextViewSetOnClickListener = onHolderTextViewSetOnClickListener;
+    public void setOnHolderTextViewOnClickListener(OnHolderTextViewOnClickListener onHolderTextViewOnClickListener){
+        this.onHolderTextViewOnClickListener = onHolderTextViewOnClickListener;
     }
 
-    public void setOnFooterTextViewSetOnClickListener(OnFooterTextViewSetOnClickListener onFooterTextViewSetOnClickListener){
-        this.onFooterTextViewSetOnClickListener = onFooterTextViewSetOnClickListener;
+    public void setOnHolderTextViewOnLongClickListener(OnHolderTextViewOnLongClickListener onHolderTextViewOnLongClickListener){
+        this.onHolderTextViewOnLongClickListener = onHolderTextViewOnLongClickListener;
+    }
+
+    public void setOnFooterTextViewSetOnClickListener(OnFooterTextViewOnClickListener onFooterTextViewOnClickListener){
+        this.onFooterTextViewOnClickListener = onFooterTextViewOnClickListener;
     }
 }
 
