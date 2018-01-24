@@ -23,23 +23,10 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
 
 
 
-
-
-
-
-
     public SmallTaskFragmentPagerAdapter(FragmentManager fm) {
 
         super(fm);
-
-
-       listModels = ListsRealmController.getLists();
-       for (ListModel listModel: listModels){
-           listModelId.add(listModel.getId());
-       }
-
-
-
+        setTaskList();
     }
 
     @Override
@@ -50,5 +37,24 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return listModelId.size();
+    }
+
+
+    private void setTaskList(){
+        listModels = ListsRealmController.getLists();
+        for (ListModel listModel: listModels){
+            listModelId.add(listModel.getId());
+        }
+    }
+
+//    public void  notifyTaskListChanged(){
+//        setTaskList();
+//        notifyDataSetChanged();
+//    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        setTaskList();
+        super.notifyDataSetChanged();
     }
 }

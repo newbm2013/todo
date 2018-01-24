@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.category_dialog;
+package com.shumidub.todoapprealm.ui.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

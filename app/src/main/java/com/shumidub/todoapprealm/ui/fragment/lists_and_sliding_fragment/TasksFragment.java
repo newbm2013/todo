@@ -32,7 +32,7 @@ import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.ActionModeListCallback;
 import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTaskFragmentPagerAdapter;
-import com.shumidub.todoapprealm.ui.category_dialog.DialogAddList;
+import com.shumidub.todoapprealm.ui.dialog.DialogAddList;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Calendar;
@@ -396,17 +396,13 @@ public class TasksFragment extends Fragment {
     }
 
     public void notifyListsDataChanged(){
-        lists = ListsRealmController.getLists();
-        tasksListRecyclerViewAdapter = new TasksListRecyclerViewAdapter(lists, getActivity());
-        tasksListRecyclerViewAdapter.setOnHolderTextViewSetOnClickListener(onHolderTextViewSetOnClickListener);
-        tasksListRecyclerViewAdapter.setOnFooterTextViewSetOnClickListener(onFooterTextViewSetOnClickListener);
-        rvLists.setAdapter(tasksListRecyclerViewAdapter);
 
-//        smallTaskFragmentPagerAdapter.notifyDataSetChanged();
-        smallTasksViewPager.getAdapter().notifyDataSetChanged();
-        smallTasksViewPager.setAdapter(new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager()));
+//      lists = ListsRealmController.getLists();
+//      tasksListRecyclerViewAdapter.notifyDataSetChanged();
 
-//        tasksListRecyclerViewAdapter.notifyDataSetChanged();
+        tasksListRecyclerViewAdapter.notifyDataSetChanged();
+        smallTaskFragmentPagerAdapter.notifyDataSetChanged();
+
     }
 
 //    protected void tasksDataChanged(){

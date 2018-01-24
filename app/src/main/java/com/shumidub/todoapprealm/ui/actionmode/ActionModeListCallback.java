@@ -7,12 +7,12 @@ import android.view.MenuItem;
 
 import com.shumidub.todoapprealm.R;
 
-import com.shumidub.todoapprealm.ui.category_dialog.DialogEditDelList;
+import com.shumidub.todoapprealm.ui.dialog.DialogEditDelList;
 import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
 
-import static com.shumidub.todoapprealm.ui.category_dialog.DialogEditDelList.DELETE_LIST;
-import static com.shumidub.todoapprealm.ui.category_dialog.DialogEditDelList.EDIT_LIST;
+import static com.shumidub.todoapprealm.ui.dialog.DialogEditDelList.DELETE_LIST;
+import static com.shumidub.todoapprealm.ui.dialog.DialogEditDelList.EDIT_LIST;
 import static com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment.titleList;
 
 
