@@ -5,12 +5,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.ui.actionmode.EmptyActionMode;
 import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
+import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     long time = 0;
     ActionBar actionBar;
+    MainPagerAdapter mainPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
 
         viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+        mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mainPagerAdapter);
         viewPager.setCurrentItem(1);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -42,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 }else {
                     actionBar.setTitle("Notes/Reports");
                 }
-
+                ActionMode actionMode = startSupportActionMode(new EmptyActionMode());
             }
 
             @Override

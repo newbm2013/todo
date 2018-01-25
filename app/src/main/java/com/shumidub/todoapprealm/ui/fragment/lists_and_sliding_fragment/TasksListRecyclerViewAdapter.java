@@ -1,15 +1,20 @@
 package com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.model.ListModel;
+
+
+import java.util.concurrent.TimeUnit;
 
 import io.realm.RealmResults;
 
@@ -28,6 +33,15 @@ public class TasksListRecyclerViewAdapter
     OnHolderTextViewOnLongClickListener onHolderTextViewOnLongClickListener;
     OnFooterTextViewOnClickListener onFooterTextViewOnClickListener;
 
+    Thread thread;
+    Runnable runnable;
+
+
+    long then;
+    int longClickDuration = 2000;
+    int middleClickDuration = 1000;
+    boolean touchAlreadyExecuted = false;
+
     public interface OnHolderTextViewOnClickListener {
        void onClick(ViewHolder holder, int position);
     }
@@ -42,6 +56,11 @@ public class TasksListRecyclerViewAdapter
 
     public TasksListRecyclerViewAdapter(RealmResults<ListModel> realmResults, Activity activity){
         this.realmResults = realmResults;
+
+        Thread thread =new Thread(runnable);
+
+
+
         //activity as context
     }
 
@@ -57,27 +76,89 @@ public class TasksListRecyclerViewAdapter
         } else return null;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d("DTAG", "onBindViewHolder: position" + position + "array size = " + realmResults.size());
         if (holder.getItemViewType() == TYPE_ITEM) {
             ((ItemViewHolder) holder).textView.setText("" + realmResults.get(position).getName());
             ((ItemViewHolder) holder).textView.setTag(realmResults.get(position).getId());
-            ((ItemViewHolder) holder).textView.setOnClickListener(new View.OnClickListener() {
+
+            ((ItemViewHolder) holder).textView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View view) {
-                    onHolderTextViewOnClickListener.onClick(holder, position);
-                }
-            });
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        then = System.currentTimeMillis();
+
+                        runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                               try {
+                                    TimeUnit.MILLISECONDS.sleep(longClickDuration);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                v.post(() ->  {
+                                    if ((System.currentTimeMillis() - then) > longClickDuration) {
+                                        onHolderTextViewOnLongClickListener.onLongClick(holder, position);
+                                    }
+                                    touchAlreadyExecuted = false;
+                                    Log.d("DTAG", "onTouch new thread : " + touchAlreadyExecuted);
+                                });
+                            }
+                        };
+
+                        thread = new Thread(runnable);
+                        thread.start();
+                    } else {
+                        if (thread.getState()!= Thread.State.TERMINATED && thread != null){
+                            thread.interrupt();
+                        }
+                    }
 
 
-            ((ItemViewHolder) holder).textView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    onHolderTextViewOnLongClickListener.onLongClick(holder, position);
+
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if ((System.currentTimeMillis() - then) > middleClickDuration) {
+
+                            touchAlreadyExecuted = true;
+                            Log.d("DTAG", "onTouch middle: " + touchAlreadyExecuted);
+                            return false;
+                        }else {
+                            if (thread.getState()== Thread.State.RUNNABLE){
+                                thread.interrupt();
+                            }
+                            onHolderTextViewOnClickListener.onClick(holder, position);
+                            touchAlreadyExecuted = true;
+                            Log.d("DTAG", "onTouch: click" + touchAlreadyExecuted);
+                            return false;
+                        }
+                    }
                     return true;
                 }
             });
+
+
+
+
+//            ((ItemViewHolder) holder).textView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    onHolderTextViewOnClickListener.onClick(holder, position);
+//                }
+//            });
+//
+//
+//            ((ItemViewHolder) holder).textView.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View view) {
+//                    onHolderTextViewOnLongClickListener.onLongClick(holder, position);
+//                    return true;
+//                }
+//            });
+
+
 
         } else if(holder.getItemViewType() == TYPE_FOOTER){
             ((FooterViewHolder) holder).footerTextView.setOnClickListener(new View.OnClickListener() {

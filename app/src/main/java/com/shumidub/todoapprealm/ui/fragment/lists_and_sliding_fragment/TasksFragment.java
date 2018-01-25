@@ -9,11 +9,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,6 +38,8 @@ import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTaskFragm
 import com.shumidub.todoapprealm.ui.dialog.DialogAddList;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -82,7 +87,7 @@ public class TasksFragment extends Fragment {
     AdapterView.OnItemLongClickListener longListener;
     ExpandableListView.OnChildClickListener childClickListener;
 
-    ActionMode actionMode;
+    static ActionMode actionMode;
 
     ActionMode.Callback listCallback;
 
@@ -105,6 +110,9 @@ public class TasksFragment extends Fragment {
     int priority = 0;
     boolean cycling = false;
 
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +130,8 @@ public class TasksFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+
         super.onViewCreated(view, savedInstanceState);
 
         actionBar = ((MainActivity)getActivity()).getSupportActionBar();
@@ -144,16 +154,37 @@ public class TasksFragment extends Fragment {
                 llBottomFooter.setAlpha(1.0f - slideOffset);
                 if (slideOffset > 0.87){
                     llBottomFooter.setVisibility(View.GONE);
-                }
-                if (slideOffset<0.85){
+                } else if (slideOffset<0.85){
                     llBottomFooter.setVisibility(View.VISIBLE);
                 }
+
+
+                if (slideOffset > 0.3 && slideOffset < 0.7){
+                    if (actionMode!=null){
+                        actionMode.finish();
+                    }
+
+
+                    Fragment currentFragment = smallTaskFragmentPagerAdapter.getItem(smallTasksViewPager.getCurrentItem());
+                    if (currentFragment instanceof SmallTasksFragment){
+                        ((SmallTasksFragment) currentFragment).finishActionMode();
+                    }
+
+
+                }
+
+
+
+
             }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) setTitle("Tasks");
-//                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) setTitle(ListsRealmController.getListById(tasksListId).getName());
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED){
+//                    setTitle(ListsRealmController.getListById(tasksListId).getName());
+                    if (actionMode!=null) actionMode.finish();
+                }
             }
         });
 
@@ -168,6 +199,8 @@ public class TasksFragment extends Fragment {
                 new TasksListRecyclerViewAdapter.OnHolderTextViewOnClickListener() {
                     @Override
                     public void onClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
+
+                        if (actionMode!=null) actionMode.finish();
 
                         String text = et.getText().toString();
                         int count = Integer.valueOf(tvTaskCountValue.getText().toString());
@@ -207,9 +240,12 @@ public class TasksFragment extends Fragment {
             @Override
             public void onLongClick(TasksListRecyclerViewAdapter.ViewHolder holder, int position) {
 
+
                 idOnTag = (Long) holder.itemView.findViewById(R.id.item_text).getTag();
                 titleList = ListsRealmController.getListById(idOnTag).getName();
-                actionMode = null;
+
+                if (actionMode!=null) actionMode.invalidate();
+
                 actionMode = getActivity().startActionMode(getCallback(LIST_ACTIONMODE));
 
                 /*
@@ -234,6 +270,19 @@ public class TasksFragment extends Fragment {
 
         rvLists.setAdapter(tasksListRecyclerViewAdapter);
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallback());
+        itemTouchHelper.attachToRecyclerView(rvLists);
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -249,6 +298,27 @@ public class TasksFragment extends Fragment {
         smallTasksViewPager = view.findViewById(R.id.view_pager_small_tasks);
         smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager());
         smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
+
+
+        smallTasksViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment currentFragment = smallTaskFragmentPagerAdapter.getItem(position);
+                if (currentFragment instanceof SmallTasksFragment){
+                    ((SmallTasksFragment) currentFragment).finishActionMode();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
     @Override
@@ -420,7 +490,7 @@ public class TasksFragment extends Fragment {
 //        setTasks();
 //    }
 
-    public void finishActionMode(){
+    public static void finishActionMode(){
         if (actionMode!=null) actionMode.finish();
     }
 
@@ -498,6 +568,59 @@ public class TasksFragment extends Fragment {
 //    }
 
 
+    @SuppressWarnings("all")
+    private ItemTouchHelper.Callback createHelperCallback() {
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
+                0) {
+
+            int dragFrom = -1;
+            int dragTo = -1;
+
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+
+
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+
+                if (dragFrom == -1) {
+                    dragFrom = fromPosition;
+                }
+                dragTo = toPosition;
+
+                tasksListRecyclerViewAdapter.notifyItemMoved(fromPosition, toPosition);
+                return true;
+            }
+
+//            private void reallyMoved(int from, int to) {arrayList.add(to, arrayList.remove(from));}
+
+            @Override
+            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+
+                if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+//                    reallyMoved(dragFrom, dragTo);
+//                    if (!arrayList.equals(arrayListCopy)){
+//                        arrayListCopy=arrayList.clone();
+//                    }
+                }
+                dragFrom = dragTo = -1;
+            }
+
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            }
+        };
+
+
+
+        return simpleItemTouchCallback;
+    }
 
 }
 

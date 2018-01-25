@@ -30,7 +30,7 @@ public class SmallTasksFragment extends Fragment {
     RecyclerView rvItems;
     LinearLayoutManager llm;
     TasksRecyclerViewAdapter adapter;
-    ActionMode actionMode;
+    static ActionMode actionMode;
 
     TasksRecyclerViewAdapter.OnItemLongClicked onItemLongClicked;
     TasksRecyclerViewAdapter.OnItemClicked onItemClicked;
@@ -75,8 +75,9 @@ public class SmallTasksFragment extends Fragment {
 
         if (ListsRealmController.getListById(tasksListId)==null) tasksListId=0;
         rvItems = view.findViewById(R.id.rv_items);
-        setTasks();
         setTasksListClickListeners();
+        setTasks();
+
 
     }
 
@@ -168,7 +169,7 @@ public class SmallTasksFragment extends Fragment {
     }
 
 
-    public void finishActionMode(){
+    public static void finishActionMode(){
         if (actionMode!=null) actionMode.finish();
     }
 
