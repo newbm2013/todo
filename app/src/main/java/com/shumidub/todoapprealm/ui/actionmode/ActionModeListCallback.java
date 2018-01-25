@@ -26,7 +26,6 @@ public class ActionModeListCallback {
     TasksFragment tasksFragment;
 
 
-
     public ActionMode.Callback getListActionModeCallback(MainActivity activity, TasksFragment tasksFragment,  long idOnTag) {
 
         this.tasksFragment = tasksFragment;

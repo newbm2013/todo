@@ -38,9 +38,8 @@ public class TasksListRecyclerViewAdapter
 
 
     long then;
-    int longClickDuration = 2000;
-    int middleClickDuration = 1000;
-    boolean touchAlreadyExecuted = false;
+    int longClickDuration = 1300;
+    int middleClickDuration = 400;
 
     public interface OnHolderTextViewOnClickListener {
        void onClick(ViewHolder holder, int position);
@@ -103,8 +102,6 @@ public class TasksListRecyclerViewAdapter
                                     if ((System.currentTimeMillis() - then) > longClickDuration) {
                                         onHolderTextViewOnLongClickListener.onLongClick(holder, position);
                                     }
-                                    touchAlreadyExecuted = false;
-                                    Log.d("DTAG", "onTouch new thread : " + touchAlreadyExecuted);
                                 });
                             }
                         };
@@ -117,21 +114,14 @@ public class TasksListRecyclerViewAdapter
                         }
                     }
 
-
-
                     if (event.getAction() == MotionEvent.ACTION_UP) {
                         if ((System.currentTimeMillis() - then) > middleClickDuration) {
-
-                            touchAlreadyExecuted = true;
-                            Log.d("DTAG", "onTouch middle: " + touchAlreadyExecuted);
                             return false;
                         }else {
                             if (thread.getState()== Thread.State.RUNNABLE){
                                 thread.interrupt();
                             }
                             onHolderTextViewOnClickListener.onClick(holder, position);
-                            touchAlreadyExecuted = true;
-                            Log.d("DTAG", "onTouch: click" + touchAlreadyExecuted);
                             return false;
                         }
                     }

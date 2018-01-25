@@ -275,17 +275,6 @@ public class TasksFragment extends Fragment {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 //        expandableListView.setAdapter(new CategoriesAndListsAdapter(getContext()).getAdapter());
 //        expandableListView.setOnItemLongClickListener(getLongListener());
 //        expandableListView.setOnChildClickListener(getChildClickListener());
