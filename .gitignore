@@ -9,5 +9,6 @@
 .externalNativeBuild
 /.idea/
 /gradle/wrapper
+/.idea
 
 
