@@ -1,6 +1,6 @@
-package com.shumidub.todoapprealm.model;
+package com.shumidub.todoapprealm.realmmodel;
 
-import com.shumidub.todoapprealm.unused.RealmInteger;
+
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -9,12 +9,12 @@ import io.realm.RealmObject;
  * Created by Артем on 19.12.2017.
  */
 
-public class TaskModel extends RealmObject {
+public class TaskObject extends RealmObject {
 
     private long id;
     private String text;
     private boolean done;
-    private long taskListId;
+    private long taskFolderId;
     private int lastDoneDate;
     private boolean isCycling;
     private int countValue;
@@ -83,9 +83,8 @@ public class TaskModel extends RealmObject {
         this.done = done;
     }
 
-    public long getTaskListId() {return taskListId; }
-    public void setTaskListId(long taskListId) {this.taskListId = taskListId;}
-
+    public long getTaskFolderId() {return taskFolderId; }
+    public void setTaskFolderId(long taskFolderId) {this.taskFolderId = taskFolderId;}
 
 
     public int getLastDoneDate() { return lastDoneDate;}

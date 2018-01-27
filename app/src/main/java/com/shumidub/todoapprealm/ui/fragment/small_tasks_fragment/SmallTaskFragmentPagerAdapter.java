@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.shumidub.todoapprealm.model.ListModel;
-import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
+import com.shumidub.todoapprealm.realmmodel.FolderObject;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ import io.realm.RealmResults;
 
 public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    RealmResults<ListModel> listModels;
+    RealmResults<FolderObject> listModels;
     ArrayList <Long> listModelId = new ArrayList<>();
 
 
@@ -41,9 +41,9 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
 
 
     private void setTaskList(){
-        listModels = ListsRealmController.getLists();
-        for (ListModel listModel: listModels){
-            listModelId.add(listModel.getId());
+        listModels = FolderRealmController.getFolders();
+        for (FolderObject folderObject : listModels){
+            listModelId.add(folderObject.getId());
         }
     }
 

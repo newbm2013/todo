@@ -12,7 +12,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
 import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
 
@@ -47,7 +47,7 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String text = ((EditText) getDialog().findViewById(R.id.name)).getText().toString();
                         if (!text.isEmpty()){
-                            long idList = ListsRealmController.addTasksLists(text);
+                            long idList = FolderRealmController.addFolder(text);
                             Toast.makeText(getContext(),"Done", Toast.LENGTH_SHORT).show();
 
                             activity = (MainActivity) getActivity();

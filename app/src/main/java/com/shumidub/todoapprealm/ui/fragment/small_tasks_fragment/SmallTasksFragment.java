@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.TaskModel;
-import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.TaskActionModeCallback;
@@ -35,8 +35,8 @@ public class SmallTasksFragment extends Fragment {
     TasksRecyclerViewAdapter.OnItemLongClicked onItemLongClicked;
     TasksRecyclerViewAdapter.OnItemClicked onItemClicked;
 
-    public List<TaskModel> tasks;
-    public List<TaskModel> doneTasks;
+    public List<TaskObject> tasks;
+    public List<TaskObject> doneTasks;
     public boolean isAllTaskShowing;
 
     //TASKS
@@ -73,7 +73,7 @@ public class SmallTasksFragment extends Fragment {
 
         tasksListId = getArguments().getLong(TASKSK_LIST_ID_KEY, 0);
 
-        if (ListsRealmController.getListById(tasksListId)==null) tasksListId=0;
+        if (FolderRealmController.getFolder(tasksListId)==null) tasksListId=0;
         rvItems = view.findViewById(R.id.rv_items);
         setTasksListClickListeners();
         setTasks();
@@ -86,7 +86,7 @@ public class SmallTasksFragment extends Fragment {
             @Override
             public void onLongClick(View view, int position) {
                 long idTask = (Long) view.getTag();
-                TaskModel task = TasksRealmController.getTask(idTask);
+                TaskObject task = TasksRealmController.getTask(idTask);
 
                 ActionMode.Callback callback = new TaskActionModeCallback().getCallback(getActivity(), SmallTasksFragment.this, task);
                 actionMode = getActivity().startActionMode(callback);
@@ -98,7 +98,7 @@ public class SmallTasksFragment extends Fragment {
             public void onClick(View view, int position) {
                 if (view!=null){
                     long idTask = (Long) view.getTag();
-                    TaskModel task = TasksRealmController.getTask(idTask);
+                    TaskObject task = TasksRealmController.getTask(idTask);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setMessage(task.getText()).create().show();
                 }
@@ -116,7 +116,7 @@ public class SmallTasksFragment extends Fragment {
 
         if (tasksListId !=0){
             ((MainActivity) getActivity()).getSupportActionBar()
-                    .setTitle((CharSequence) ListsRealmController.getListById(tasksListId).getName());
+                    .setTitle((CharSequence) FolderRealmController.getFolder(tasksListId).getName());
         }
         llm = new LinearLayoutManager(getContext());
         rvItems.setLayoutManager(llm);

@@ -11,9 +11,9 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.ListModel;
-import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
-import com.shumidub.todoapprealm.unused.SharedPrefHelper;
+import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
+import com.shumidub.todoapprealm.realmmodel.FolderObject;
+
 import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
 
@@ -31,7 +31,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
     public static String DELETE_LIST = "Delete ";
     long idList;
     String title;
-    ListModel list;
+    FolderObject list;
     String currentTextList;
     boolean currentIsDefaultList;
     boolean currentIsCyclingList;
@@ -58,7 +58,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        SharedPrefHelper spHelper = new SharedPrefHelper(getActivity());
+
 
         String textButton = "Edit";
 
@@ -68,7 +68,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
             if (title == DELETE_LIST) textButton = "DELETE";
             if (title == EDIT_LIST) textButton = "Done";
 
-            list = ListsRealmController.getListById(idList);
+            list = FolderRealmController.getFolder(idList);
 
             currentTextList = list.getName();
 
@@ -102,7 +102,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
 
 
                             String text = etName.getText().toString();
-                            ListsRealmController.editList(list, text);
+                            FolderRealmController.editFolder(list, text);
 
 
                             tasksFragment.finishActionMode();
@@ -113,7 +113,7 @@ public class DialogEditDelList extends android.support.v4.app.DialogFragment{
 
                         else if (title == DELETE_LIST){
                             if (list.getId() != defaultListId ) {
-                                ListsRealmController.deleteLists(list);
+                                FolderRealmController.deleteFolder(list);
                                 Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                                 tasksFragment.finishActionMode();
                                 tasksFragment.notifyListsDataChanged();

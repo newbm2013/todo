@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.ListModel;
+import com.shumidub.todoapprealm.realmmodel.FolderObject;
 
 
 import java.util.concurrent.TimeUnit;
@@ -28,7 +28,7 @@ public class TasksListRecyclerViewAdapter
     private static final int TYPE_FOOTER = 1;
     private static final int TYPE_ITEM = 0;
 
-    RealmResults<ListModel> realmResults;
+    RealmResults<FolderObject> realmResults;
     OnHolderTextViewOnClickListener onHolderTextViewOnClickListener;
     OnHolderTextViewOnLongClickListener onHolderTextViewOnLongClickListener;
     OnFooterTextViewOnClickListener onFooterTextViewOnClickListener;
@@ -38,7 +38,7 @@ public class TasksListRecyclerViewAdapter
 
 
     long then;
-    int longClickDuration = 1300;
+    int longClickDuration = 1100;
     int middleClickDuration = 400;
 
     public interface OnHolderTextViewOnClickListener {
@@ -53,7 +53,7 @@ public class TasksListRecyclerViewAdapter
     }
 
 
-    public TasksListRecyclerViewAdapter(RealmResults<ListModel> realmResults, Activity activity){
+    public TasksListRecyclerViewAdapter(RealmResults<FolderObject> realmResults, Activity activity){
         this.realmResults = realmResults;
 
         Thread thread =new Thread(runnable);
@@ -75,7 +75,7 @@ public class TasksListRecyclerViewAdapter
         } else return null;
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"All", "ClickableViewAccessibility"})
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d("DTAG", "onBindViewHolder: position" + position + "array size = " + realmResults.size());
@@ -86,6 +86,10 @@ public class TasksListRecyclerViewAdapter
             ((ItemViewHolder) holder).textView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+
+
+
+
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         then = System.currentTimeMillis();
 

@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.model;
+package com.shumidub.todoapprealm.realmmodel;
 
 import io.realm.RealmObject;
 
@@ -6,7 +6,7 @@ import io.realm.RealmObject;
  * Created by Артем on 24.12.2017.
  */
 
-public class ListModel extends RealmObject {
+public class FolderObject extends RealmObject {
 
     private String name;
     private long id;

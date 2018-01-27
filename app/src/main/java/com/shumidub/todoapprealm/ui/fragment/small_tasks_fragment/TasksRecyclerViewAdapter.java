@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.TaskModel;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 
 import java.util.List;
@@ -23,8 +23,8 @@ import java.util.List;
 
 public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAdapter.ViewHolder> {
 
-    private List<TaskModel> tasks;
-    private List<TaskModel> doneTasks;
+    private List<TaskObject> tasks;
+    private List<TaskObject> doneTasks;
     private boolean isNotEmpty;
 
 
@@ -53,7 +53,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     }
 
 
-    public TasksRecyclerViewAdapter(List<TaskModel> tasks, List<TaskModel> doneTasks, SmallTasksFragment smallTasksFragment){
+    public TasksRecyclerViewAdapter(List<TaskObject> tasks, List<TaskObject> doneTasks, SmallTasksFragment smallTasksFragment){
         this.tasks = tasks;
         this.doneTasks = doneTasks;
         this.smallTasksFragment = smallTasksFragment;
@@ -102,7 +102,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
             if (holder instanceof NormalViewHolder) {
 
-                TaskModel item = tasks.get(position);
+                TaskObject item = tasks.get(position);
 
                 long taskId = item.getId();
                 String text = item.getText();

@@ -3,7 +3,7 @@ package com.shumidub.todoapprealm;
 import android.app.Application;
 import android.util.Log;
 
-import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 
 import io.realm.Realm;
@@ -24,11 +24,12 @@ public class App extends Application {
         super.onCreate();
         Realm.init(this);
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder()
+                .schemaVersion(1)
                 .deleteRealmIfMigrationNeeded()
                 .build());
         initRealm();
-        if(BuildConfig.DEBUG && ListsRealmController.listsIsEmpty()) addContent();
-        Log.d("DTAG", "addContent: " + ListsRealmController.getLists().size());
+        if(BuildConfig.DEBUG && FolderRealmController.listOfFolderIsEmpty()) addContent();
+        Log.d("DTAG", "addContent: " + FolderRealmController.getFolders().size());
     }
 
     public static void initRealm() {
@@ -42,7 +43,7 @@ public class App extends Application {
     private void addContent() {
         initRealm();
         for (int i2 =0; i2<40; i2++) {
-            long idList = ListsRealmController.addTasksLists("List "+i2);
+            long idList = FolderRealmController.addFolder("List "+i2);
             if (i2%3!=0){
                 int i4 = 0;
                 for (int i3=0; i3<30; i3++){

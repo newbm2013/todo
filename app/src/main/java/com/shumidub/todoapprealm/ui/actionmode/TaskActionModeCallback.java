@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.TaskModel;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
 
@@ -37,7 +37,7 @@ public class TaskActionModeCallback  {
     int defaultColor;
     int accentColor;
 
-    public ActionMode.Callback getCallback(Activity activity, SmallTasksFragment smallTasksFragment, TaskModel task){
+    public ActionMode.Callback getCallback(Activity activity, SmallTasksFragment smallTasksFragment, TaskObject task){
 
         callback = new ActionMode.Callback() {
             @Override
@@ -192,7 +192,7 @@ public class TaskActionModeCallback  {
     }
 
     public void onEditTaskEditClick(Context context, SmallTasksFragment smallTasksFragment, ActionMode actionMode,
-        TaskModel task, String taskText, int count, int maxAccumulation, boolean taskCycling, int priority) {
+                                    TaskObject task, String taskText, int count, int maxAccumulation, boolean taskCycling, int priority) {
         TasksRealmController.editTask(task, taskText, count, maxAccumulation, taskCycling, priority);
         dialog.dismiss();
         actionMode.finish();

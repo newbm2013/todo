@@ -1,15 +1,10 @@
 package com.shumidub.todoapprealm.realmcontrollers;
 
 import android.util.Log;
-
 import com.shumidub.todoapprealm.App;
-import com.shumidub.todoapprealm.model.ListModel;
-import com.shumidub.todoapprealm.model.TaskModel;
-
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
 import io.reactivex.annotations.NonNull;
 import io.realm.Realm;
 import io.realm.Sort;
@@ -20,66 +15,58 @@ import io.realm.Sort;
 
 public class TasksRealmController {
 
-//   public static List<TaskModel> getItems(){
-//        App.initRealm();
-//        return App.realm.where(TaskModel.class).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
-//    }
-
-//    public static List<TaskModel> getItems(long listId){
-//        App.initRealm();
-//        return App.realm.where(TaskModel.class).equalTo("taskListId", listId).findAll().sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
-//    }
-
-    public static TaskModel getTask(long idTask){
+    /** get task by id*/
+    public static TaskObject getTask(long idTask){
         App.initRealm();
-        return App.realm.where(TaskModel.class).equalTo("id", idTask).findFirst();
+        return App.realm.where(TaskObject.class).equalTo("id", idTask).findFirst();
     }
 
-    public static List<TaskModel> getTasks(){
+    /** get all tasks*/
+    public static List<TaskObject> getTasks(){
         App.initRealm();
-        return App.realm.where(TaskModel.class)
-                .findAll()
+        return App.realm.where(TaskObject.class).findAll()
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
-
-    public static List<TaskModel> getNotDoneTasks(){
+    /** get not done tasks*/
+    public static List<TaskObject> getNotDoneTasks(){
         App.initRealm();
-        return App.realm.where(TaskModel.class)
+        return App.realm.where(TaskObject.class)
                 .equalTo("done", false)
                 .findAll()
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
-
-    public static List<TaskModel> getDoneTasks(){
+    /** get done tasks*/
+    public static List<TaskObject> getDoneTasks(){
         App.initRealm();
-        return App.realm.where(TaskModel.class)
+        return App.realm.where(TaskObject.class)
                 .equalTo("done", true)
                 .findAll()
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
-    //done and not done tasks but where countAccumulation more than 0
-    public static List<TaskModel> getDoneAndPartiallyDoneTasks(){
+    /** done and not done tasks but where countAccumulation more than 0 */
+    public static List<TaskObject> getDoneAndPartiallyDoneTasks(){
         App.initRealm();
-        return App.realm.where(TaskModel.class)
+        return App.realm.where(TaskObject.class)
                 .notEqualTo("countAccumulation", 0)
                 .findAll()
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
-    public static List<TaskModel> getTasks(long listId){
+    /** get tasks by folder id*/
+    public static List<TaskObject> getTasks(long folderId){
         App.initRealm();
-        return App.realm.where(TaskModel.class)
-                .equalTo("taskListId", listId)
+        return App.realm.where(TaskObject.class)
+                .equalTo("taskListId", folderId)
                 .findAll()
                 .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
     }
 
-    public static List<TaskModel> getNotDoneTasks(long listId){
+    public static List<TaskObject> getNotDoneTasks(long listId){
         App.initRealm();
-        return App.realm.where(TaskModel.class)
+        return App.realm.where(TaskObject.class)
                 .equalTo("taskListId", listId)
                 .equalTo("done", false)
                 .findAll()
@@ -87,9 +74,9 @@ public class TasksRealmController {
     }
 
 
-    public static List<TaskModel> getDoneTasks(long listId){
+    public static List<TaskObject> getDoneTasks(long listId){
         App.initRealm();
-        return App.realm.where(TaskModel.class)
+        return App.realm.where(TaskObject.class)
                 .equalTo("taskListId", listId)
                 .equalTo("done", true)
                 .findAll()
@@ -97,9 +84,9 @@ public class TasksRealmController {
     }
 
     //done and not done tasks but where countAccumulation more than 0
-    public static List<TaskModel> getDoneAndPartiallyDoneTasks(long listId){
+    public static List<TaskObject> getDoneAndPartiallyDoneTasks(long listId){
         App.initRealm();
-        return App.realm.where(TaskModel.class)
+        return App.realm.where(TaskObject.class)
                 .equalTo("taskListId", listId)
                 .notEqualTo("countAccumulation", 0)
                 .findAll()
@@ -114,8 +101,8 @@ public class TasksRealmController {
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                TaskModel task = realm.createObject(TaskModel.class);
-                long id = getIdForNextValue(TaskModel.class);
+                TaskObject task = realm.createObject(TaskObject.class);
+                long id = getIdForNextValue(TaskObject.class);
                 task.setId(id);
 //              item.setText(text + id);
                 task.setText(text);
@@ -132,7 +119,7 @@ public class TasksRealmController {
     }
 
 
-    public static  void editTask(TaskModel task, String text, @NonNull int count, @NonNull int maxAccumulation, @NonNull boolean cycling, @NonNull int priority ){
+    public static  void editTask(TaskObject task, String text, @NonNull int count, @NonNull int maxAccumulation, @NonNull boolean cycling, @NonNull int priority ){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -148,7 +135,7 @@ public class TasksRealmController {
 
 
 
-    public static void setTaskDoneOrParticullaryDone(TaskModel task, boolean done){
+    public static void setTaskDoneOrParticullaryDone(TaskObject task, boolean done){
         App.initRealm();
         App.realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -187,18 +174,18 @@ public class TasksRealmController {
 //
 //    public static void deleteTask(long taskId){
 //        App.initRealm();
-//        TaskModel task = App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst();
+//        TaskObject task = App.realm.where(TaskObject.class).equalTo("id", taskId).findFirst();
 //        String taskText = task.getText();
 //
 //        task.deleteFromRealm();
-//        if (App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst() == null){
+//        if (App.realm.where(TaskObject.class).equalTo("id", taskId).findFirst() == null){
 //            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " DELETED" );
 //        }else{
 //            Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " NOT DELETED !!!" );
 //        }
 //    }
 
-    public static void deleteTask(TaskModel task){
+    public static void deleteTask(TaskObject task){
         App.initRealm();
         long taskId = task.getId();
         String taskText = task.getText();
@@ -218,7 +205,7 @@ public class TasksRealmController {
         }
 
 
-        if (App.realm.where(TaskModel.class).equalTo("id", taskId).findFirst() == null){
+        if (App.realm.where(TaskObject.class).equalTo("id", taskId).findFirst() == null){
             Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " DELETED" );
         }else{
             Log.d("DEBUG_TAG", "TASK: " + taskText + " id:" + taskId + " NOT DELETED !!!" );

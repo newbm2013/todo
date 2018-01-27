@@ -10,13 +10,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,11 +24,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.model.ListModel;
+import com.shumidub.todoapprealm.realmmodel.FolderObject;
+import com.shumidub.todoapprealm.realmmodel.RealmInteger;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
-import com.shumidub.todoapprealm.unused.RealmInteger;
-import com.shumidub.todoapprealm.model.TaskModel;
-import com.shumidub.todoapprealm.realmcontrollers.ListsRealmController;
+
+import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.ActionModeListCallback;
@@ -38,15 +37,13 @@ import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTaskFragm
 import com.shumidub.todoapprealm.ui.dialog.DialogAddList;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 
 import io.realm.RealmResults;
 
-import static com.shumidub.todoapprealm.realmcontrollers.ListsRealmController.listsIsEmpty;
+import static com.shumidub.todoapprealm.realmcontrollers.FolderRealmController.listOfFolderIsEmpty;
 
 /**
  * Created by Артем on 19.12.2017.
@@ -92,7 +89,7 @@ public class TasksFragment extends Fragment {
     ActionMode.Callback listCallback;
 
     //FOLDERS (LISTS)
-    RealmResults<ListModel> lists;
+    RealmResults<FolderObject> lists;
 
 
     public static String titleList;
@@ -182,7 +179,7 @@ public class TasksFragment extends Fragment {
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) setTitle("Tasks");
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED){
-//                    setTitle(ListsRealmController.getListById(tasksListId).getName());
+//                    setTitle(FolderRealmController.getFolder(tasksListId).getName());
                     if (actionMode!=null) actionMode.finish();
                 }
             }
@@ -191,7 +188,7 @@ public class TasksFragment extends Fragment {
         //FOLDER
         findFolderViews(view);
         rvLists.setLayoutManager(new LinearLayoutManager(getContext()));
-        lists = ListsRealmController.getLists();
+        lists = FolderRealmController.getFolders();
         tasksListRecyclerViewAdapter = new TasksListRecyclerViewAdapter(lists, getActivity());
 
 
@@ -229,7 +226,7 @@ public class TasksFragment extends Fragment {
 
                             smallTasksViewPager.setCurrentItem(position);
 
-                            setTitle(ListsRealmController.getListById(tasksListId).getName());
+                            setTitle(FolderRealmController.getFolder(tasksListId).getName());
                             slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                         }
                     }
@@ -242,7 +239,7 @@ public class TasksFragment extends Fragment {
 
 
                 idOnTag = (Long) holder.itemView.findViewById(R.id.item_text).getTag();
-                titleList = ListsRealmController.getListById(idOnTag).getName();
+                titleList = FolderRealmController.getFolder(idOnTag).getName();
 
                 if (actionMode!=null) actionMode.invalidate();
 
@@ -347,7 +344,7 @@ public class TasksFragment extends Fragment {
     }
 
     private void setEmptyStateIfListsIsEmpty(View view){
-        if (listsIsEmpty()){
+        if (listOfFolderIsEmpty()){
             (view.findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
         } else (view.findViewById(R.id.tv_empty)).setVisibility(View.INVISIBLE);
     }
@@ -370,7 +367,7 @@ public class TasksFragment extends Fragment {
 //                    Log.d("DEBUG_TAG", "onItemLongClick: parent  index out");
 //                }else if (view.getId() == R.id.child_text1) {
 //                    try {
-//                        titleList = ListsRealmController.getListById(idOnTag).getName();
+//                        titleList = FolderRealmController.getFolder(idOnTag).getName();
 //                        actionMode = null;
 //                        subtitle = "List";
 //                        actionMode = getActivity().startActionMode(getCallback(LIST_ACTIONMODE));
@@ -413,7 +410,7 @@ public class TasksFragment extends Fragment {
 //                        //todo set right title
 ////                        tasksDataChanged();
 //                        slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-//                        setTitle(ListsRealmController.getListById(tasksListId).getName());
+//                        setTitle(FolderRealmController.getFolder(tasksListId).getName());
 //                    }
 //                    return false;
 //                }
@@ -467,7 +464,7 @@ public class TasksFragment extends Fragment {
 
     public void notifyListsDataChanged(){
 
-//      lists = ListsRealmController.getLists();
+//      lists = FolderRealmController.getFolders();
 //      tasksListRecyclerViewAdapter.notifyDataSetChanged();
 
         tasksListRecyclerViewAdapter.notifyDataSetChanged();
@@ -487,7 +484,7 @@ public class TasksFragment extends Fragment {
     private void  resetTasksCountAccumulationAndSetDayScopeValue(boolean resetTasksCountAccumulation,
                                                                  boolean setDayScopeValue){
         // done and not done tasks but where countAccumulation more than 0
-        List<TaskModel> allDoneAndParticullaryDoneTasks = TasksRealmController.getDoneAndPartiallyDoneTasks();
+        List<TaskObject> allDoneAndParticullaryDoneTasks = TasksRealmController.getDoneAndPartiallyDoneTasks();
 
         //TASK
         dayScope = 0;
@@ -496,7 +493,7 @@ public class TasksFragment extends Fragment {
 
 
 
-        for (TaskModel task : allDoneAndParticullaryDoneTasks) {
+        for (TaskObject task : allDoneAndParticullaryDoneTasks) {
 
 
 
@@ -548,7 +545,7 @@ public class TasksFragment extends Fragment {
 //                tasks = TasksRealmController.getNotDoneTasks(tasksListId);
 //                doneTasks = TasksRealmController.getDoneTasks(tasksListId);
 //                ((MainActivity) getActivity()).getSupportActionBar()
-//                        .setTitle((CharSequence) ListsRealmController.getListById(tasksListId).getName());
+//                        .setTitle((CharSequence) FolderRealmController.getFolder(tasksListId).getName());
 //            }
 //            adapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
 //            rvItems.setAdapter(adapter);
@@ -561,7 +558,7 @@ public class TasksFragment extends Fragment {
     private ItemTouchHelper.Callback createHelperCallback() {
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN ,
                 0) {
 
             int dragFrom = -1;

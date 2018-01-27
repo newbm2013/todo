@@ -71,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
 //        * Например, после ухода с экрана, категория со списком могла быть удалена и при возврате на
 //        * экран и тапе на список - была ошибка.
 //        */
-//        if (ListsRealmController.getListById(listId)==null){
+//        if (FolderRealmController.getFolder(listId)==null){
 //
 //            long defaultListId = new SharedPrefHelper(this).getDefaultListId();
-//            if (ListsRealmController.getListById(defaultListId)!=null)  listId = defaultListId;
+//            if (FolderRealmController.getFolder(defaultListId)!=null)  listId = defaultListId;
 //            else listId = 0;
 //            fragmentManager.beginTransaction().replace(R.id.container,
 //                    TasksFragment.newInstance(listId)).commitAllowingStateLoss();
