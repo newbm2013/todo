@@ -15,7 +15,8 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
+import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.TaskActionModeCallback;
 
 import java.util.List;
@@ -27,9 +28,9 @@ import java.util.List;
 public class SmallTasksFragment extends Fragment {
 
     //TASKS VIEW, ADAPTER
-    RecyclerView rvItems;
+    RecyclerView rvTasks;
     LinearLayoutManager llm;
-    TasksRecyclerViewAdapter adapter;
+    TasksRecyclerViewAdapter tasksRecyclerViewAdapter;
     static ActionMode actionMode;
 
     TasksRecyclerViewAdapter.OnItemLongClicked onItemLongClicked;
@@ -40,19 +41,16 @@ public class SmallTasksFragment extends Fragment {
     public boolean isAllTaskShowing;
 
     //TASKS
-    long tasksListId;
-    public static final String TASKSK_LIST_ID_KEY = "TASKSK_LIST_ID_KEY";
-
+    long tasksFolderId;
+    public static final String TASK_FOLDER_ID_KEY = "TASK_FOLDER_ID_KEY";
 
     public static final SmallTasksFragment newInstance(long tasksListId) {
-
         Bundle args = new Bundle();
-        args.putLong(TASKSK_LIST_ID_KEY, tasksListId);
+        args.putLong(TASK_FOLDER_ID_KEY, tasksListId);
         SmallTasksFragment fragment = new SmallTasksFragment();
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Nullable
     @Override
@@ -65,78 +63,61 @@ public class SmallTasksFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
 //        TASK
         isAllTaskShowing = false;
-//        long defaultListId = new SharedPrefHelper(getActivity()).getDefaultListId();
-//        tasksListId = defaultListId;
-
-        tasksListId = getArguments().getLong(TASKSK_LIST_ID_KEY, 0);
-
-        if (FolderRealmController.getFolder(tasksListId)==null) tasksListId=0;
-        rvItems = view.findViewById(R.id.rv_items);
+        tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
+        if (FolderRealmController.getFolder(tasksFolderId)==null) tasksFolderId =0;
+        rvTasks = view.findViewById(R.id.rv_items);
         setTasksListClickListeners();
         setTasks();
-
-
     }
 
     private void setTasksListClickListeners(){
-        onItemLongClicked = new TasksRecyclerViewAdapter.OnItemLongClicked() {
-            @Override
-            public void onLongClick(View view, int position) {
-                long idTask = (Long) view.getTag();
-                TaskObject task = TasksRealmController.getTask(idTask);
-
-                ActionMode.Callback callback = new TaskActionModeCallback().getCallback(getActivity(), SmallTasksFragment.this, task);
-                actionMode = getActivity().startActionMode(callback);
-            }
+        onItemLongClicked = (View view, int position) -> {
+            long idTask = (Long) view.getTag();
+            TaskObject task = TasksRealmController.getTask(idTask);
+            ActionMode.Callback callback = new TaskActionModeCallback().getCallback(getActivity(), SmallTasksFragment.this, task);
+            actionMode = getActivity().startActionMode(callback);
         };
 
-        onItemClicked = new TasksRecyclerViewAdapter.OnItemClicked() {
-            @Override
-            public void onClick(View view, int position) {
-                if (view!=null){
-                    long idTask = (Long) view.getTag();
-                    TaskObject task = TasksRealmController.getTask(idTask);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setMessage(task.getText()).create().show();
-                }
+        onItemClicked = (View view, int position) -> {
+            if (view!=null){
+                long idTask = (Long) view.getTag();
+                TaskObject task = TasksRealmController.getTask(idTask);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage(task.getText()).create().show();
             }
         };
     }
 
-
     public void setTasks(){
-        if (tasksListId == 0) doneTasks = TasksRealmController.getDoneTasks();
-        else doneTasks = TasksRealmController.getDoneTasks(tasksListId);
+        if (tasksFolderId == 0) doneTasks = TasksRealmController.getDoneTasks();
+        else doneTasks = TasksRealmController.getDoneTasks(tasksFolderId);
 
-        if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
-        else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
+        if (tasksFolderId == 0) tasks = TasksRealmController.getNotDoneTasks();
+        else tasks = TasksRealmController.getNotDoneTasks(tasksFolderId);
 
-        if (tasksListId !=0){
+        if (tasksFolderId !=0){
             ((MainActivity) getActivity()).getSupportActionBar()
-                    .setTitle((CharSequence) FolderRealmController.getFolder(tasksListId).getName());
+                    .setTitle((CharSequence) FolderRealmController.getFolder(tasksFolderId).getName());
         }
         llm = new LinearLayoutManager(getContext());
-        rvItems.setLayoutManager(llm);
-        adapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
-        rvItems.setAdapter(adapter);
+        rvTasks.setLayoutManager(llm);
+        tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+        rvTasks.setAdapter(tasksRecyclerViewAdapter);
 
-        adapter.setOnLongClicked(onItemLongClicked);
-        adapter.setOnClicked(onItemClicked);
+        tasksRecyclerViewAdapter.setOnLongClicked(onItemLongClicked);
+        tasksRecyclerViewAdapter.setOnClicked(onItemClicked);
     }
 
     public void notifyDataChanged(){
-
-        //adapter, reset task and done task
-
-        if (adapter==null){
-            adapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+        //tasksRecyclerViewAdapter, reset task and done task
+        if (tasksRecyclerViewAdapter ==null){
+            tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
         }
         else{
-//            setTasks(); or bellow
-            adapter.notifyDataSetChanged();
+//          setTasks(); or bellow
+            tasksRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
 
@@ -144,37 +125,35 @@ public class SmallTasksFragment extends Fragment {
     public void showAllTasks(){
         if(!isAllTaskShowing) {
             int position = llm.findFirstVisibleItemPosition();
-            if (tasksListId == 0) tasks = TasksRealmController.getTasks();
-            else tasks = TasksRealmController.getTasks(tasksListId);
-            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
-            adapter.setOnLongClicked(onItemLongClicked);
-            adapter.setOnClicked(onItemClicked);
-            rvItems.setAdapter(adapter);
-            rvItems.scrollToPosition(position);
+            if (tasksFolderId == 0) tasks = TasksRealmController.getTasks();
+            else tasks = TasksRealmController.getTasks(tasksFolderId);
+            tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
+            tasksRecyclerViewAdapter.setOnLongClicked(onItemLongClicked);
+            tasksRecyclerViewAdapter.setOnClicked(onItemClicked);
+            rvTasks.setAdapter(tasksRecyclerViewAdapter);
+            rvTasks.scrollToPosition(position);
             isAllTaskShowing = true;
         } else if (isAllTaskShowing){
-            if (tasksListId == 0) tasks = TasksRealmController.getNotDoneTasks();
-            else tasks = TasksRealmController.getNotDoneTasks(tasksListId);
-            adapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
-            adapter.setOnLongClicked(onItemLongClicked);
-            adapter.setOnClicked(onItemClicked);
-            rvItems.setAdapter(adapter);
+            if (tasksFolderId == 0) tasks = TasksRealmController.getNotDoneTasks();
+            else tasks = TasksRealmController.getNotDoneTasks(tasksFolderId);
+            tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
+            tasksRecyclerViewAdapter.setOnLongClicked(onItemLongClicked);
+            tasksRecyclerViewAdapter.setOnClicked(onItemClicked);
+            rvTasks.setAdapter(tasksRecyclerViewAdapter);
             isAllTaskShowing = false;
         }
     }
-
 
     public void tasksDataChanged(){
         setTasks();
     }
 
-
-    public static void finishActionMode(){
-        if (actionMode!=null) actionMode.finish();
+    public void finishActionMode(){
+        ((MainActivity) getActivity()).startSupportActionMode(new EmptyActionModeCallback());
     }
 
+    //todo клики актионмоды таск ресайкл вью адаптер , где лонг клик может использоваться, деваулт лист ид , запуск
 }
 
 
 
-//todo клики актионмоды таск ресайкл вью адаптер , где лонг клик может использоваться, деваулт лист ид , запуск

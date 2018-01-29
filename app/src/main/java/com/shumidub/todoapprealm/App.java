@@ -2,10 +2,8 @@ package com.shumidub.todoapprealm;
 
 import android.app.Application;
 import android.util.Log;
-
 import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -28,7 +26,7 @@ public class App extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build());
         initRealm();
-        if(BuildConfig.DEBUG && FolderRealmController.listOfFolderIsEmpty()) addContent();
+//        if(BuildConfig.DEBUG && FolderRealmController.listOfFolderIsEmpty()) addContent();
         Log.d("DTAG", "addContent: " + FolderRealmController.getFolders().size());
     }
 

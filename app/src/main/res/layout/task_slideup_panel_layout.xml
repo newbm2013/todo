@@ -14,7 +14,7 @@
     sothree:umanoScrollableView="@id/rv_items">
 
     <!--side one-->
-    <include layout="@layout/activity_category"/>
+    <include layout="@layout/folder_task_container"/>
 
 
     <LinearLayout

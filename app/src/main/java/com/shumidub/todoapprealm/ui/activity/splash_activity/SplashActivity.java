@@ -1,11 +1,10 @@
-package com.shumidub.todoapprealm.ui.activity.splashactivity;
+package com.shumidub.todoapprealm.ui.activity.splash_activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
+import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -13,8 +12,6 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

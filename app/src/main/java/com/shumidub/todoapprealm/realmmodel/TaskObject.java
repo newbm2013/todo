@@ -15,6 +15,7 @@ public class TaskObject extends RealmObject {
     private String text;
     private boolean done;
     private long taskFolderId;
+    private int priority;
     private int lastDoneDate;
     private boolean isCycling;
     private int countValue;
@@ -30,8 +31,6 @@ public class TaskObject extends RealmObject {
     public void setCountAccumulation(int countAccumulation) {
         this.countAccumulation = countAccumulation;
     }
-
-
 
     public int getMaxAccumulation() {
         return maxAccumulation;
@@ -56,13 +55,8 @@ public class TaskObject extends RealmObject {
             realmInteger.setMyInteger(lastDateCount);
             dateCountAccumulation.add(realmInteger);
         }
-
         setCountAccumulation(dateCountAccumulation.size());
-
     }
-
-
-    private int priority;
 
     public long getId() {return id;}
     public void setId(long id) {
@@ -85,7 +79,6 @@ public class TaskObject extends RealmObject {
 
     public long getTaskFolderId() {return taskFolderId; }
     public void setTaskFolderId(long taskFolderId) {this.taskFolderId = taskFolderId;}
-
 
     public int getLastDoneDate() { return lastDoneDate;}
     public void setLastDoneDate(int lastDoneDate) {this.lastDoneDate = lastDoneDate;}
@@ -112,6 +105,5 @@ public class TaskObject extends RealmObject {
     public void setPriority(int priority) {
         this.priority = priority;
     }
-
 
 }

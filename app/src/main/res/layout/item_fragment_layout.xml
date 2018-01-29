@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context=".ui.fragment.lists_and_sliding_fragment.TasksFragment">
+    tools:context=".ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment">
 
 
 

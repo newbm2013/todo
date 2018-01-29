@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.dialog;
+package com.shumidub.todoapprealm.ui.folder_dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,13 +8,11 @@ import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.Toast;
-
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
-import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
-import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
+import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
+import com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 
 import io.reactivex.annotations.NonNull;
 
@@ -22,11 +20,9 @@ import io.reactivex.annotations.NonNull;
  * Created by Артем on 24.12.2017.
  */
 
-public class DialogAddList extends android.support.v4.app.DialogFragment {
+public class AddFolderDialog extends android.support.v4.app.DialogFragment {
 
     EditText etName;
-    Switch swIsDefault;
-    Switch swIsCycling;
     MainActivity activity;
 
     @NonNull
@@ -36,48 +32,33 @@ public class DialogAddList extends android.support.v4.app.DialogFragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.add_list_layout, null);
         etName = view.findViewById(R.id.name);
 
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Add new list "
-        )
+        builder.setTitle("Add new folder ")
                 .setView(view)
 //              .setIcon(R.drawable.ic_launcher_cat)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                .setPositiveButton("Add", (dialogInterface, i) -> {
                         String text = ((EditText) getDialog().findViewById(R.id.name)).getText().toString();
                         if (!text.isEmpty()){
-                            long idList = FolderRealmController.addFolder(text);
+                            long idFolder = FolderRealmController.addFolder(text);
                             Toast.makeText(getContext(),"Done", Toast.LENGTH_SHORT).show();
-
                             activity = (MainActivity) getActivity();
                             for (Fragment fragment : activity.getSupportFragmentManager().getFragments()){
-                                if (fragment instanceof TasksFragment){
-                                    ((TasksFragment) fragment).notifyListsDataChanged();
+                                if (fragment instanceof FolderSlidingPanelFragment){
+                                    ((FolderSlidingPanelFragment) fragment).notifyListsDataChanged();
                                 }
                             }
                         }
-                    }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
+                .setNegativeButton("Cancel", (dialog, i) ->  dialog.cancel());
 
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode,
-                                 KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    // do nothing
-                    return true;
-                }
-                return false;
+        dialog.setOnKeyListener((DialogInterface dialogInterface, int keyCode,KeyEvent event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                // do nothing
+                return true;
             }
+            return false;
         });
         return dialog;
     }

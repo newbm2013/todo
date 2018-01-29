@@ -10,5 +10,4 @@
         android:hint="name"
         android:focusedByDefault="true"/>
 
-
 </LinearLayout>

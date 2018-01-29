@@ -1,11 +1,10 @@
-package com.shumidub.todoapprealm.ui.activity.mainactivity;
+package com.shumidub.todoapprealm.ui.activity.main_activity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
 import com.shumidub.todoapprealm.ui.fragment.custom_fragment.CustomFragment;
-import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
+import com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 
 /**
  * Created by user on 12.01.18.
@@ -14,8 +13,6 @@ import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFra
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
     public MainPagerAdapter(FragmentManager fm) {
-
-
         super(fm);
     }
 
@@ -26,16 +23,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
-
         if (position == 1){
-            return new TasksFragment();
+            return new FolderSlidingPanelFragment();
         }
         else {
             return new CustomFragment();
-
         }
     }
-
-
 }

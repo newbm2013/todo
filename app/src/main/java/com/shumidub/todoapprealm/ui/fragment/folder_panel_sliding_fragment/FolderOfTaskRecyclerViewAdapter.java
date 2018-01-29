@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment;
+package com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,8 +22,8 @@ import io.realm.RealmResults;
  * Created by user on 22.01.18.
  */
 
-public class TasksListRecyclerViewAdapter
-        extends RecyclerView.Adapter<TasksListRecyclerViewAdapter.ViewHolder> {
+public class FolderOfTaskRecyclerViewAdapter
+        extends RecyclerView.Adapter<FolderOfTaskRecyclerViewAdapter.ViewHolder> {
 
     private static final int TYPE_FOOTER = 1;
     private static final int TYPE_ITEM = 0;
@@ -35,7 +35,6 @@ public class TasksListRecyclerViewAdapter
 
     Thread thread;
     Runnable runnable;
-
 
     long then;
     int longClickDuration = 1100;
@@ -53,14 +52,8 @@ public class TasksListRecyclerViewAdapter
     }
 
 
-    public TasksListRecyclerViewAdapter(RealmResults<FolderObject> realmResults, Activity activity){
+    public FolderOfTaskRecyclerViewAdapter(RealmResults<FolderObject> realmResults, Activity activity){
         this.realmResults = realmResults;
-
-        Thread thread =new Thread(runnable);
-
-
-
-        //activity as context
     }
 
     @Override
@@ -86,10 +79,6 @@ public class TasksListRecyclerViewAdapter
             ((ItemViewHolder) holder).textView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-
-
-
-
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         then = System.currentTimeMillis();
 
@@ -101,7 +90,6 @@ public class TasksListRecyclerViewAdapter
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-
                                 v.post(() ->  {
                                     if ((System.currentTimeMillis() - then) > longClickDuration) {
                                         onHolderTextViewOnLongClickListener.onLongClick(holder, position);
@@ -132,27 +120,6 @@ public class TasksListRecyclerViewAdapter
                     return true;
                 }
             });
-
-
-
-
-//            ((ItemViewHolder) holder).textView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    onHolderTextViewOnClickListener.onClick(holder, position);
-//                }
-//            });
-//
-//
-//            ((ItemViewHolder) holder).textView.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    onHolderTextViewOnLongClickListener.onLongClick(holder, position);
-//                    return true;
-//                }
-//            });
-
-
 
         } else if(holder.getItemViewType() == TYPE_FOOTER){
             ((FooterViewHolder) holder).footerTextView.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +152,6 @@ public class TasksListRecyclerViewAdapter
     }
 
     public class ItemViewHolder extends ViewHolder {
-
         TextView textView;
 
         public ItemViewHolder(View itemView) {
@@ -195,7 +161,6 @@ public class TasksListRecyclerViewAdapter
     }
 
     public class FooterViewHolder extends ViewHolder {
-
         TextView footerTextView;
 
         public FooterViewHolder(View itemView) {

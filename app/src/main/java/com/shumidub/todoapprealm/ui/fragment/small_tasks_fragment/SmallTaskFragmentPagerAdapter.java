@@ -20,9 +20,6 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
     RealmResults<FolderObject> listModels;
     ArrayList <Long> listModelId = new ArrayList<>();
 
-
-
-
     public SmallTaskFragmentPagerAdapter(FragmentManager fm) {
 
         super(fm);

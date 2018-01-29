@@ -4,7 +4,6 @@ import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.realmmodel.FolderObject;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-
 import static com.shumidub.todoapprealm.App.realm;
 
 /**
@@ -30,22 +29,15 @@ public class FolderRealmController {
 
     /** add folder */
     public static long addFolder(String name){
-        long id = TasksRealmController.getIdForNextValue(FolderObject.class);
+        long id = getIdForNextValue();
         App.initRealm();
-        realm.executeTransaction((transaction) -> {
-                FolderObject folder = realm.createObject(FolderObject.class);
+        App.realm.executeTransaction((transaction) -> {
+                FolderObject folder = App.realm.createObject(FolderObject.class);
                 folder.setId(id);
                 folder.setName(name);
-                realm.insert(folder);
+                App.realm.insert(folder);
         });
         return id;
-    }
-
-    /** edit folder by id */
-    public static long editFolder(long id, String name){
-        App.initRealm();
-        FolderObject folder = getFolder(id);
-        return editFolder(folder, name);
     }
 
     /** edit folder by folderobject */
@@ -55,17 +47,24 @@ public class FolderRealmController {
         return folder.getId();
     }
 
-    /** delete folder by id */
-    public static void deleteFolder(long idList){
+    /** edit folder by id */
+    public static long editFolder(long id, String name){
         App.initRealm();
-        FolderObject list = getFoldersQuery().equalTo("id", idList).findFirst();
-        deleteFolder(list);
+        FolderObject folder = getFolder(id);
+        return editFolder(folder, name);
     }
 
     /** delete folder by folderobject */
     public static void deleteFolder(FolderObject list){
         App.initRealm();
         realm.executeTransaction((transaction)-> list.deleteFromRealm());
+    }
+
+    /** delete folder by id */
+    public static void deleteFolder(long idList){
+        App.initRealm();
+        FolderObject list = getFoldersQuery().equalTo("id", idList).findFirst();
+        deleteFolder(list);
     }
 
     /** folder is valid */
@@ -84,7 +83,7 @@ public class FolderRealmController {
         }
     }
 
-    /** folders is not exist*/
+    /** folders is not exist, haven,t any folder*/
     public static boolean listOfFolderIsEmpty(){
         App.initRealm();
         return (realm.where(FolderObject.class).findAll() == null
@@ -96,5 +95,14 @@ public class FolderRealmController {
         App.initRealm();
         foldersQuery = realm.where(FolderObject.class);
         return foldersQuery;
+    }
+
+    /** get unique id*/
+    static long getIdForNextValue() {
+        long id =  System.currentTimeMillis();
+        while ((App.realm.where(FolderObject.class).equalTo("id", id)).findFirst()!=null){
+            id ++;
+        }
+        return id;
     }
 }

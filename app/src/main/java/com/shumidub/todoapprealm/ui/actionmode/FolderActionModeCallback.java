@@ -7,28 +7,28 @@ import android.view.MenuItem;
 
 import com.shumidub.todoapprealm.R;
 
-import com.shumidub.todoapprealm.ui.dialog.DialogEditDelList;
-import com.shumidub.todoapprealm.ui.activity.mainactivity.MainActivity;
-import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
+import com.shumidub.todoapprealm.ui.folder_dialog.EditDelFolderDialog;
+import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
+import com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 
-import static com.shumidub.todoapprealm.ui.dialog.DialogEditDelList.DELETE_LIST;
-import static com.shumidub.todoapprealm.ui.dialog.DialogEditDelList.EDIT_LIST;
-import static com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment.titleList;
+import static com.shumidub.todoapprealm.ui.folder_dialog.EditDelFolderDialog.DELETE_LIST;
+import static com.shumidub.todoapprealm.ui.folder_dialog.EditDelFolderDialog.EDIT_LIST;
+import static com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment.titleFolder;
 
 
 /**
  * Created by Артем on 03.01.2018.
  */
 
-public class ActionModeListCallback {
+public class FolderActionModeCallback {
 
     ActionMode.Callback mListCallback;
-    TasksFragment tasksFragment;
+    FolderSlidingPanelFragment folderSlidingPanelFragment;
 
 
-    public ActionMode.Callback getListActionModeCallback(MainActivity activity, TasksFragment tasksFragment,  long idOnTag) {
+    public ActionMode.Callback getListActionModeCallback(MainActivity activity, FolderSlidingPanelFragment folderSlidingPanelFragment, long idOnTag) {
 
-        this.tasksFragment = tasksFragment;
+        this.folderSlidingPanelFragment = folderSlidingPanelFragment;
 
         mListCallback = new ActionMode.Callback() {
             @Override
@@ -38,7 +38,7 @@ public class ActionModeListCallback {
                 MenuItem editList = menu.add("edit ");
                 editList.setIcon(R.drawable.ic_edit);
                 editList.setOnMenuItemClickListener((MenuItem a) -> {
-                    DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, EDIT_LIST, tasksFragment);
+                    EditDelFolderDialog dialog = EditDelFolderDialog.newInstance(idOnTag, EDIT_LIST, folderSlidingPanelFragment);
                     dialog.show(activity.getSupportFragmentManager(), "editlist");
                     return true;
                 });
@@ -47,7 +47,7 @@ public class ActionModeListCallback {
                 MenuItem deleteList = menu.add("delete ");
                 deleteList.setIcon(R.drawable.ic_del);
                 deleteList.setOnMenuItemClickListener((MenuItem a) -> {
-                    DialogEditDelList dialog = DialogEditDelList.newInstance(idOnTag, DELETE_LIST, tasksFragment);
+                    EditDelFolderDialog dialog = EditDelFolderDialog.newInstance(idOnTag, DELETE_LIST, folderSlidingPanelFragment);
                     dialog.show(activity.getSupportFragmentManager(), "deletelist");
                     return true;
                 });
@@ -56,7 +56,7 @@ public class ActionModeListCallback {
 
             @Override
             public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                actionMode.setTitle(titleList);
+                actionMode.setTitle(titleFolder);
 
                 return false;
             }

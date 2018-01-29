@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.activity.mainactivity;
+package com.shumidub.todoapprealm.ui.activity.main_activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,15 +7,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.ui.actionmode.EmptyActionMode;
-import com.shumidub.todoapprealm.ui.fragment.lists_and_sliding_fragment.TasksFragment;
-import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
+import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     long time = 0;
     ActionBar actionBar;
     MainPagerAdapter mainPagerAdapter;
+    ActionMode actionMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +36,16 @@ public class MainActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
                 if (position==1){
-                    actionBar.setTitle(TasksFragment.getTitle());
+                    actionBar.setTitle(FolderSlidingPanelFragment.getTitle());
                 }else {
                     actionBar.setTitle("Notes/Reports");
                 }
-                ActionMode actionMode = startSupportActionMode(new EmptyActionMode());
+                actionMode = startSupportActionMode(new EmptyActionModeCallback());
             }
 
             @Override
@@ -77,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
 //            if (FolderRealmController.getFolder(defaultListId)!=null)  listId = defaultListId;
 //            else listId = 0;
 //            fragmentManager.beginTransaction().replace(R.id.container,
-//                    TasksFragment.newInstance(listId)).commitAllowingStateLoss();
+//                    FolderSlidingPanelFragment.newInstance(listId)).commitAllowingStateLoss();
 ////          try fix run method before savedInstance outStatte
-////          TasksFragment.newInstance(listId)).commit();
+////          FolderSlidingPanelFragment.newInstance(listId)).commit();
 //        }
         super.onRestart();
     }
@@ -89,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
         int currentFragmentItem = viewPager.getCurrentItem();
         if (currentFragmentItem == 1){
             for (Fragment fragment: getSupportFragmentManager ().getFragments()){
-                if (fragment instanceof TasksFragment){
-                    SlidingUpPanelLayout slidingUpPanelLayout = ((TasksFragment) fragment).slidingUpPanelLayout;
+                if (fragment instanceof FolderSlidingPanelFragment){
+                    SlidingUpPanelLayout slidingUpPanelLayout = ((FolderSlidingPanelFragment) fragment).slidingUpPanelLayout;
                     if ( slidingUpPanelLayout.getPanelState()== SlidingUpPanelLayout.PanelState.EXPANDED){
                         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                         return;

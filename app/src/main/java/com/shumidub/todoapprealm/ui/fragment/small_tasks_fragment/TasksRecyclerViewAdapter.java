@@ -15,8 +15,6 @@ import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 
 import java.util.List;
 
-
-
 /**
  * Created by Артем on 19.12.2017.
  */
@@ -26,13 +24,8 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     private List<TaskObject> tasks;
     private List<TaskObject> doneTasks;
     private boolean isNotEmpty;
-
-
     private static final int FOOTER_VIEW = 123;
-
     SmallTasksFragment smallTasksFragment;
-
-
     OnItemLongClicked onItemLongClicked;
     OnItemClicked onItemClicked;
 
@@ -65,9 +58,6 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         if ((tasks != null && !tasks.isEmpty() && tasks.size() > 0)
                 || (doneTasks!=null && !doneTasks.isEmpty() && doneTasks.size()>0)) {
 
-
-
-
             isNotEmpty = true;
 
             if(viewType!=FOOTER_VIEW) {
@@ -78,13 +68,11 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 return new FooterViewHolder(view);
             }
 
-
         }else{
             isNotEmpty = false;
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_empty_state, parent, false);
             return new ViewHolder(view);
         }
-
     }
 
     private void setTasksTextColor(ViewHolder holder, boolean isDone){
@@ -102,63 +90,48 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
             if (holder instanceof NormalViewHolder) {
 
-                TaskObject item = tasks.get(position);
+                TaskObject taskObject = tasks.get(position);
 
-                long taskId = item.getId();
-                String text = item.getText();
-
+                long taskId = taskObject.getId();
+                String text = taskObject.getText();
 
                 holder.textView.setText(text);
                 holder.textView.setTag(taskId);
+                holder.tvCount.setText("" + taskObject.getCountValue());
+                holder.tvAccumulation.setText(taskObject.getCountAccumulation() + "/" + taskObject.getMaxAccumulation());
 
-                holder.tvCount.setText("" + item.getCountValue());
-
-
-
-                holder.tvAccumulation.setText(item.getCountAccumulation() + "/" + item.getMaxAccumulation());
-
-
-                int priority = item.getPriority();
+                int priority = taskObject.getPriority();
                 String textPriority = "";
 
                 while (priority>0){
                     textPriority += "!";
                     priority-=1;
                 }
+
                 holder.tvPriority.setText(textPriority);
 
-                int color = item.isCycling() ? Color.RED : Color.WHITE;
+                int color = taskObject.isCycling() ? Color.RED : Color.WHITE;
                 holder.tvCycling.setTextColor(color);
 
-
-                holder.checkBox.setChecked(item.isDone());
-                setTasksTextColor(holder, item.isDone());
+                holder.checkBox.setChecked(taskObject.isDone());
+                setTasksTextColor(holder, taskObject.isDone());
 
                 holder.checkBox.setOnClickListener(
                         (cb) -> {
-                            TasksRealmController.setTaskDoneOrParticullaryDone(item, holder.checkBox.isChecked());
+                            TasksRealmController.setTaskDoneOrParticullaryDone(taskObject, holder.checkBox.isChecked());
                             notifyDataSetChanged();
                             smallTasksFragment.getActivity().invalidateOptionsMenu();
-                            setTasksTextColor(holder, item.isDone());
+                            setTasksTextColor(holder, taskObject.isDone());
                         });
 
-                holder.textView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        Log.d("DTAG", "onLongClick: " + view.toString() + " " + position);
-
-                        onItemLongClicked.onLongClick(view, position);
-
-                        return true;
-                    }
+                holder.textView.setOnLongClickListener((View view) -> {
+                    Log.d("DTAG", "onLongClick: " + view.toString() + " " + position);
+                    onItemLongClicked.onLongClick(view, position);
+                    return true;
                 });
 
-
-                holder.textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (onItemClicked!=null) onItemClicked.onClick(view, position);
-                    }
+                holder.textView.setOnClickListener((View view) -> {
+                    if (onItemClicked!=null) onItemClicked.onClick(view, position);
                 });
             }
             else if (holder instanceof FooterViewHolder){
@@ -168,6 +141,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             }
         }
     }
+
     @Override
     public int getItemViewType(int position) {
         if (position == tasks.size() && tasks.size() > 0) {
@@ -218,12 +192,9 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         }
     }
 
-
     public class NormalViewHolder extends ViewHolder {
         public NormalViewHolder(View itemView) {
             super(itemView);
-
         }
     }
-
 }
