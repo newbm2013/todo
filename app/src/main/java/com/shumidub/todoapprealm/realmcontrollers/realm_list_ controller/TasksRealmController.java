@@ -55,7 +55,7 @@ public class TasksRealmController {
     /** get tasks by folder id*/
     public static RealmList<TaskObject> getTasks(long folderId){
         App.initRealm();
-        //todo !!! new need test
+        //todo !!! new need test + need think and add about sort
 
 //        return App.realm.where(TaskObject.class)
 //                .equalTo("taskFolderId", folderId)
