@@ -17,7 +17,6 @@ import com.shumidub.todoapprealm.realmmodel.FolderObject;
 import java.util.concurrent.TimeUnit;
 
 import io.realm.RealmList;
-import io.realm.RealmResults;
 
 /**
  * Created by user on 22.01.18.
@@ -61,10 +60,10 @@ public class FolderOfTaskRecyclerViewAdapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         if (viewType == TYPE_FOOTER){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_add_new_list, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.folder_card_view_add_new_folder, parent, false);
             return new FooterViewHolder(view);
         }else if (viewType == TYPE_ITEM){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.folder_card_view, parent, false);
             return new ItemViewHolder(view);
         } else return null;
     }

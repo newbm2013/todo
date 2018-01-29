@@ -61,16 +61,16 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             isNotEmpty = true;
 
             if(viewType!=FOOTER_VIEW) {
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_card_view, parent, false);
                 return new NormalViewHolder(view);
             }else{
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.textview_done_tasks, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_card_view_done_tasks, parent, false);
                 return new FooterViewHolder(view);
             }
 
         }else{
             isNotEmpty = false;
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_empty_state, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_empty_state, parent, false);
             return new ViewHolder(view);
         }
     }

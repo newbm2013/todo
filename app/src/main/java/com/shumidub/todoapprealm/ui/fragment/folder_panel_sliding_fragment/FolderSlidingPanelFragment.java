@@ -43,7 +43,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import io.realm.RealmList;
-import io.realm.RealmResults;
 
 import static com.shumidub.todoapprealm.realmcontrollers.FolderRealmController.listOfFolderIsEmpty;
 
@@ -108,7 +107,7 @@ public class FolderSlidingPanelFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.task_slideup_panel_layout, container, false);
+        View view = inflater.inflate(R.layout.slide_up_panel_layout, container, false);
         return view;
     }
 

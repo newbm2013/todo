@@ -29,7 +29,7 @@ public class AddFolderDialog extends android.support.v4.app.DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.add_list_layout, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_folder_layout, null);
         etName = view.findViewById(R.id.name);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

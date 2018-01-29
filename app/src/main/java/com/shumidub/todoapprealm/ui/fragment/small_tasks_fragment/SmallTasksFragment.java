@@ -55,7 +55,7 @@ public class SmallTasksFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.item_fragment_layout, container, false);
+        View view = inflater.inflate(R.layout.small_tasks_rv_fragment_layout, container, false);
         return view;
     }
 
@@ -67,7 +67,7 @@ public class SmallTasksFragment extends Fragment {
         isAllTaskShowing = false;
         tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
         if (FolderRealmController.getFolder(tasksFolderId)==null) tasksFolderId =0;
-        rvTasks = view.findViewById(R.id.rv_items);
+        rvTasks = view.findViewById(R.id.rv_tasks);
         setTasksListClickListeners();
         setTasks();
     }

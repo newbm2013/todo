@@ -46,7 +46,7 @@ public class TaskActionModeCallback  {
                 actionMode.setTitle(task.getText());
 
                 LayoutInflater inflater = activity.getLayoutInflater();
-                View view = inflater.inflate(R.layout.edit_task_layout, null);
+                View view = inflater.inflate(R.layout.dialog_edit_task, null);
 
                 EditText etEditTask = view.findViewById(R.id.et);
                 TextView tvEditTaskCycling = view.findViewById(R.id.task_cycling);
