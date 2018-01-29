@@ -2,11 +2,13 @@ package com.shumidub.todoapprealm.realmcontrollers;
 
 import android.util.Log;
 import com.shumidub.todoapprealm.App;
+import com.shumidub.todoapprealm.realmmodel.FolderObject;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import java.util.Calendar;
 import java.util.List;
 import io.reactivex.annotations.NonNull;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.Sort;
 
 /**
@@ -51,12 +53,17 @@ public class TasksRealmController {
     }
 
     /** get tasks by folder id*/
-    public static List<TaskObject> getTasks(long folderId){
+    public static RealmList<TaskObject> getTasks(long folderId){
         App.initRealm();
-        return App.realm.where(TaskObject.class)
-                .equalTo("taskFolderId", folderId)
-                .findAll()
-                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+        //todo !!! new need test
+
+//        return App.realm.where(TaskObject.class)
+//                .equalTo("taskFolderId", folderId)
+//                .findAll()
+//                .sort("done", Sort.ASCENDING, "id",Sort.ASCENDING);
+
+   return ((FolderObject) App.realm.where(FolderObject.class)
+                  .equalTo("id", folderId).findFirst()).folderTasks;
     }
 
     /** get not done tasks by id*/

@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.TaskActionModeCallback;

@@ -24,27 +24,25 @@ import android.widget.TextView;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
 import com.shumidub.todoapprealm.realmmodel.RealmInteger;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
-
-import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
-import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.FolderActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTaskFragmentPagerAdapter;
 import com.shumidub.todoapprealm.ui.folder_dialog.AddFolderDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
 import java.util.Calendar;
 import java.util.List;
-
 import io.realm.RealmList;
 
 import static com.shumidub.todoapprealm.realmcontrollers.FolderRealmController.listOfFolderIsEmpty;
+
 
 /**
  * Created by Артем on 19.12.2017.
@@ -153,7 +151,7 @@ public class FolderSlidingPanelFragment extends Fragment {
         ///////////////////////    FOLDER VIEWS (onViewCreated)     //////////////////////
         findFolderViews(view);
         rvFolders.setLayoutManager(new LinearLayoutManager(getContext()));
-        folderObjects = FolderRealmController.getFolders();
+        folderObjects = FolderRealmController.getFoldersList();
 
         //set empty state for folder // todo need redesign view
         setEmptyStateIfFoldersIsEmpty(view);

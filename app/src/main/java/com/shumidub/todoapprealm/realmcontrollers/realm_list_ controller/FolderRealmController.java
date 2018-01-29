@@ -19,12 +19,8 @@ public class FolderRealmController {
     private static RealmResults<FolderObject> folders;
 
     /** Get all folder */
-    //todo rename to getFoldersList and maybe del old method
-//    public static RealmResults<FolderObject> getFolders(){
-    public static RealmList<FolderObject> getFolders(){
+    public static RealmList<FolderObject> getFoldersList(){
         App.initRealm();
-//        folders = getFoldersQuery().findAll();
-//        return folders;
         return App.realm.where(RealmFoldersContainer.class).findFirst().folderOfTasksList;
     }
 
@@ -41,8 +37,8 @@ public class FolderRealmController {
                 FolderObject folder = App.realm.createObject(FolderObject.class);
                 folder.setId(id);
                 folder.setName(name);
-
-                App.realm.insert(folder);
+//              App.realm.insert(folder);
+                App.folderOfTasksListFromContainer.add(folder);
         });
         return id;
     }
@@ -62,9 +58,9 @@ public class FolderRealmController {
     }
 
     /** delete folder by folderobject */
-    public static void deleteFolder(FolderObject list){
+    public static void deleteFolder(FolderObject folderObject){
         App.initRealm();
-        realm.executeTransaction((transaction)-> list.deleteFromRealm());
+        realm.executeTransaction((transaction)-> folderObject.deleteFromRealm());
     }
 
     /** delete folder by id */
@@ -95,6 +91,12 @@ public class FolderRealmController {
         App.initRealm();
         return (realm.where(FolderObject.class).findAll() == null
                 || realm.where(FolderObject.class).findAll().size() == 0);
+    }
+
+    /** containre of folders is exist*/
+    public static boolean containerOfFolderIsExist(){
+        App.initRealm();
+        return (realm.where(RealmFoldersContainer.class).findFirst() != null);
     }
 
     /** Промежуточный запрос */

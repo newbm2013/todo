@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
 
 

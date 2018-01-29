@@ -10,8 +10,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
+
 
 import java.util.List;
 
