@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,8 +22,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmmodel.FolderObject;
+import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
 import com.shumidub.todoapprealm.realmmodel.RealmInteger;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
@@ -39,6 +42,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.Calendar;
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 import static com.shumidub.todoapprealm.realmcontrollers.FolderRealmController.listOfFolderIsEmpty;
@@ -79,7 +83,9 @@ public class FolderSlidingPanelFragment extends Fragment {
     FolderOfTaskRecyclerViewAdapter.OnFooterTextViewOnClickListener onFooterTextViewOnClickListener;
 
     // FOLDER VARIABLES, DATA
-    RealmResults<FolderObject> folderObjects;
+    RealmFoldersContainer realmFoldersContainer;
+//    RealmResults<FolderObject> folderObjects;
+    RealmList<FolderObject> folderObjects;
     public static Long idFolderFromTag;
     private static String title;
     public static String titleFolder;
@@ -131,7 +137,7 @@ public class FolderSlidingPanelFragment extends Fragment {
                 llBottomSmallTasksLabel.setAlpha(1.0f - slideOffset);
                 if (slideOffset > 0.87){
                     llBottomSmallTasksLabel.setVisibility(View.GONE);
-                } else if (slideOffset<0.85){
+                }else if (slideOffset<0.85){
                     llBottomSmallTasksLabel.setVisibility(View.VISIBLE);
                 }
 
@@ -218,47 +224,55 @@ public class FolderSlidingPanelFragment extends Fragment {
         folderOfTaskRVAdapter.setOnFooterTextViewSetOnClickListener(onFooterTextViewOnClickListener);
 
         // set ITEM TOUCH HELPER for folder rv
+        App.initRealm();
+        realmFoldersContainer = App.realm.where(RealmFoldersContainer.class).findFirst();
+        //todo try is it working, or need not use linked variable
+        RealmList<FolderObject> folderOfTasksLis = realmFoldersContainer.folderOfTasksList;
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                     ItemTouchHelper.UP | ItemTouchHelper.DOWN ,0) {
 
-                int dragFrom = -1;
-                int dragTo = -1;
+            int dragFrom = -1;
+            int dragTo = -1;
 
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                      RecyclerView.ViewHolder target) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
 
-                    int fromPosition = viewHolder.getAdapterPosition();
-                    int toPosition = target.getAdapterPosition();
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
 
-                    if (dragFrom == -1) {
-                        dragFrom = fromPosition;
-                    }
-                    dragTo = toPosition;
-
-                    folderOfTaskRVAdapter.notifyItemMoved(fromPosition, toPosition);
-                    return true;
+                if (dragFrom == -1) {
+                    dragFrom = fromPosition;
                 }
+                dragTo = toPosition;
 
-//            private void reallyMoved(int from, int to) {arrayList.add(to, arrayList.remove(from));}
+                folderOfTaskRVAdapter.notifyItemMoved(fromPosition, toPosition);
+                return true;
+            }
 
-                @Override
-                public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                    super.clearView(recyclerView, viewHolder);
+            // todo need fix if move bellow "add list"
+            private void reallyMoved(int from, int to) {
+                App.initRealm();
+                App.realm.executeTransaction((realm) ->
+                    folderOfTasksLis.add(to, folderOfTasksLis.remove(from)));
+                Log.d("MOVED_DTAG", "reallyMoved: " + to + " " + from);
+            }
 
-                    if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
-//                    reallyMoved(dragFrom, dragTo);
-//                    if (!arrayList.equals(arrayListCopy)){
-//                        arrayListCopy=arrayList.clone();
-//                    }
-                    }
-                    dragFrom = dragTo = -1;
+            @Override
+            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+
+                if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+                reallyMoved(dragFrom, dragTo);
                 }
+                dragFrom = dragTo = -1;
+            }
 
-                @Override
-                public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                }
-            });
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) { }
+
+        });
+
         itemTouchHelper.attachToRecyclerView(rvFolders);
 
 
@@ -375,7 +389,6 @@ public class FolderSlidingPanelFragment extends Fragment {
 //    protected void tasksDataChanged(){
 //        setTasks();
 //    }
-
 
     public void finishActionMode(){
         ((MainActivity) getActivity()).startSupportActionMode(new EmptyActionModeCallback());

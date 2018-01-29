@@ -9,6 +9,7 @@ import com.shumidub.todoapprealm.realmmodel.FolderObject;
 
 import java.util.ArrayList;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -17,7 +18,7 @@ import io.realm.RealmResults;
 
 public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    RealmResults<FolderObject> listModels;
+    RealmList<FolderObject> listModels;
     ArrayList <Long> listModelId = new ArrayList<>();
 
     public SmallTaskFragmentPagerAdapter(FragmentManager fm) {
@@ -37,6 +38,9 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
 
+    //есть реалм результ фолдеров
+    // для размера результа - создаем лист только с ид
+    // todo для чего это?
     private void setTaskList(){
         listModels = FolderRealmController.getFolders();
         for (FolderObject folderObject : listModels){

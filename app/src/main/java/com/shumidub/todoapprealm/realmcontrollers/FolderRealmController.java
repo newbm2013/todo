@@ -2,6 +2,9 @@ package com.shumidub.todoapprealm.realmcontrollers;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.realmmodel.FolderObject;
+import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
+
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import static com.shumidub.todoapprealm.App.realm;
@@ -16,10 +19,13 @@ public class FolderRealmController {
     private static RealmResults<FolderObject> folders;
 
     /** Get all folder */
-    public static RealmResults<FolderObject> getFolders(){
+    //todo rename to getFoldersList and maybe del old method
+//    public static RealmResults<FolderObject> getFolders(){
+    public static RealmList<FolderObject> getFolders(){
         App.initRealm();
-        folders = getFoldersQuery().findAll();
-        return folders;
+//        folders = getFoldersQuery().findAll();
+//        return folders;
+        return App.realm.where(RealmFoldersContainer.class).findFirst().folderOfTasksList;
     }
 
     /** get folder by id */
@@ -35,6 +41,7 @@ public class FolderRealmController {
                 FolderObject folder = App.realm.createObject(FolderObject.class);
                 folder.setId(id);
                 folder.setName(name);
+
                 App.realm.insert(folder);
         });
         return id;

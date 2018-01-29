@@ -16,6 +16,7 @@ import com.shumidub.todoapprealm.realmmodel.FolderObject;
 
 import java.util.concurrent.TimeUnit;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -28,7 +29,7 @@ public class FolderOfTaskRecyclerViewAdapter
     private static final int TYPE_FOOTER = 1;
     private static final int TYPE_ITEM = 0;
 
-    RealmResults<FolderObject> realmResults;
+    RealmList<FolderObject> realmListFolder;
     OnHolderTextViewOnClickListener onHolderTextViewOnClickListener;
     OnHolderTextViewOnLongClickListener onHolderTextViewOnLongClickListener;
     OnFooterTextViewOnClickListener onFooterTextViewOnClickListener;
@@ -52,8 +53,8 @@ public class FolderOfTaskRecyclerViewAdapter
     }
 
 
-    public FolderOfTaskRecyclerViewAdapter(RealmResults<FolderObject> realmResults, Activity activity){
-        this.realmResults = realmResults;
+    public FolderOfTaskRecyclerViewAdapter(RealmList<FolderObject> realmListFolder, Activity activity){
+        this.realmListFolder = realmListFolder;
     }
 
     @Override
@@ -71,10 +72,10 @@ public class FolderOfTaskRecyclerViewAdapter
     @SuppressLint({"All", "ClickableViewAccessibility"})
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d("DTAG", "onBindViewHolder: position" + position + "array size = " + realmResults.size());
+        Log.d("DTAG", "onBindViewHolder: position" + position + "array size = " + realmListFolder.size());
         if (holder.getItemViewType() == TYPE_ITEM) {
-            ((ItemViewHolder) holder).textView.setText("" + realmResults.get(position).getName());
-            ((ItemViewHolder) holder).textView.setTag(realmResults.get(position).getId());
+            ((ItemViewHolder) holder).textView.setText("" + realmListFolder.get(position).getName());
+            ((ItemViewHolder) holder).textView.setTag(realmListFolder.get(position).getId());
 
             ((ItemViewHolder) holder).textView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -133,12 +134,12 @@ public class FolderOfTaskRecyclerViewAdapter
 
     @Override
     public int getItemCount() {
-        return realmResults.size() + 1;
+        return realmListFolder.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == realmResults.size()){
+        if (position == realmListFolder.size()){
             return TYPE_FOOTER;
         } else {
             return TYPE_ITEM;
