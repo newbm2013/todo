@@ -199,14 +199,10 @@ public class TasksRealmController {
 
 
     public static void changeOrder(long folderId, TaskObject taskObjectTarget , TaskObject taskObjectTargetPosition){
-
         RealmList<TaskObject> taskList = getFolderTasksRealmListFromFolder(folderId);
-
-
         int from = taskList.indexOf(taskObjectTarget);
         int to  = taskList.indexOf(taskObjectTargetPosition);
         taskList.add(to, taskList.remove(from));
-        Log.d("DTAG", "changeOrder: from " + from + "to " + to);
     }
 
     /** get unique id*/
@@ -218,7 +214,8 @@ public class TasksRealmController {
         return id;
     }
 
-    private static RealmList<TaskObject> getFolderTasksRealmListFromFolder (long folderId){
+    //todo set private
+    public static RealmList<TaskObject> getFolderTasksRealmListFromFolder (long folderId){
         return ((FolderObject) App.realm.where(FolderObject.class)
                 .equalTo("id", folderId).findFirst()).folderTasks;
     }

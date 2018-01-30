@@ -81,12 +81,16 @@ public class App extends Application {
 
             folderId[0] = ((FolderObject)gettedFolderObject).getId();
 
-
         });
 
         for (int i = 0; i < 20; i++) {
             TasksRealmController.addTask("task " + i, 1, 1,
                     false, 1, folderId[0]);
         }
+
+        folderOfTasksListFromContainer.toArray();
+        folderOfTasksListFromContainer.toArray();
+        folderOfTasksListFromContainer.toArray();
+
     }
 }
