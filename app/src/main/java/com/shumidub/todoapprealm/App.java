@@ -3,6 +3,7 @@ package com.shumidub.todoapprealm;
 import android.app.Application;
 
 import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
@@ -44,15 +45,22 @@ public class App extends Application {
     }
 
     private static void initContainers(){
-        if (!FolderRealmController.containerOfFolderIsExist()){
-            realmFoldersContainer = realm.createObject(RealmFoldersContainer.class);
-        } else {
-            realmFoldersContainer= realm.where(RealmFoldersContainer.class).findFirst();
-        }
+        App.initRealm();
+        realm.executeTransaction((realm) -> {
+            if (!FolderRealmController.containerOfFolderIsExist()){
+                realmFoldersContainer = realm.createObject(RealmFoldersContainer.class);
+            } else {
+                realmFoldersContainer= realm.where(RealmFoldersContainer.class).findFirst();
+            }
+        });
+
         folderOfTasksListFromContainer = realmFoldersContainer.folderOfTasksList;
     }
 
     private void addContent() {
+
+        long[] folderId = new long[1];
+
         realm.executeTransaction((Realm realm) -> {
 
             final FolderObject folderObject
@@ -71,13 +79,14 @@ public class App extends Application {
 
             final RealmModel gettedFolderObject = folderOfTasksListFromContainer.get(0);
 
-            for (int i = 0; i < 100; i++) {
-                TaskObject task = realm.createObject(TaskObject.class);
-                task.setId(System.currentTimeMillis());
-                task.setText("task № " + i);
-                ((FolderObject) gettedFolderObject).folderTasks.add(task);
+            folderId[0] = ((FolderObject)gettedFolderObject).getId();
 
-            }
+
         });
+
+        for (int i = 0; i < 20; i++) {
+            TasksRealmController.addTask("task " + i, 1, 1,
+                    false, 1, folderId[0]);
+        }
     }
 }

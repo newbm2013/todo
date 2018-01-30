@@ -2,6 +2,7 @@ package com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
@@ -51,6 +53,78 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         this.tasks = tasks;
         this.doneTasks = doneTasks;
         this.smallTasksFragment = smallTasksFragment;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN ,0) {
+
+            int dragFrom = -1;
+            int dragTo = -1;
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+
+                if (dragFrom == -1) {
+                    dragFrom = fromPosition;
+                }
+                dragTo = toPosition;
+
+                if (! (viewHolder instanceof FooterViewHolder)){
+                    notifyItemMoved(fromPosition, toPosition);
+                }
+                return true;
+            }
+
+            // todo need fix if move bellow "add list"
+            private void reallyMoved(TaskObject taskTarget, TaskObject taskTargetPosition) {
+                App.initRealm();
+                App.realm.executeTransaction((realm) ->{
+                    long folderId = ((TaskObject) taskTarget).getTaskFolderId();
+                    TasksRealmController.changeOrder(folderId, taskTarget, taskTargetPosition );
+                });
+            }
+
+            @Override
+            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+
+                if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+                    if (! (viewHolder instanceof FooterViewHolder)) {
+
+                        long taskTargetId = (Long) recyclerView
+                                .findViewHolderForAdapterPosition(dragFrom)
+                                .itemView.findViewById(R.id.tv).getTag();
+
+
+                        long taskTargetPositionId = (Long) recyclerView
+                                .findViewHolderForAdapterPosition(dragTo)
+                                .itemView.findViewById(R.id.tv).getTag();
+
+                        Log.d("DTAG", "clearView: dragTo " + dragTo + " dragFrom " + dragFrom );
+
+
+                        TaskObject taskTarget = TasksRealmController.getTask(taskTargetId);
+                        TaskObject taskTargetPosition = TasksRealmController.getTask(taskTargetPositionId);
+                        //todo need to check
+                        reallyMoved(taskTarget, taskTargetPosition);
+                    }
+                }
+                dragFrom = dragTo = -1;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) { }
+        });
+
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override

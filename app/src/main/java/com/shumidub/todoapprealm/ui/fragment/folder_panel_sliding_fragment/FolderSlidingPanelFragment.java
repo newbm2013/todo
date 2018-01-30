@@ -250,8 +250,13 @@ public class FolderSlidingPanelFragment extends Fragment {
             // todo need fix if move bellow "add list"
             private void reallyMoved(int from, int to) {
                 App.initRealm();
-                App.realm.executeTransaction((realm) ->
-                    folderOfTasksLis.add(to, folderOfTasksLis.remove(from)));
+                // because  folderOfTasksLis.size()-1 == footerView
+                if (from < folderOfTasksLis.size()-1 ){
+                    App.realm.executeTransaction((realm) -> {
+                        int to2 = to<folderOfTasksLis.size() ? to : folderOfTasksLis.size()-1;
+                        folderOfTasksLis.add(to2, folderOfTasksLis.remove(from));
+                    });
+                }
                 Log.d("MOVED_DTAG", "reallyMoved: " + to + " " + from);
             }
 
