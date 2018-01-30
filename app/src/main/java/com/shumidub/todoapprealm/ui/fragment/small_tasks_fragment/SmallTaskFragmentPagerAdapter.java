@@ -17,6 +17,7 @@ import io.realm.RealmList;
 
 public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
 
+    //todo need renaim?
     RealmList<FolderObject> listModels;
     ArrayList <Long> listModelId = new ArrayList<>();
 
