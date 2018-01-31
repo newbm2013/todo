@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment;
+package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

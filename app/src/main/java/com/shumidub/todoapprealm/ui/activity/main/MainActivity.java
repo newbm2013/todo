@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.activity.main_activity;
+package com.shumidub.todoapprealm.ui.activity.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
-import com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
+import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity {

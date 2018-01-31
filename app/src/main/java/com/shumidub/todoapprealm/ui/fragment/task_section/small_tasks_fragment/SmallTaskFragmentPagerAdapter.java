@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment;
+package com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

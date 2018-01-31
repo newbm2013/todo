@@ -11,7 +11,7 @@
     sothree:umanoDragView="@+id/ll"
     sothree:umanoOverlay="false"
     sothree:umanoShadowHeight="4dp"
-    sothree:umanoScrollableView="@id/rv_tasks">
+    sothree:umanoScrollableView="@id/rv">
 
     <!--side one-->
     <include layout="@layout/folder_task_container"/>

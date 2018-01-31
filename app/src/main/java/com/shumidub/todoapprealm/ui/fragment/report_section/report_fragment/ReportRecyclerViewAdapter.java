@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment;
+package com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
-
+import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTasksFragment;
 
 import java.util.List;
 
@@ -22,25 +22,25 @@ import java.util.List;
  * Created by Артем on 19.12.2017.
  */
 
-public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewAdapter.ViewHolder> {
+public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecyclerViewAdapter.ViewHolder> {
 
     private List<TaskObject> tasks;
     private List<TaskObject> doneTasks;
     private boolean isNotEmpty;
     private static final int FOOTER_VIEW = 123;
     private boolean touchOutsideUnDoneTaskArea = false;
-    SmallTasksFragment smallTasksFragment;
-    OnItemLongClicked onItemLongClicked;
-    OnItemClicked onItemClicked;
-    ItemTouchHelper itemTouchHelper;
-    ItemTouchHelper.SimpleCallback itemTouchHelperSimpleCallback;
+    private SmallTasksFragment smallTasksFragment;
+    private OnItemLongClicked onItemLongClicked;
+    private OnItemClicked onItemClicked;
+    private ItemTouchHelper itemTouchHelper;
+    private ItemTouchHelper.SimpleCallback itemTouchHelperSimpleCallback;
 
     public interface OnItemLongClicked{
-        void onLongClick (View view, int position);
+        void onLongClick(View view, int position);
     }
 
     public interface OnItemClicked{
-        void onClick (View view, int position);
+        void onClick(View view, int position);
     }
 
     public void setOnLongClicked(OnItemLongClicked onItemLongClicked){
@@ -52,7 +52,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     }
 
 
-    public TasksRecyclerViewAdapter(List<TaskObject> tasks, List<TaskObject> doneTasks, SmallTasksFragment smallTasksFragment){
+    public ReportRecyclerViewAdapter(List<TaskObject> tasks, List<TaskObject> doneTasks, SmallTasksFragment smallTasksFragment){
         this.tasks = tasks;
         this.doneTasks = doneTasks;
         this.smallTasksFragment = smallTasksFragment;

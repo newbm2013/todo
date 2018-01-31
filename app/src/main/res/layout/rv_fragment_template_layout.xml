@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context=".ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment">
+    tools:context=".ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment">
 
 
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_tasks"
+            android:id="@+id/rv"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:background="@color/colorGray">

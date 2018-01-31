@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment;
+package com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
-import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
-import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
+import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.TaskActionModeCallback;
 
 import java.util.List;
@@ -55,7 +55,7 @@ public class SmallTasksFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.small_tasks_rv_fragment_layout, container, false);
+        View view = inflater.inflate(R.layout.rv_fragment_template_layout, container, false);
         return view;
     }
 
@@ -67,7 +67,7 @@ public class SmallTasksFragment extends Fragment {
         isAllTaskShowing = false;
         tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
         if (FolderRealmController.getFolder(tasksFolderId)==null) tasksFolderId =0;
-        rvTasks = view.findViewById(R.id.rv_tasks);
+        rvTasks = view.findViewById(R.id.rv);
         setTasksListClickListeners();
         setTasks();
     }

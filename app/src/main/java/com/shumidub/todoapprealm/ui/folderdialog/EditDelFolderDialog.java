@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.folder_dialog;
+package com.shumidub.todoapprealm.ui.folderdialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,8 +13,8 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderObject;
 
-import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
-import com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
+import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
+import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 
 import io.reactivex.annotations.NonNull;
 

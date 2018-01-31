@@ -7,13 +7,13 @@ import android.view.MenuItem;
 
 import com.shumidub.todoapprealm.R;
 
-import com.shumidub.todoapprealm.ui.folder_dialog.EditDelFolderDialog;
-import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
-import com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
+import com.shumidub.todoapprealm.ui.folderdialog.EditDelFolderDialog;
+import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
+import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 
-import static com.shumidub.todoapprealm.ui.folder_dialog.EditDelFolderDialog.DELETE_LIST;
-import static com.shumidub.todoapprealm.ui.folder_dialog.EditDelFolderDialog.EDIT_LIST;
-import static com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment.FolderSlidingPanelFragment.titleFolder;
+import static com.shumidub.todoapprealm.ui.folderdialog.EditDelFolderDialog.DELETE_LIST;
+import static com.shumidub.todoapprealm.ui.folderdialog.EditDelFolderDialog.EDIT_LIST;
+import static com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment.titleFolder;
 
 
 /**

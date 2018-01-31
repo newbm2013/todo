@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.fragment.folder_panel_sliding_fragment;
+package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment;
 
 
 import android.animation.StateListAnimator;
@@ -25,17 +25,17 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
-import com.shumidub.todoapprealm.realmcontrollers.TasksRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
 import com.shumidub.todoapprealm.realmmodel.RealmInteger;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
-import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTasksFragment;
-import com.shumidub.todoapprealm.ui.activity.main_activity.MainActivity;
+import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTasksFragment;
+import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.FolderActionModeCallback;
-import com.shumidub.todoapprealm.ui.fragment.small_tasks_fragment.SmallTaskFragmentPagerAdapter;
-import com.shumidub.todoapprealm.ui.folder_dialog.AddFolderDialog;
+import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTaskFragmentPagerAdapter;
+import com.shumidub.todoapprealm.ui.folderdialog.AddFolderDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.Calendar;
 import java.util.List;
