@@ -18,8 +18,6 @@ import com.shumidub.todoapprealm.realmmodel.TaskObject;
 
 import java.util.List;
 
-import io.realm.RealmList;
-
 /**
  * Created by Артем on 19.12.2017.
  */
@@ -30,12 +28,12 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     private List<TaskObject> doneTasks;
     private boolean isNotEmpty;
     private static final int FOOTER_VIEW = 123;
+    private boolean touchOutsideUnDoneTaskArea = false;
     SmallTasksFragment smallTasksFragment;
     OnItemLongClicked onItemLongClicked;
     OnItemClicked onItemClicked;
     ItemTouchHelper itemTouchHelper;
-    boolean touchHelperAttachedToRecyclerView;
-    RecyclerView attachedRV;
+    ItemTouchHelper.SimpleCallback itemTouchHelperSimpleCallback;
 
     public interface OnItemLongClicked{
         void onLongClick (View view, int position);
@@ -63,10 +61,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        attachTouchHelperToRecyclerView(recyclerView, true);
-        attachedRV = recyclerView;
-        itemTouchHelper.attachToRecyclerView(recyclerView);  //todo 68
-//        recyclerView.touch
+        attachTouchHelperToRecyclerView(recyclerView);
     }
 
     @Override
@@ -155,8 +150,6 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 holder.textViewDoneTask.setText("Done " + smallTasksFragment.doneTasks.size() + " tasks");
                 holder.textViewDoneTask.setTag("footer");
                 holder.textViewDoneTask.setOnClickListener((v) -> smallTasksFragment.showAllTasks());
-                if (touchHelperAttachedToRecyclerView) attachTouchHelperToRecyclerView(attachedRV,false);
-                else if (!touchHelperAttachedToRecyclerView) attachTouchHelperToRecyclerView(attachedRV, true);
             }
         }
     }
@@ -218,87 +211,72 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     }
 
 
-    public void attachTouchHelperToRecyclerView(RecyclerView recyclerView, boolean attach){
-        if (attach){
+    public void attachTouchHelperToRecyclerView(RecyclerView recyclerView){
+        itemTouchHelperSimpleCallback =  new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN ,0) {
 
-            itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
-                    ItemTouchHelper.UP | ItemTouchHelper.DOWN ,0) {
+            int dragFrom = -1;
+            int dragTo = -1;
 
-                int dragFrom = -1;
-                int dragTo = -1;
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
 
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                      RecyclerView.ViewHolder target) {
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
 
-                    int fromPosition = viewHolder.getAdapterPosition();
-                    int toPosition = target.getAdapterPosition();
-
-                    if (dragFrom == -1) {
-                        dragFrom = fromPosition;
-                    }
-                    dragTo = toPosition;
-
-                    if (! (viewHolder instanceof FooterViewHolder)){
-                        notifyItemMoved(fromPosition, toPosition);
-                    }
-                    return true;
-                }
-
-                private void reallyMoved(TaskObject taskTarget, TaskObject taskTargetPosition) {
-                    App.initRealm();
-                    App.realm.executeTransaction((realm) ->{
-                        long folderId = ((TaskObject) taskTarget).getTaskFolderId();
-                        TasksRealmController.changeOrder(folderId, taskTarget, taskTargetPosition );
-                    });
-                }
-
-                @Override
-                public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                    super.clearView(recyclerView, viewHolder);
-
-                    if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
-                        if (! (viewHolder instanceof FooterViewHolder)) {
-                            TaskObject taskTarget = tasks.get(dragFrom);
-                            dragTo = dragTo < tasks.size() ? dragTo:tasks.size()-1;
-                            TaskObject taskTargetPosition = tasks.get(dragTo);
-                            reallyMoved(taskTarget, taskTargetPosition);
-                        }
-                    }
-                    dragFrom = dragTo = -1;
-                }
-
-                @Override
-                public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) { }
-            });
-
-
-        } else {
-            itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
-                @Override
-                public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                    return 0;
-                }
-
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                if (fromPosition > tasks.size() -1 || tasks.get(fromPosition).isDone()
+                        || toPosition > tasks.size() - 1 || tasks.get(toPosition).isDone()){
+                    touchOutsideUnDoneTaskArea = true;
                     return false;
                 }
 
-                @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
+                if (dragFrom == -1) {
+                    dragFrom = fromPosition;
                 }
-            });
-        }
+                dragTo = toPosition;
 
-        touchHelperAttachedToRecyclerView = attach;
+                if (! (viewHolder instanceof FooterViewHolder)){
+//                    notifyItemMoved(fromPosition, toPosition);
+                }
+                return true;
+            }
 
-        //todo maybe del from string 68 and use itemTouchListener add and remove ... or uncomment bellow ...
-        //todo or try use boolean paramentre instead itemtouchhelper
+            private void reallyMoved(TaskObject taskTarget, TaskObject taskTargetPosition) {
+                App.initRealm();
+                App.realm.executeTransaction((realm) ->{
+                    long folderId = ((TaskObject) taskTarget).getTaskFolderId();
+                    TasksRealmController.changeOrder(folderId, taskTarget, taskTargetPosition );
+                });
+            }
 
+            @Override
+            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
 
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
+                if (touchOutsideUnDoneTaskArea) {
+                    touchOutsideUnDoneTaskArea = false;
+                    dragFrom = dragTo = -1;
+                    return;
+                }
 
+                super.clearView(recyclerView, viewHolder);
+
+                if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+                    if (! (viewHolder instanceof FooterViewHolder)) {
+                        if (dragFrom > tasks.size()-1) return;
+                        TaskObject taskTarget = tasks.get(dragFrom);
+                        dragTo = dragTo < tasks.size() ? dragTo:tasks.size()-1;
+                        TaskObject taskTargetPosition = tasks.get(dragTo);
+                        reallyMoved(taskTarget, taskTargetPosition);
+                    }
+                }
+                dragFrom = dragTo = -1;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) { }
+        };
+        itemTouchHelper = new ItemTouchHelper(itemTouchHelperSimpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 }
