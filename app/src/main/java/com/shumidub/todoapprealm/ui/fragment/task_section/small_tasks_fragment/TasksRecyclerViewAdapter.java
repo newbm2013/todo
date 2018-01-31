@@ -222,14 +222,21 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
 
+
+
                 int fromPosition = viewHolder.getAdapterPosition();
                 int toPosition = target.getAdapterPosition();
 
                 if (fromPosition > tasks.size() -1 || tasks.get(fromPosition).isDone()
                         || toPosition > tasks.size() - 1 || tasks.get(toPosition).isDone()){
                     touchOutsideUnDoneTaskArea = true;
+
+//                    notifyItemMoved(fromPosition, tasks.size() -1);
+
                     return false;
                 }
+
+
 
                 if (dragFrom == -1) {
                     dragFrom = fromPosition;
@@ -237,7 +244,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 dragTo = toPosition;
 
                 if (! (viewHolder instanceof FooterViewHolder)){
-//                    notifyItemMoved(fromPosition, toPosition);
+                    notifyItemMoved(fromPosition, toPosition);
                 }
                 return true;
             }
