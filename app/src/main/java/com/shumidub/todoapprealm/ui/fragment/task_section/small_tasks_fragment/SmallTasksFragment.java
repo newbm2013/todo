@@ -17,7 +17,7 @@ import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmContr
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
-import com.shumidub.todoapprealm.ui.actionmode.TaskActionModeCallback;
+import com.shumidub.todoapprealm.ui.actionmode.task.TaskActionModeCallback;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.actionmode;
+package com.shumidub.todoapprealm.ui.actionmode.task;
 
 
 import android.view.ActionMode;

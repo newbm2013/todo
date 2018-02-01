@@ -1,6 +1,12 @@
 package com.shumidub.todoapprealm.realmcontrollers.reportcontroller;
 
+import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
+
+import java.util.List;
+
 public interface IReportController {
+
+    List<ReportObject> getReportList();
 
     void getReport(long id);
 
