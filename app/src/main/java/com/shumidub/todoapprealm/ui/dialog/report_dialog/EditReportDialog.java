@@ -3,6 +3,7 @@ package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
@@ -47,6 +48,8 @@ public class EditReportDialog extends BaseReportDialog {
         etTextReport.setText(reportObject.getReportText());
         rbHealth.setRating(reportObject.getHealthRating());
         rbSoul.setRating(reportObject.getSoulRating());
+
+        switcWeek.setVisibility(View.GONE);
 
 //        rbHealth.set
 

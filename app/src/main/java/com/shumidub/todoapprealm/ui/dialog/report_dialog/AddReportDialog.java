@@ -40,7 +40,7 @@ public class AddReportDialog extends BaseReportDialog {
                 String textReport = etTextReport.getText().toString();
                 int soulRating = rbSoul.getProgress();
                 int healthRating = rbHealth.getProgress();
-                ReportRealmController.addReport(date, dayCount, textReport, soulRating, healthRating);
+                ReportRealmController.addReport(date, dayCount, textReport, soulRating, healthRating, switcWeek.isChecked());
                 notifyDataChanged();
                 dismiss();
             } else {

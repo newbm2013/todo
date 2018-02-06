@@ -24,23 +24,6 @@ public class ReportRealmController  {
     }
 
 
-    public static long addReport(String date, int dayCount, String textReport, int soulRating, int healthRating) {
-
-        long id = getValidId();
-        App.initRealm();
-        App.realm.executeTransaction((realm -> {
-            ReportObject reportObject = App.realm.createObject(ReportObject.class);
-            reportObject.setId(id);
-            reportObject.setDate(date);
-            reportObject.setCountOfDay(dayCount);
-            reportObject.setReportText(textReport);
-            reportObject.setSoulRating(soulRating);
-            reportObject.setHealthRating(healthRating);
-            App.realm.insert(reportObject);
-        }));
-        return id;
-    }
-
     public static long addReport(String date, int dayCount, String textReport, int soulRating, int healthRating, boolean isWeekReport) {
 
         long id;

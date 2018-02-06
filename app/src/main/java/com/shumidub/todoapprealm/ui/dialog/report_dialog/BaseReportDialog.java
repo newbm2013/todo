@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Switch;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
@@ -38,6 +39,7 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
     protected EditText etTextReport;
     protected RatingBar rbHealth;
     protected RatingBar rbSoul;
+    protected Switch switcWeek;
 
     protected TextInputLayout tilDate;
     protected TextInputLayout tilCountValue;
@@ -111,6 +113,7 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
         rbSoul = view.findViewById(R.id.ratingbar_soul);
         tilDate = view.findViewById(R.id.til_date);
         tilCountValue = view.findViewById(R.id.til_count_value);
+        switcWeek = view.findViewById(R.id.switch_week);
     }
 
     protected void notifyDataChanged() {
