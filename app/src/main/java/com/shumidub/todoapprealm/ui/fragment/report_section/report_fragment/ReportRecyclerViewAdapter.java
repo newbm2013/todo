@@ -70,7 +70,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
             ReportObject reportObject = reportObjects.get(position);
 
             holder.tvDate.setText(reportObject.getDate());
-            holder.tvDayCount.setText(reportObject.getCountOfDay());
+            holder.tvDayCount.setText("" + reportObject.getCountOfDay());
             holder.tvRetortText.setText(reportObject.getReportText());
             holder.ratingBarSoul.setRating(1);
             holder.ratingBarHealth.setRating(1);

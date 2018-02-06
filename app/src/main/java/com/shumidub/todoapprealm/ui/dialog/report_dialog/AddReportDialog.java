@@ -1,5 +1,11 @@
 package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
+import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by A.shumidub on 05.02.18.
  */
@@ -7,34 +13,50 @@ package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 public class AddReportDialog extends ReportDialog {
 
     @Override
-    public void setTitle() {
+    protected void setTitle() {
        title = ADD_REPORT_TITLE;
     }
 
     @Override
-    public void setView() {
+    protected void setView() {
         super.setView();
     }
 
     @Override
-    public void setPositiveButtonText() {
+    protected void setPositiveButtonText() {
         positiveButtonText = ADD_BUTTON_TEXT;
     }
 
     @Override
-    public void setPositiveButtonInterface() {
+    protected void setDialogViews() {
+        super.setDialogViews();
+
+       String defaultDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date(System.currentTimeMillis()));
+       int defaultCount = 100;
+
+        etDate.setText(defaultDate);
+        etCountValue.setText("" + defaultCount);
+
+//        rbHealth.set
+
+
+    }
+
+    @Override
+    protected void setPositiveButtonInterface() {
         positiveButtonInterface = (dialogInterface, i)-> {
-            //    String text = ((EditText) getDialog().findViewById(R.id.name)).getText().toString();
-//                    if (!text.isEmpty()){
-//                            long idFolder = FolderRealmController.addFolder(text);
-//                            Toast.makeText(getContext(),"Done", Toast.LENGTH_SHORT).show();
-//                            activity = (MainActivity) getActivity();
-//                            for (Fragment fragment : activity.getSupportFragmentManager().getFragments()){
-//                            if (fragment instanceof FolderSlidingPanelFragment){
-//                            ((FolderSlidingPanelFragment) fragment).notifyListsDataChanged();
-//                            }
-//                            }
-//                            }
+
+            //todo show error
+            if (!etDate.getText().toString().isEmpty() && !etDate.getText().toString().isEmpty()){
+                String date = etDate.getText().toString();
+                //todo set number keyboard
+                int dayCount = Integer.valueOf(etCountValue.getText().toString());
+                String textReport = etTextReport.getText().toString();
+                int soulRaiting = rbSoul.getNumStars();
+                int healthRaiting = rbHealth.getNumStars();
+
+                ReportRealmController.addReport(date, dayCount, textReport, soulRaiting, healthRaiting);
+            }
         };
     }
 }

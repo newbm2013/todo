@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm.realmcontrollers.reportcontroller;
 
 import com.shumidub.todoapprealm.App;
+import com.shumidub.todoapprealm.realmmodel.FolderObject;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
 
 import java.util.List;
@@ -19,13 +20,21 @@ public class ReportRealmController  {
     }
 
 
-    public static long addReport(long id, String date, int dayCount, String textReport) {
-        return 0;
-    }
+    public static long addReport(String date, int dayCount, String textReport, int soulRaiting, int healthRaiting) {
 
-
-    public static long addReport(int dayCount, String textReport) {
-        return 0;
+        long id = getValidId();
+        App.initRealm();
+        App.realm.executeTransaction((realm -> {
+            ReportObject reportObject = App.realm.createObject(ReportObject.class);
+            reportObject.setId(id);
+            reportObject.setDate(date);
+            reportObject.setCountOfDay(dayCount);
+            reportObject.setReportText(textReport);
+            reportObject.setSoulRaiting(soulRaiting);
+            reportObject.setHealthRaiting(healthRaiting);
+            App.realm.insert(reportObject);
+        }));
+        return id;
     }
 
 

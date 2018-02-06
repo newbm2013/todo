@@ -2,6 +2,7 @@ package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,9 @@ import android.widget.RatingBar;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
+import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
+
+import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 
@@ -29,18 +33,19 @@ public class ReportDialog extends android.support.v4.app.DialogFragment {
 
     public static final String ADD_BUTTON_TEXT = "ADD";
 
-    MainActivity activity;
-    EditText  etDate;
-    EditText  etCountValue;
-    EditText  etTextReport;
-    RatingBar rbHealth;
-    RatingBar rbSoul;
+    protected MainActivity activity;
+    protected EditText etDate;
+    protected EditText etCountValue;
+    protected EditText etTextReport;
+    protected RatingBar rbHealth;
+    protected RatingBar rbSoul;
 
     String title;
     View view;
     String positiveButtonText;
 
     PositiveButtonInterface positiveButtonInterface;
+
     interface PositiveButtonInterface {
         void onClick(DialogInterface dialogInterface, int i);
     }
@@ -49,23 +54,19 @@ public class ReportDialog extends android.support.v4.app.DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        activity = (MainActivity) getActivity();
         setTitle();
         setView();
         setPositiveButtonText();
         setPositiveButtonInterface();
-
-        etDate = view.findViewById(R.id.name);
-        etCountValue = view.findViewById(R.id.name);
-        etTextReport = view.findViewById(R.id.name);
-        rbHealth = view.findViewById(R.id.ratingbar_health);
-        rbSoul = view.findViewById(R.id.ratingbar_soul);
+        setDialogViews();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title)
-            .setView(view)
-            .setPositiveButton(positiveButtonText, (dialogInterface, i) ->
-                positiveButtonInterface.onClick(dialogInterface, i))
-            .setNegativeButton("Cancel", (dialog, i) ->  dialog.cancel());
+                .setView(view)
+                .setPositiveButton(positiveButtonText, (dialogInterface, i) ->
+                        positiveButtonInterface.onClick(dialogInterface, i))
+                .setNegativeButton("Cancel", (dialog, i) -> dialog.cancel());
 
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
@@ -79,21 +80,42 @@ public class ReportDialog extends android.support.v4.app.DialogFragment {
         return dialog;
     }
 
-    public void setTitle(){
+    protected void setTitle() {
         title = "title";
     }
 
-    public void setView(){
-        view = getActivity().getLayoutInflater().inflate(R.layout., null);
+    protected void setView() {
+        view = getActivity().getLayoutInflater().inflate(R.layout.report_dialog_add_edit_show_fully_size, null);
     }
 
-    public void setPositiveButtonText() {
+    protected void setPositiveButtonText() {
         positiveButtonText = "positiveButtonText";
     }
 
-    public void setPositiveButtonInterface() {
+    protected void setPositiveButtonInterface() {
         positiveButtonInterface = (dialogInterface, i) -> Log.d("DTAG", "setPositiveButtonInterface");
     }
+
+    protected void setDialogViews() {
+        etDate = view.findViewById(R.id.tv_date);
+        etCountValue = view.findViewById(R.id.tv_count_value);
+        etTextReport = view.findViewById(R.id.tv_report_text);
+        rbHealth = view.findViewById(R.id.ratingbar_health);
+        rbSoul = view.findViewById(R.id.ratingbar_soul);
+    }
+
+
+    protected void notifyDataChanged() {
+        List<android.support.v4.app.Fragment> fragments
+                = (getActivity()).getSupportFragmentManager().getFragments();
+
+
+        for (android.support.v4.app.Fragment fragment : fragments) {
+            if (fragment instanceof ReportFragment) {
+                ((ReportFragment) fragment).notifyDataChanged();
+            }
+        }
+    }
+
+
 }
-
-
