@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -71,6 +72,13 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
             holder.itemView.setOnLongClickListener((View view) -> {
                 return onItemLongClicked.onLongClick(view, position, reportObject.getId());
             });
+
+            if (reportObject.isWeekReport()){
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(reportObject.getId());
+                int weekNumber = calendar.get(Calendar.WEEK_OF_YEAR);
+                holder.tvDate.setText("Week" + String.valueOf(weekNumber));
+            }
         }
     }
 
