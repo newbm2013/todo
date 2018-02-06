@@ -77,7 +77,9 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(reportObject.getId());
                 int weekNumber = calendar.get(Calendar.WEEK_OF_YEAR);
-                holder.tvDate.setText("Week" + String.valueOf(weekNumber));
+                holder.tvDate.setText("Week " + String.valueOf(weekNumber));
+                holder.tvDayCountFieldName.setText("Week count");
+
             }
         }
     }
@@ -93,6 +95,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
         TextView tvDate;
         TextView tvDayCount;
         TextView tvRetortText;
+        TextView tvDayCountFieldName;
 
         RatingBar ratingBarSoul;
         RatingBar ratingBarHealth;
@@ -107,6 +110,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
                 tvRetortText = itemView.findViewById(R.id.tv_report_text);
                 ratingBarSoul = itemView.findViewById(R.id.ratingbar_soul);
                 ratingBarHealth = itemView.findViewById(R.id.ratingbar_health);
+                tvDayCountFieldName = itemView.findViewById(R.id.tv_count_field_name);
             }
         }
     }
