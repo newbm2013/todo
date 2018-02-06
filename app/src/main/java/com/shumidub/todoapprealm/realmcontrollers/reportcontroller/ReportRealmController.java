@@ -35,7 +35,6 @@ public class ReportRealmController  {
             id = getValidId();
         }
 
-
         App.initRealm();
         App.realm.executeTransaction((realm -> {
             ReportObject reportObject = App.realm.createObject(ReportObject.class);
