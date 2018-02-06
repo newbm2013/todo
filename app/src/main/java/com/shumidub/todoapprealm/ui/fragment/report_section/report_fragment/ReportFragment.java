@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
+import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.actionmode.report.ReportActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.dialog.report_dialog.AddReportDialog;
@@ -33,6 +34,9 @@ public class ReportFragment extends Fragment{
     ActionBar actionBar;
     ReportRecyclerViewAdapter reportRecyclerViewAdapter;
     List<ReportObject> reportObjectList;
+    public boolean actionModeIsEnabled = false;
+
+    public static long id = 0l;
 
     @Nullable
     @Override
@@ -50,7 +54,6 @@ public class ReportFragment extends Fragment{
 
         recyclerView = view.findViewById(R.id.rv);
 
-
         reportObjectList = ReportRealmController.getReportList();
         reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(reportObjectList);
         recyclerView.setAdapter(reportRecyclerViewAdapter);
@@ -60,8 +63,11 @@ public class ReportFragment extends Fragment{
             //todo open full size
         });
         reportRecyclerViewAdapter.setOnLongClicked((v, position, reportId)->{
-            android.support.v7.view.ActionMode.Callback actionModeCallback = new ReportActionModeCallback();
+            setId(reportId);
+            ActionMode.Callback actionModeCallback
+                    = new ReportActionModeCallback().getReportActionMode(getActivity(), reportId);
             actionBar.startActionMode(actionModeCallback);
+            actionModeIsEnabled = true;
             return true;});
     }
 
@@ -82,6 +88,19 @@ public class ReportFragment extends Fragment{
     public void notifyDataChanged(){
         reportObjectList = ReportRealmController.getReportList();
         reportRecyclerViewAdapter.notifyDataSetChanged();
-        recyclerView.getAdapter().notifyDataSetChanged();
+
+//        reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(reportObjectList);
+//        recyclerView.setAdapter(reportRecyclerViewAdapter);
+
     }
+
+    public static void setId(long idReport){
+        id = idReport;
+    }
+
+    public void finishActionMode(){
+        actionBar.startActionMode(new EmptyActionModeCallback());
+        actionModeIsEnabled = false;
+    }
+
 }

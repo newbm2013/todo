@@ -2,9 +2,9 @@ package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,12 +24,11 @@ import io.reactivex.annotations.NonNull;
  *
  */
 
-public class ReportDialog extends android.support.v4.app.DialogFragment {
+public class BaseReportDialog extends android.support.v4.app.DialogFragment {
 
     public static final String ADD_REPORT_TITLE = "Add new report";
     public static final String EDIT_REPORT_TITLE = "Edit report";
     public static final String DELETE_REPORT_TITLE = "Delete report";
-
 
     public static final String ADD_BUTTON_TEXT = "ADD";
 
@@ -40,14 +39,18 @@ public class ReportDialog extends android.support.v4.app.DialogFragment {
     protected RatingBar rbHealth;
     protected RatingBar rbSoul;
 
+    protected TextInputLayout tilDate;
+    protected TextInputLayout tilCountValue;
+
     String title;
     View view;
     String positiveButtonText;
-
     PositiveButtonInterface positiveButtonInterface;
 
+    AlertDialog dialog;
+
     interface PositiveButtonInterface {
-        void onClick(DialogInterface dialogInterface, int i);
+        void onClick(View view);
     }
 
     @NonNull
@@ -62,13 +65,16 @@ public class ReportDialog extends android.support.v4.app.DialogFragment {
         setDialogViews();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(title)
-                .setView(view)
-                .setPositiveButton(positiveButtonText, (dialogInterface, i) ->
-                        positiveButtonInterface.onClick(dialogInterface, i))
+        builder .setView(view)
+                .setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
                 .setNegativeButton("Cancel", (dialog, i) -> dialog.cancel());
 
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
+
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnKeyListener((DialogInterface dialogInterface, int keyCode, KeyEvent event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -77,10 +83,11 @@ public class ReportDialog extends android.support.v4.app.DialogFragment {
             }
             return false;
         });
+
         return dialog;
     }
 
-    protected void setTitle() {
+    private void setTitle() {
         title = "title";
     }
 
@@ -93,7 +100,7 @@ public class ReportDialog extends android.support.v4.app.DialogFragment {
     }
 
     protected void setPositiveButtonInterface() {
-        positiveButtonInterface = (dialogInterface, i) -> Log.d("DTAG", "setPositiveButtonInterface");
+        positiveButtonInterface = (v) -> Log.d("DTAG", "setPositiveButtonInterface");
     }
 
     protected void setDialogViews() {
@@ -102,13 +109,13 @@ public class ReportDialog extends android.support.v4.app.DialogFragment {
         etTextReport = view.findViewById(R.id.tv_report_text);
         rbHealth = view.findViewById(R.id.ratingbar_health);
         rbSoul = view.findViewById(R.id.ratingbar_soul);
+        tilDate = view.findViewById(R.id.til_date);
+        tilCountValue = view.findViewById(R.id.til_count_value);
     }
-
 
     protected void notifyDataChanged() {
         List<android.support.v4.app.Fragment> fragments
                 = (getActivity()).getSupportFragmentManager().getFragments();
-
 
         for (android.support.v4.app.Fragment fragment : fragments) {
             if (fragment instanceof ReportFragment) {
@@ -117,5 +124,13 @@ public class ReportDialog extends android.support.v4.app.DialogFragment {
         }
     }
 
+    protected void setDateError(String errorText, boolean errorEnable){
+        tilDate.setErrorEnabled(errorEnable);
+        tilDate.setError(errorText);
+    }
 
+    protected void setCountValueError(String errorText, boolean errorEnable){
+        tilCountValue.setErrorEnabled(errorEnable);
+        tilCountValue.setError(errorText);
+    }
 }

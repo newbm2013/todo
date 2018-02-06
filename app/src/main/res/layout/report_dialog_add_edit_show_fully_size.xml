@@ -31,6 +31,7 @@
                 android:layout_marginBottom="8dp">
 
                     <android.support.design.widget.TextInputLayout
+                        android:id="@+id/til_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.8"
@@ -47,37 +48,13 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="2dp"
                             android:textSize="18sp"
+                            android:inputType="date"
                             />
 
                     </android.support.design.widget.TextInputLayout>
 
-
-
-
-
-
-
-
-
-
-
-                <!--<TextView-->
-                    <!--android:id="@+id/tv_count_field_name"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:maxLines="1"-->
-                    <!--android:lines="1"-->
-                    <!--android:layout_marginBottom="2dp"-->
-                    <!--android:layout_marginEnd="8dp"-->
-                    <!--android:layout_marginStart="8dp"-->
-                    <!--android:layout_marginTop="2dp"-->
-                    <!--android:text="Day count"-->
-                    <!--android:gravity="right"-->
-                    <!--android:textSize="16sp"-->
-                    <!--android:layout_weight="1" />-->
-                <!---->
-
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_count_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -95,8 +72,8 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="2dp"
                         android:textSize="18sp"
-                        android:gravity="right" />
-
+                        android:gravity="right"
+                        android:inputType="number"/>
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -107,6 +84,7 @@
             <include layout="@layout/report_raiting_bar_container"></include>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_report_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Report text">
@@ -120,11 +98,6 @@
                     android:layout_margin="8dp"/>
 
             </android.support.design.widget.TextInputLayout>
-
-
-
-
-
 
 
         </LinearLayout>

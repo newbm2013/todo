@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.dialog.dialog.task_folder_dialog;
+package com.shumidub.todoapprealm.ui.dialog.task_folder_dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

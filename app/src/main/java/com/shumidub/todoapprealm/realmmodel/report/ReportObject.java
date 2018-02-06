@@ -24,8 +24,8 @@ public class ReportObject extends RealmObject implements IReportObject {
     private String date;
     private int countOfDay;
     private String reportText;
-    private int soulRaiting;
-    private int healthRaiting;
+    private int soulRating;
+    private int healthRating;
 
     public long getId() {
         return id;
@@ -59,20 +59,20 @@ public class ReportObject extends RealmObject implements IReportObject {
         this.reportText = reportText;
     }
 
-    public int getSoulRaiting() {
-        return soulRaiting;
+    public int getSoulRating() {
+        return soulRating;
     }
 
-    public void setSoulRaiting(int soulRaiting) {
-        this.soulRaiting = soulRaiting;
+    public void setSoulRating(int soulRating) {
+        this.soulRating = soulRating;
     }
 
-    public int getHealthRaiting() {
-        return healthRaiting;
+    public int getHealthRating() {
+        return healthRating;
     }
 
-    public void setHealthRaiting(int healthRaiting) {
-        this.healthRaiting = healthRaiting;
+    public void setHealthRating(int healthRating) {
+        this.healthRating = healthRating;
     }
 
 }

@@ -1,22 +1,15 @@
 package com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
-import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTasksFragment;
 
 import java.util.List;
 
@@ -62,21 +55,18 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
         return new ViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (!reportObjects.isEmpty()) {
-
             ReportObject reportObject = reportObjects.get(position);
-
             holder.tvDate.setText(reportObject.getDate());
-            holder.tvDayCount.setText("" + reportObject.getCountOfDay());
+            holder.tvDayCount.setText(String.valueOf(reportObject.getCountOfDay()));
             holder.tvRetortText.setText(reportObject.getReportText());
-            holder.ratingBarSoul.setRating(1);
-            holder.ratingBarHealth.setRating(1);
-
+            holder.ratingBarSoul.setRating(reportObject.getSoulRating());
+            holder.ratingBarSoul.setIsIndicator(true);
+            holder.ratingBarHealth.setRating(reportObject.getHealthRating());
+            holder.ratingBarHealth.setIsIndicator(true);
             holder.itemView.setTag(reportObject.getId());
-
             holder.itemView.setOnClickListener((view)-> onItemClicked.onClick(view, position, reportObject.getId() ));
             holder.itemView.setOnLongClickListener((View view) -> {
                 return onItemLongClicked.onLongClick(view, position, reportObject.getId());
@@ -112,8 +102,4 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
             }
         }
     }
-
-
-
-
 }

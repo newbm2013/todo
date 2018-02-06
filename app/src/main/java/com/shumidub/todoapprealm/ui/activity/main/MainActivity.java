@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -96,7 +97,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-        }else{
+        } else if (currentFragmentItem ==2){
+            for (Fragment fragment: getSupportFragmentManager ().getFragments()){
+                if (fragment instanceof ReportFragment) {
+                    if (((ReportFragment) fragment).actionModeIsEnabled) {
+                        ((ReportFragment) fragment).finishActionMode();
+                    } else {
+                        onBackPressedWithTimer();
+                        return;
+                    }
+                }
+            }
+        } else {
             onBackPressedWithTimer();
         }
     }

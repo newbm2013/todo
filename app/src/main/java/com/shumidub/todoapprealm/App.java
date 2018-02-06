@@ -14,6 +14,7 @@ import io.realm.RealmModel;
 
 /**
  * Created by Артем on 19.12.2017.
+ *
  */
 
 public class App extends Application {

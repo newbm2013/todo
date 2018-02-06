@@ -35,7 +35,7 @@ import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.S
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.task.FolderActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTaskFragmentPagerAdapter;
-import com.shumidub.todoapprealm.ui.dialog.dialog.task_folder_dialog.AddFolderDialog;
+import com.shumidub.todoapprealm.ui.dialog.task_folder_dialog.AddFolderDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.Calendar;
 import java.util.List;
