@@ -30,71 +30,100 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="8dp">
 
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:hint="Date">
+
+                        <EditText
+                            android:id="@+id/tv_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:lines="1"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="2dp"
+                            android:textSize="18sp"
+                            />
+
+                    </android.support.design.widget.TextInputLayout>
 
 
-                <EditText
-                    android:id="@+id/tv_date"
+
+
+
+
+
+
+
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_count_field_name"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:maxLines="1"-->
+                    <!--android:lines="1"-->
+                    <!--android:layout_marginBottom="2dp"-->
+                    <!--android:layout_marginEnd="8dp"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:layout_marginTop="2dp"-->
+                    <!--android:text="Day count"-->
+                    <!--android:gravity="right"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:layout_weight="1" />-->
+                <!---->
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:lines="1"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
-                    android:text="date"
-                    android:textSize="18sp"
-                    android:layout_weight="0.8" />
+                    android:layout_weight="1"
+                    android:hint="Days count"
+                    >
 
-                <TextView
-                    android:id="@+id/tv_count_field_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:lines="1"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
-                    android:text="Day count"
-                    android:gravity="right"
-                    android:textSize="16sp"
-                    android:layout_weight="1" />
+                    <EditText
+                        android:id="@+id/tv_count_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="2dp"
+                        android:textSize="18sp"
+                        android:gravity="right" />
 
-                <EditText
-                    android:id="@+id/tv_count_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:lines="1"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
-                    android:text="100"
-                    android:textSize="20sp"
-                    android:layout_weight="1.1"
-                    android:gravity="right" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
 
             </LinearLayout>
 
             <include layout="@layout/report_raiting_bar_container"></include>
 
-            <EditText
-                android:id="@+id/tv_report_text"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minLines="5"
-                android:gravity="bottom"
-                android:layout_margin="8dp"
-                android:text="text_report"/>
+                android:hint="Report text">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-            </LinearLayout>
+                <EditText
+                    android:id="@+id/tv_report_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minLines="5"
+                    android:gravity="bottom"
+                    android:layout_margin="8dp"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
 
 
 

@@ -32,6 +32,7 @@ public class ReportFragment extends Fragment{
     RecyclerView recyclerView;
     ActionBar actionBar;
     ReportRecyclerViewAdapter reportRecyclerViewAdapter;
+    List<ReportObject> reportObjectList;
 
     @Nullable
     @Override
@@ -50,7 +51,7 @@ public class ReportFragment extends Fragment{
         recyclerView = view.findViewById(R.id.rv);
 
 
-        List<ReportObject> reportObjectList = ReportRealmController.getReportList();
+        reportObjectList = ReportRealmController.getReportList();
         reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(reportObjectList);
         recyclerView.setAdapter(reportRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -79,6 +80,8 @@ public class ReportFragment extends Fragment{
     }
 
     public void notifyDataChanged(){
+        reportObjectList = ReportRealmController.getReportList();
         reportRecyclerViewAdapter.notifyDataSetChanged();
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 }
