@@ -51,7 +51,7 @@ public class FullSizeReportDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.report_card_view, null, false);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.report_full_size_dialog, null, false);
 
         tvDate = view.findViewById(R.id.tv_date);
         tvDayCount = view.findViewById(R.id.tv_count_value);
@@ -77,7 +77,6 @@ public class FullSizeReportDialog extends DialogFragment {
 
         tvRetortText.setMaxLines(10000);
         tvRetortText.setText(reportObject.getReportText());
-        tvRetortText.setMovementMethod(new ScrollingMovementMethod());
 
         ratingBarSoul.setRating(reportObject.getSoulRating());
         ratingBarSoul.setIsIndicator(true);

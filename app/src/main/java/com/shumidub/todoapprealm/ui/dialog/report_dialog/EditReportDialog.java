@@ -65,7 +65,6 @@ public class EditReportDialog extends BaseReportDialog {
         llSwitchWeekContainer.setVisibility(View.GONE);
 
         if (reportObject.isWeekReport()){
-            //todo need think
             if (currentWeekNumber != reportObject.getWeekNumber()){
                 Log.d("DTAG", "setDialogViews: " + currentWeekNumber + " " + reportObject.getWeekNumber());
                 etDate.setEnabled(false);
