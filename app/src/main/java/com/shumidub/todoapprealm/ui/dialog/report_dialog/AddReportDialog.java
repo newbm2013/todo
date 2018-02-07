@@ -1,8 +1,13 @@
 package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
+import android.util.Log;
+import android.widget.CompoundButton;
+
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
+import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -26,27 +31,71 @@ public class AddReportDialog extends BaseReportDialog {
     protected void setDialogViews() {
         super.setDialogViews();
         String defaultDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date(System.currentTimeMillis()));
-        int defaultCount = 100;
+        int defaultCount = FolderSlidingPanelFragment.getDayScopeValue();
+
         etDate.setText(defaultDate);
         etCountValue.setText("" + defaultCount);
-    }
+
+
+        switchWeek.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    etDate.setText(String.valueOf(currentWeekNumber));
+                    tilCountValue.setHint("Week count");
+                    tilDate.setHint("Week number");
+                }
+                else{
+                    etDate.setText(defaultDate);
+                    tilCountValue.setHint("Day count");
+                    tilDate.setHint("Date");
+                }
+            }
+        });
+            }
 
     @Override
     protected void setPositiveButtonInterface() {
         positiveButtonInterface = (v)-> {
-            if (!etDate.getText().toString().isEmpty() && !etCountValue.getText().toString().isEmpty()){
-                String date = etDate.getText().toString();
+
+
+            //todo need check
+            if (!etDate.getText().toString().isEmpty() && !etCountValue.getText().toString().isEmpty()
+                    && Integer.valueOf(etCountValue.getText().toString()) < 500
+                    && ((( !switchWeek.isChecked() && etDate.getText().toString().length()==10 )
+                        || (switchWeek.isChecked()
+                            && ( (Integer.valueOf(etDate.getText().toString())== currentWeekNumber
+                            || (Integer.valueOf(etDate.getText().toString())== currentWeekNumber -1 ))))))){
+
+                String date;
                 int dayCount = Integer.valueOf(etCountValue.getText().toString());
                 String textReport = etTextReport.getText().toString();
                 int soulRating = rbSoul.getProgress();
                 int healthRating = rbHealth.getProgress();
-                ReportRealmController.addReport(date, dayCount, textReport, soulRating, healthRating, switcWeek.isChecked());
+                boolean isWeekReport = switchWeek.isChecked();
+                int weekNumber;
+
+                if (isWeekReport){
+                    weekNumber = Integer.valueOf(etDate.getText().toString());
+                    date = calendar.get(Calendar.DATE) + "." + calendar.get(Calendar.MONTH) + "."
+                            + calendar.get(Calendar.YEAR);
+                    Log.d("DTAG", "setPositiveButtonInterface: date = " + date);
+                }
+                else {
+                    date = etDate.getText().toString();
+                    weekNumber = currentWeekNumber;
+                }
+
+                ReportRealmController.addReport(date, dayCount, textReport, soulRating, healthRating, isWeekReport, weekNumber);
                 notifyDataChanged();
                 dismiss();
+
             } else {
                 if (etDate.getText().toString().isEmpty()) {
                     setDateError("Should be filled", true);
-                } else {
+                } else if (!switchWeek.isChecked() && etDate.getText().toString().length()!=10){
+                    setDateError("Not valid date", true);
+                }else {
                     setDateError("", false);
                 }
                 if (etCountValue.getText().toString().isEmpty()) {
@@ -54,8 +103,31 @@ public class AddReportDialog extends BaseReportDialog {
                 } else {
                     setCountValueError("", false);
                 }
-            }
 
+                boolean weekNumberValid = false;
+                if (switchWeek.isChecked() && !etDate.getText().toString().isEmpty() ){
+                    weekNumberValid
+                            =  ((Integer.valueOf(etDate.getText().toString())== currentWeekNumber
+                            || (Integer.valueOf(etDate.getText().toString())== currentWeekNumber -1)));
+                }
+
+
+                if ( switchWeek.isChecked() && !etDate.getText().toString().isEmpty()
+                        && !weekNumberValid ) {
+                    setDateError("Not valid week number", true);
+                } else if (switchWeek.isChecked() && !etDate.getText().toString().isEmpty()
+                        && weekNumberValid){
+                    setDateError("", false);
+                }
+
+
+                if (!(Integer.valueOf(etCountValue.getText().toString()) < 500)){
+                    setCountValueError("Count value too match", true);
+                } else {
+                    setCountValueError("", false);
+                }
+
+            }
         };
     }
 

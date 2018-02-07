@@ -1,13 +1,14 @@
 package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
-import android.content.DialogInterface;
-import android.os.Bundle;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
 import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
+
+import java.util.Calendar;
 
 /**
  * Created by A.shumidub on 05.02.18.
@@ -17,14 +18,8 @@ import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.Repo
 public class EditReportDialog extends BaseReportDialog {
 
     long id;
+    ReportObject reportObject;
 
-//    public static EditReportDialog newInstance(long id) {
-//        Bundle args = new Bundle();
-//        args.putLong("id", id);
-//        EditReportDialog fragment = new EditReportDialog();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     protected void setView() {
@@ -42,16 +37,36 @@ public class EditReportDialog extends BaseReportDialog {
 
         id = ReportFragment.id;
 
-        ReportObject reportObject = ReportRealmController.getReport(id);
-                etDate.setText(reportObject.getDate());
+        reportObject = ReportRealmController.getReport(id);
+
+        if (reportObject.isWeekReport()){
+            etDate.setText(String.valueOf(reportObject.getWeekNumber()));
+            tilCountValue.setHint("Week count");
+            tilDate.setHint("Week number");
+        } else{
+            etDate.setText(reportObject.getDate());
+            tilCountValue.setHint("Day count");
+            tilDate.setHint("Date");
+        }
+
         etCountValue.setText(String.valueOf(reportObject.getCountOfDay()));
         etTextReport.setText(reportObject.getReportText());
         rbHealth.setRating(reportObject.getHealthRating());
         rbSoul.setRating(reportObject.getSoulRating());
 
-        switcWeek.setVisibility(View.GONE);
+        llSwitchWeekContainer.setVisibility(View.GONE);
 
-//        rbHealth.set
+        if (reportObject.isWeekReport()){
+            //todo need think
+            if (currentWeekNumber != reportObject.getWeekNumber()){
+                Log.d("DTAG", "setDialogViews: " + currentWeekNumber + " " + reportObject.getWeekNumber());
+                etDate.setEnabled(false);
+                etDate.setCursorVisible(false);
+                etDate.setTextColor(Color.BLACK);
+                etDate.setKeyListener(null);
+            }
+        }
+
 
     }
 
@@ -59,30 +74,87 @@ public class EditReportDialog extends BaseReportDialog {
     protected void setPositiveButtonInterface() {
         positiveButtonInterface = (v)-> {
 
-            //todo show error
-            if (!etDate.getText().toString().isEmpty() && !etDate.getText().toString().isEmpty()){
-                String date = etDate.getText().toString();
-                //todo set number keyboard
+
+            //todo need check
+            if (!etDate.getText().toString().isEmpty() && !etCountValue.getText().toString().isEmpty()
+                    && (Integer.valueOf(etCountValue.getText().toString()) < 500)
+                    && ((( !reportObject.isWeekReport() && etDate.getText().toString().length()==10 )
+                    || (reportObject.isWeekReport()
+                        && ((Integer.valueOf(etDate.getText().toString())== currentWeekNumber
+                        || (Integer.valueOf(etDate.getText().toString())== currentWeekNumber -1 ))))))){
+
+                String date;
                 int dayCount = Integer.valueOf(etCountValue.getText().toString());
                 String textReport = etTextReport.getText().toString();
                 int soulRating = rbSoul.getProgress();
                 int healthRating = rbHealth.getProgress();
-                ReportRealmController.editReport(id ,date, dayCount, textReport, soulRating, healthRating);
+                int weekNumber;
+
+                if (reportObject.isWeekReport()){
+                    weekNumber = Integer.valueOf(etDate.getText().toString());
+                    date = calendar.get(Calendar.DATE) + "." + calendar.get(Calendar.MONTH) + "."
+                            + calendar.get(Calendar.YEAR);
+                    Log.d("DTAG", "setPositiveButtonInterface: date = " + date);
+                }
+                else {
+                    date = etDate.getText().toString();
+                    weekNumber = currentWeekNumber;
+                }
+
+                ReportRealmController.editReport(id, date, dayCount, textReport, soulRating, healthRating, weekNumber);
                 notifyDataChanged();
                 dismiss();
-            } else{
-                //todo not work
-                if (etDate.getText().toString().isEmpty()){
+
+            } else {
+                if (etDate.getText().toString().isEmpty()) {
                     setDateError("Should be filled", true);
-                } else{
+                } else if (!reportObject.isWeekReport() && etDate.getText().toString().length()!=10){
+                    setDateError("Not valid date", true);
+                }else {
                     setDateError("", false);
                 }
-                if (etCountValue.getText().toString().isEmpty()){
+
+                if (etCountValue.getText().toString().isEmpty()) {
                     setCountValueError("Should be filled", true);
-                }else{
+                } else {
                     setCountValueError("", false);
                 }
+
+                boolean weekNumberValid = false;
+                if (reportObject.isWeekReport() && !etDate.getText().toString().isEmpty() ){
+                    weekNumberValid
+                            =  ((Integer.valueOf(etDate.getText().toString())== currentWeekNumber
+                            || (Integer.valueOf(etDate.getText().toString())== currentWeekNumber -1)));
+                }
+
+                if ( reportObject.isWeekReport() && !etDate.getText().toString().isEmpty()
+                        && !weekNumberValid ) {
+                    setDateError("Not valid week number", true);
+                } else if (reportObject.isWeekReport() && !etDate.getText().toString().isEmpty()
+                        && weekNumberValid){
+                    setDateError("", false);
+                }
+
+
+                if (!(Integer.valueOf(etCountValue.getText().toString()) < 500)){
+                    setCountValueError("Count value too match", true);
+                } else {
+                    setCountValueError("", false);
+                }
+
+
             }
+
+
+
+
+
+
+
+
+
+
+
         };
     }
 

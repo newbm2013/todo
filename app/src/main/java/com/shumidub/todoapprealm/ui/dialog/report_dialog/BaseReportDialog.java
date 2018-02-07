@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Switch;
 
@@ -16,6 +17,7 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
 
+import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
@@ -39,7 +41,8 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
     protected EditText etTextReport;
     protected RatingBar rbHealth;
     protected RatingBar rbSoul;
-    protected Switch switcWeek;
+    protected Switch switchWeek;
+    protected LinearLayout llSwitchWeekContainer;
 
     protected TextInputLayout tilDate;
     protected TextInputLayout tilCountValue;
@@ -48,6 +51,10 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
     View view;
     String positiveButtonText;
     PositiveButtonInterface positiveButtonInterface;
+
+    int currentWeekNumber;
+    Calendar calendar;
+
 
     AlertDialog dialog;
 
@@ -59,12 +66,19 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        currentWeekNumber = calendar.get(Calendar.WEEK_OF_YEAR);
+
         activity = (MainActivity) getActivity();
         setTitle();
         setView();
         setPositiveButtonText();
         setPositiveButtonInterface();
         setDialogViews();
+
+
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder .setView(view)
@@ -113,7 +127,8 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
         rbSoul = view.findViewById(R.id.ratingbar_soul);
         tilDate = view.findViewById(R.id.til_date);
         tilCountValue = view.findViewById(R.id.til_count_value);
-        switcWeek = view.findViewById(R.id.switch_week);
+        switchWeek = view.findViewById(R.id.switch_week);
+        llSwitchWeekContainer = view.findViewById(R.id.ll_week_switc_container);
     }
 
     protected void notifyDataChanged() {

@@ -74,12 +74,8 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
             });
 
             if (reportObject.isWeekReport()){
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(reportObject.getId());
-                int weekNumber = calendar.get(Calendar.WEEK_OF_YEAR);
-                holder.tvDate.setText("Week " + String.valueOf(weekNumber));
+                holder.tvDate.setText("Week " + reportObject.getWeekNumber());
                 holder.tvDayCountFieldName.setText("Week count");
-
             }
         }
     }

@@ -24,7 +24,8 @@ public class ReportRealmController  {
     }
 
 
-    public static long addReport(String date, int dayCount, String textReport, int soulRating, int healthRating, boolean isWeekReport) {
+    public static long addReport(String date, int dayCount, String textReport, int soulRating,
+                                 int healthRating, boolean isWeekReport, int weekNumber) {
 
         long id;
 
@@ -45,13 +46,15 @@ public class ReportRealmController  {
             reportObject.setSoulRating(soulRating);
             reportObject.setHealthRating(healthRating);
             reportObject.setWeekReport(isWeekReport);
+            reportObject.setWeekNumber(weekNumber);
             App.realm.insert(reportObject);
         }));
         return id;
     }
 
 
-    public static void editReport(long id, String date, int dayCount, String textReport, int soulRaiting, int healthRaiting) {
+    public static void editReport(long id, String date, int dayCount, String textReport,
+                                  int soulRaiting, int healthRaiting, int weekNumber) {
         App.initRealm();
         ReportObject reportObject = App.realm.where(ReportObject.class).equalTo("id", id).findFirst();
         App.realm.executeTransaction((realm)->{
@@ -60,6 +63,7 @@ public class ReportRealmController  {
             reportObject.setReportText(textReport);
             reportObject.setSoulRating(soulRaiting);
             reportObject.setHealthRating(healthRaiting);
+            reportObject.setWeekNumber(weekNumber);
         });
     }
 

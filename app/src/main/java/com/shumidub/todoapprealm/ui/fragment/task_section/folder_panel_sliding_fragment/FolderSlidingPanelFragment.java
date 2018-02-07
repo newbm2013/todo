@@ -55,7 +55,7 @@ public class FolderSlidingPanelFragment extends Fragment {
     static ActionMode actionMode;
     ActionMode.Callback folderCallback;
     static final int FOLDER_ACTIONMODE = 2;
-    public int dayScope;
+    public static int dayScope;
 
     // SLIDING VIEW
     public SlidingUpPanelLayout slidingUpPanelLayout;
@@ -417,6 +417,8 @@ public class FolderSlidingPanelFragment extends Fragment {
             }
         }
     }
+
+    public static int getDayScopeValue(){return dayScope;}
 
     /** update done status and number of doing on cycling tasks if done day != today*/
     private void resetTasksCountAccumulation(){

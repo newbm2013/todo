@@ -26,6 +26,7 @@ public class ReportObject extends RealmObject implements IReportObject {
     private String reportText;
     private int soulRating;
     private int healthRating;
+    private int weekNumber;
     private boolean isWeekReport;
 
     public long getId() {
@@ -82,5 +83,13 @@ public class ReportObject extends RealmObject implements IReportObject {
 
     public void setWeekReport(boolean weekReport) {
         isWeekReport = weekReport;
+    }
+
+    public int getWeekNumber() {
+        return weekNumber;
+    }
+
+    public void setWeekNumber(int weekNumber) {
+        this.weekNumber = weekNumber;
     }
 }

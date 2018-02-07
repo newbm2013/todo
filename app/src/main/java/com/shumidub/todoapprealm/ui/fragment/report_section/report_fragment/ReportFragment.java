@@ -77,7 +77,8 @@ public class ReportFragment extends Fragment{
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem add = menu.add("add ");
-        add.setIcon(R.drawable.ic_edit);
+        add.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        add.setIcon(R.drawable.ic_add);
         add.setOnMenuItemClickListener((MenuItem a) -> {
             new AddReportDialog().show(getActivity().getSupportFragmentManager(), AddReportDialog.ADD_REPORT_TITLE);
         return true;
