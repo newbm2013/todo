@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -32,6 +33,10 @@ public class FullSizeReportDialog extends DialogFragment {
 
     RatingBar ratingBarSoul;
     RatingBar ratingBarHealth;
+    RatingBar ratingBarPhinance;
+    RatingBar ratingBarEnglish;
+    RatingBar ratingBarSocial;
+    RatingBar ratingBarFamilly;
 
 
     public static FullSizeReportDialog newInstance(long id) {
@@ -42,18 +47,23 @@ public class FullSizeReportDialog extends DialogFragment {
         return fragment;
     }
 
-    @NonNull
+    @Nullable
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = getActivity().getLayoutInflater().inflate(R.layout.report_card_view, null, false);
 
-
         tvDate = view.findViewById(R.id.tv_date);
         tvDayCount = view.findViewById(R.id.tv_count_value);
         tvRetortText = view.findViewById(R.id.tv_report_text);
+
         ratingBarSoul = view.findViewById(R.id.ratingbar_soul);
         ratingBarHealth = view.findViewById(R.id.ratingbar_health);
+        ratingBarPhinance = view.findViewById(R.id.ratingbar_phinance);
+        ratingBarEnglish = view.findViewById(R.id.ratingbar_english);
+        ratingBarSocial = view.findViewById(R.id.ratingbar_social);
+        ratingBarFamilly = view.findViewById(R.id.ratingbar_familly);
+
         tvDayCountFieldName = view.findViewById(R.id.tv_count_field_name);
 
         if (getArguments() != null && getArguments().getLong("id", 0) != 0){
@@ -64,14 +74,31 @@ public class FullSizeReportDialog extends DialogFragment {
         }
 
         tvDayCount.setText(String.valueOf(reportObject.getCountOfDay()));
+
         tvRetortText.setMaxLines(10000);
         tvRetortText.setText(reportObject.getReportText());
         tvRetortText.setMovementMethod(new ScrollingMovementMethod());
+
         ratingBarSoul.setRating(reportObject.getSoulRating());
         ratingBarSoul.setIsIndicator(true);
+
         ratingBarHealth.setRating(reportObject.getHealthRating());
         ratingBarHealth.setIsIndicator(true);
 
+        ratingBarPhinance.setRating(reportObject.getPhinanceRating());
+        ratingBarPhinance.setIsIndicator(true);
+
+        ratingBarEnglish.setRating(reportObject.getEnglishRating());
+        ratingBarEnglish.setIsIndicator(true);
+
+        ratingBarSocial.setRating(reportObject.getSocialRating());
+        ratingBarSocial.setIsIndicator(true);
+
+        ratingBarFamilly.setRating(reportObject.getFamillyRating());
+        ratingBarFamilly.setIsIndicator(true);
+
+        ratingBarHealth.setRating(reportObject.getHealthRating());
+        ratingBarHealth.setIsIndicator(true);
 
         if (reportObject.isWeekReport()){
             tvDate.setText("Week " + reportObject.getWeekNumber());

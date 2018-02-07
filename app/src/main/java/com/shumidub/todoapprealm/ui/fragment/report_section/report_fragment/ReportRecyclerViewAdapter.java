@@ -49,7 +49,6 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
        this.reportObjects = reportObjects;
     }
 
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
@@ -61,12 +60,28 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (!reportObjects.isEmpty()) {
             ReportObject reportObject = reportObjects.get(position);
+
             holder.tvDayCount.setText(String.valueOf(reportObject.getCountOfDay()));
             holder.tvRetortText.setText(reportObject.getReportText());
+
             holder.ratingBarSoul.setRating(reportObject.getSoulRating());
             holder.ratingBarSoul.setIsIndicator(true);
+
+            holder.ratingBarPhinance.setRating(reportObject.getPhinanceRating());
+            holder.ratingBarPhinance.setIsIndicator(true);
+
+            holder.ratingBarEnglish.setRating(reportObject.getEnglishRating());
+            holder.ratingBarEnglish.setIsIndicator(true);
+
+            holder.ratingBarSocial.setRating(reportObject.getSocialRating());
+            holder.ratingBarSocial.setIsIndicator(true);
+
+            holder.ratingBarFamilly.setRating(reportObject.getFamillyRating());
+            holder.ratingBarFamilly.setIsIndicator(true);
+
             holder.ratingBarHealth.setRating(reportObject.getHealthRating());
             holder.ratingBarHealth.setIsIndicator(true);
+
             holder.itemView.setTag(reportObject.getId());
             holder.itemView.setOnClickListener((view)-> onItemClicked.onClick(view, position, reportObject.getId() ));
             holder.itemView.setOnLongClickListener((View view) -> {
@@ -101,6 +116,10 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
 
         RatingBar ratingBarSoul;
         RatingBar ratingBarHealth;
+        RatingBar ratingBarPhinance;
+        RatingBar ratingBarEnglish;
+        RatingBar ratingBarSocial;
+        RatingBar ratingBarFamilly;
 
         LinearLayout llDivider;
 
@@ -112,8 +131,14 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
                 tvDate = itemView.findViewById(R.id.tv_date);
                 tvDayCount = itemView.findViewById(R.id.tv_count_value);
                 tvRetortText = itemView.findViewById(R.id.tv_report_text);
+
                 ratingBarSoul = itemView.findViewById(R.id.ratingbar_soul);
                 ratingBarHealth = itemView.findViewById(R.id.ratingbar_health);
+                ratingBarPhinance = itemView.findViewById(R.id.ratingbar_phinance);
+                ratingBarEnglish = itemView.findViewById(R.id.ratingbar_english);
+                ratingBarSocial = itemView.findViewById(R.id.ratingbar_social);
+                ratingBarFamilly = itemView.findViewById(R.id.ratingbar_familly);
+
                 tvDayCountFieldName = itemView.findViewById(R.id.tv_count_field_name);
                 llDivider = itemView.findViewById(R.id.ll_divider);
 

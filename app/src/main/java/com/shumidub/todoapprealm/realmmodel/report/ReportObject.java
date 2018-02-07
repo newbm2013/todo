@@ -26,6 +26,10 @@ public class ReportObject extends RealmObject implements IReportObject {
     private String reportText;
     private int soulRating;
     private int healthRating;
+    private int phinanceRating;
+    private int englishRating;
+    private int socialRating;
+    private int famillyRating;
     private int weekNumber;
     private boolean isWeekReport;
 
@@ -91,5 +95,37 @@ public class ReportObject extends RealmObject implements IReportObject {
 
     public void setWeekNumber(int weekNumber) {
         this.weekNumber = weekNumber;
+    }
+
+    public int getPhinanceRating() {
+        return phinanceRating;
+    }
+
+    public void setPhinanceRating(int phinanceRating) {
+        this.phinanceRating = phinanceRating;
+    }
+
+    public int getEnglishRating() {
+        return englishRating;
+    }
+
+    public void setEnglishRating(int englishRating) {
+        this.englishRating = englishRating;
+    }
+
+    public int getSocialRating() {
+        return socialRating;
+    }
+
+    public void setSocialRating(int socialRating) {
+        this.socialRating = socialRating;
+    }
+
+    public int getFamillyRating() {
+        return famillyRating;
+    }
+
+    public void setFamillyRating(int famillyRating) {
+        this.famillyRating = famillyRating;
     }
 }

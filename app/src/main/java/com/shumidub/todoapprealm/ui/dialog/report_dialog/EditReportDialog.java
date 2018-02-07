@@ -54,6 +54,14 @@ public class EditReportDialog extends BaseReportDialog {
         rbHealth.setRating(reportObject.getHealthRating());
         rbSoul.setRating(reportObject.getSoulRating());
 
+        ratingBarPhinance.setRating(reportObject.getPhinanceRating());
+        ratingBarEnglish.setRating(reportObject.getEnglishRating());
+        ratingBarSocial.setRating(reportObject.getSocialRating());
+        ratingBarFamilly.setRating(reportObject.getFamillyRating());
+
+
+
+
         llSwitchWeekContainer.setVisibility(View.GONE);
 
         if (reportObject.isWeekReport()){
@@ -86,8 +94,14 @@ public class EditReportDialog extends BaseReportDialog {
                 String date;
                 int dayCount = Integer.valueOf(etCountValue.getText().toString());
                 String textReport = etTextReport.getText().toString();
+
                 int soulRating = rbSoul.getProgress();
                 int healthRating = rbHealth.getProgress();
+                int phinanceRating = ratingBarPhinance.getProgress();
+                int englishRating = ratingBarEnglish.getProgress();
+                int socialRating = ratingBarSocial.getProgress();
+                int famillyRating = ratingBarFamilly.getProgress();
+
                 int weekNumber;
 
                 if (reportObject.isWeekReport()){
@@ -101,7 +115,10 @@ public class EditReportDialog extends BaseReportDialog {
                     weekNumber = currentWeekNumber;
                 }
 
-                ReportRealmController.editReport(id, date, dayCount, textReport, soulRating, healthRating, weekNumber);
+                ReportRealmController.editReport(id, date, dayCount, textReport,
+                        soulRating, healthRating, phinanceRating,
+                        englishRating, socialRating, famillyRating,
+                        weekNumber);
                 notifyDataChanged();
                 dismiss();
 

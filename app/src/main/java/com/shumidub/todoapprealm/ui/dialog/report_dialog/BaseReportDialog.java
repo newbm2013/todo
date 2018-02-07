@@ -39,8 +39,15 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
     protected EditText etDate;
     protected EditText etCountValue;
     protected EditText etTextReport;
+
+
     protected RatingBar rbHealth;
     protected RatingBar rbSoul;
+    protected RatingBar ratingBarPhinance;
+    protected RatingBar ratingBarEnglish;
+    protected RatingBar ratingBarSocial;
+    protected RatingBar ratingBarFamilly;
+
     protected Switch switchWeek;
     protected LinearLayout llSwitchWeekContainer;
 
@@ -123,8 +130,14 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
         etDate = view.findViewById(R.id.tv_date);
         etCountValue = view.findViewById(R.id.tv_count_value);
         etTextReport = view.findViewById(R.id.tv_report_text);
+
         rbHealth = view.findViewById(R.id.ratingbar_health);
         rbSoul = view.findViewById(R.id.ratingbar_soul);
+        ratingBarPhinance = view.findViewById(R.id.ratingbar_phinance);
+        ratingBarEnglish = view.findViewById(R.id.ratingbar_english);
+        ratingBarSocial = view.findViewById(R.id.ratingbar_social);
+        ratingBarFamilly = view.findViewById(R.id.ratingbar_familly);
+
         tilDate = view.findViewById(R.id.til_date);
         tilCountValue = view.findViewById(R.id.til_count_value);
         switchWeek = view.findViewById(R.id.switch_week);

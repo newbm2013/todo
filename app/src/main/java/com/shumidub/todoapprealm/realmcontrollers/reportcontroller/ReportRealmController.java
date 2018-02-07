@@ -24,8 +24,10 @@ public class ReportRealmController  {
     }
 
 
-    public static long addReport(String date, int dayCount, String textReport, int soulRating,
-                                 int healthRating, boolean isWeekReport, int weekNumber) {
+    public static long addReport(String date, int dayCount, String textReport,
+                                 int soulRating, int healthRating, int phinanceRating,
+                                 int englishRating, int socialRating, int famillyRating,
+                                 boolean isWeekReport, int weekNumber) {
 
         long id;
 
@@ -43,8 +45,14 @@ public class ReportRealmController  {
             reportObject.setDate(date);
             reportObject.setCountOfDay(dayCount);
             reportObject.setReportText(textReport);
+
             reportObject.setSoulRating(soulRating);
             reportObject.setHealthRating(healthRating);
+            reportObject.setPhinanceRating(phinanceRating);
+            reportObject.setEnglishRating(englishRating);
+            reportObject.setSocialRating(socialRating);
+            reportObject.setFamillyRating(famillyRating);
+
             reportObject.setWeekReport(isWeekReport);
             reportObject.setWeekNumber(weekNumber);
             App.realm.insert(reportObject);
@@ -54,15 +62,23 @@ public class ReportRealmController  {
 
 
     public static void editReport(long id, String date, int dayCount, String textReport,
-                                  int soulRaiting, int healthRaiting, int weekNumber) {
+                                  int soulRating, int healthRating, int phinanceRating,
+                                  int englishRating,int socialRating, int famillyRating,
+                                  int weekNumber) {
         App.initRealm();
         ReportObject reportObject = App.realm.where(ReportObject.class).equalTo("id", id).findFirst();
         App.realm.executeTransaction((realm)->{
             reportObject.setDate(date);
             reportObject.setCountOfDay(dayCount);
             reportObject.setReportText(textReport);
-            reportObject.setSoulRating(soulRaiting);
-            reportObject.setHealthRating(healthRaiting);
+
+            reportObject.setSoulRating(soulRating);
+            reportObject.setHealthRating(healthRating);
+            reportObject.setPhinanceRating(phinanceRating);
+            reportObject.setEnglishRating(englishRating);
+            reportObject.setSocialRating(socialRating);
+            reportObject.setFamillyRating(famillyRating);
+
             reportObject.setWeekNumber(weekNumber);
         });
     }

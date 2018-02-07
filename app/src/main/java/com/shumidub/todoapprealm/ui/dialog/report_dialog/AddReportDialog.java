@@ -70,8 +70,15 @@ public class AddReportDialog extends BaseReportDialog {
                 String date;
                 int dayCount = Integer.valueOf(etCountValue.getText().toString());
                 String textReport = etTextReport.getText().toString();
+
                 int soulRating = rbSoul.getProgress();
                 int healthRating = rbHealth.getProgress();
+                int phinanceRating = ratingBarPhinance.getProgress();
+                int englishRating = ratingBarEnglish.getProgress();
+                int socialRating = ratingBarSocial.getProgress();
+                int famillyRating = ratingBarFamilly.getProgress();
+
+
                 boolean isWeekReport = switchWeek.isChecked();
                 int weekNumber;
 
@@ -86,7 +93,12 @@ public class AddReportDialog extends BaseReportDialog {
                     weekNumber = currentWeekNumber;
                 }
 
-                ReportRealmController.addReport(date, dayCount, textReport, soulRating, healthRating, isWeekReport, weekNumber);
+                ReportRealmController.addReport(date, dayCount, textReport,
+                        soulRating, healthRating, phinanceRating,
+                        englishRating, socialRating, famillyRating,
+                        isWeekReport, weekNumber);
+
+
                 notifyDataChanged();
                 dismiss();
 
