@@ -1,15 +1,11 @@
 package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -19,6 +15,7 @@ import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
 
 /**
  * Created by A.shumidub on 07.02.18.
+ *
  */
 
 public class FullSizeReportDialog extends DialogFragment {

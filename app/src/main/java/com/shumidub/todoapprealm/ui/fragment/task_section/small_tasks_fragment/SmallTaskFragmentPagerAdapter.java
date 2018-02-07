@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
-import com.shumidub.todoapprealm.realmmodel.FolderObject;
+import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
+import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 
 import java.util.ArrayList;
 
@@ -17,9 +17,9 @@ import io.realm.RealmList;
 
 public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    //todo need renaim?
-    RealmList<FolderObject> listModels;
-    ArrayList <Long> listModelId = new ArrayList<>();
+
+    RealmList<FolderTaskObject> folderTaskModel;
+    ArrayList <Long> folderTaskModelModelId = new ArrayList<>();
 
     public SmallTaskFragmentPagerAdapter(FragmentManager fm) {
 
@@ -29,12 +29,12 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return SmallTasksFragment.newInstance (listModelId.get(position));
+        return SmallTasksFragment.newInstance (folderTaskModelModelId.get(position));
     }
 
     @Override
     public int getCount() {
-        return listModelId.size();
+        return folderTaskModelModelId.size();
     }
 
 
@@ -42,9 +42,9 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
     // для размера результа - создаем лист только с ид
     // todo для чего это?
     private void setTaskList(){
-        listModels = FolderRealmController.getFoldersList();
-        for (FolderObject folderObject : listModels){
-            listModelId.add(folderObject.getId());
+        folderTaskModel = FolderTaskRealmController.getFoldersList();
+        for (FolderTaskObject folderObject : folderTaskModel){
+            folderTaskModelModelId.add(folderObject.getId());
         }
     }
 

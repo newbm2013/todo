@@ -10,8 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
-import com.shumidub.todoapprealm.realmmodel.FolderObject;
+import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
+import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
@@ -30,7 +30,7 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
     public static String DELETE_LIST = "Delete ";
     long idFolder;
     String title;
-    FolderObject folderObject;
+    FolderTaskObject folderObject;
     String currentTextList;
     EditText etName;
     long defaultFolderId;
@@ -58,7 +58,7 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
             if (title == DELETE_LIST) textButton = "DELETE";
             if (title == EDIT_LIST) textButton = "Done";
 
-            folderObject = FolderRealmController.getFolder(idFolder);
+            folderObject = FolderTaskRealmController.getFolder(idFolder);
             currentTextList = folderObject.getName();
         }
 
@@ -77,14 +77,14 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
                     activity = (MainActivity) getActivity();
                     if (title == EDIT_LIST ) {
                         String text = etName.getText().toString();
-                        FolderRealmController.editFolder(folderObject, text);
+                        FolderTaskRealmController.editFolder(folderObject, text);
                         folderSlidingPanelFragment.finishActionMode();
                         folderSlidingPanelFragment.notifyListsDataChanged();
                         Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
 
                     } else if (title == DELETE_LIST){
                         if (folderObject.getId() != defaultFolderId) {
-                            FolderRealmController.deleteFolder(folderObject);
+                            FolderTaskRealmController.deleteFolder(folderObject);
                             Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                             folderSlidingPanelFragment.finishActionMode();
                             folderSlidingPanelFragment.notifyListsDataChanged();

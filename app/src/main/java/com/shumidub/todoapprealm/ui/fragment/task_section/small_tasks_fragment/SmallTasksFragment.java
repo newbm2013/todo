@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
@@ -66,7 +66,7 @@ public class SmallTasksFragment extends Fragment {
 //        TASK
         isAllTaskShowing = false;
         tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
-        if (FolderRealmController.getFolder(tasksFolderId)==null) tasksFolderId =0;
+        if (FolderTaskRealmController.getFolder(tasksFolderId)==null) tasksFolderId =0;
         rvTasks = view.findViewById(R.id.rv);
         setTasksListClickListeners();
         setTasks();
@@ -99,7 +99,7 @@ public class SmallTasksFragment extends Fragment {
 
         if (tasksFolderId !=0){
             ((MainActivity) getActivity()).getSupportActionBar()
-                    .setTitle((CharSequence) FolderRealmController.getFolder(tasksFolderId).getName());
+                    .setTitle((CharSequence) FolderTaskRealmController.getFolder(tasksFolderId).getName());
         }
         llm = new LinearLayoutManager(getContext());
         rvTasks.setLayoutManager(llm);
@@ -151,8 +151,6 @@ public class SmallTasksFragment extends Fragment {
     public void finishActionMode(){
         ((MainActivity) getActivity()).startSupportActionMode(new EmptyActionModeCallback());
     }
-
-    //todo клики актионмоды таск ресайкл вью адаптер , где лонг клик может использоваться, деваулт лист ид , запуск
 }
 
 

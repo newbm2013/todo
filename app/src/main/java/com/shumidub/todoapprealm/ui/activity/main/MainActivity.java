@@ -56,10 +56,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
         App.closeRealm();
+        super.onPause();
     }
 
     @Override
@@ -121,4 +122,5 @@ public class MainActivity extends AppCompatActivity {
             Log.d("DTAG", "onBackPressedWithTimer: ");
         }
     }
+    
 }

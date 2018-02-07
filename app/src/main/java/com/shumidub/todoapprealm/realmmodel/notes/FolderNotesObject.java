@@ -1,17 +1,20 @@
-package com.shumidub.todoapprealm.realmmodel;
+package com.shumidub.todoapprealm.realmmodel.notes;
+
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
  * Created by Артем on 24.12.2017.
+ *
  */
 
-public class FolderObject extends RealmObject {
+public class FolderNotesObject extends RealmObject {
 
     private String name;
     private long id;
-    public io.realm.RealmList<TaskObject> folderTasks;
+    public RealmList<NoteObject> notesObjectRealmList;
 
     public String getName() {
         return name;
@@ -27,10 +30,10 @@ public class FolderObject extends RealmObject {
         this.id = id;
     }
 
-    public RealmList<TaskObject> getTasks() {
-        return folderTasks;
+    public RealmList<NoteObject> getTasks() {
+        return notesObjectRealmList;
     }
     public void setTasks(RealmList<TaskObject> tasks) {
-        this.folderTasks = folderTasks;
+        this.notesObjectRealmList = notesObjectRealmList;
     }
 }

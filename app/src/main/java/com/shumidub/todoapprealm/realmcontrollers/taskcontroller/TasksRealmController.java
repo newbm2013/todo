@@ -2,8 +2,8 @@ package com.shumidub.todoapprealm.realmcontrollers.taskcontroller;
 
 import android.util.Log;
 import com.shumidub.todoapprealm.App;
-import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
-import com.shumidub.todoapprealm.realmmodel.FolderObject;
+import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
+import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import java.util.Calendar;
 import java.util.List;
@@ -127,7 +127,7 @@ public class TasksRealmController {
             task.setMaxAccumulation(maxAccumulation);
             task.setCountAccumulation(0);
             task.setCycling(cycling);
-            FolderRealmController.getFolder(taskFolderId).folderTasks.add(task);
+            FolderTaskRealmController.getFolder(taskFolderId).folderTasks.add(task);
 //          App.realm.insert(task);
         });
     }
@@ -197,7 +197,6 @@ public class TasksRealmController {
         deleteTask(App.realm.where(TaskObject.class).equalTo("id", id).findFirst());
     }
 
-
     public static void changeOrder(long folderId, TaskObject taskObjectTarget , TaskObject taskObjectTargetPosition){
         RealmList<TaskObject> taskList = getFolderTasksRealmListFromFolder(folderId);
         int from = taskList.indexOf(taskObjectTarget);
@@ -214,9 +213,9 @@ public class TasksRealmController {
         return id;
     }
 
-    //todo set private
+    @SuppressWarnings("All")
     public static RealmList<TaskObject> getFolderTasksRealmListFromFolder (long folderId){
-        return ((FolderObject) App.realm.where(FolderObject.class)
+        return ((FolderTaskObject) App.realm.where(FolderTaskObject.class)
                 .equalTo("id", folderId).findFirst()).folderTasks;
     }
 }

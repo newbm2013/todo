@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmmodel.FolderObject;
+import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 
 
 import java.util.concurrent.TimeUnit;
@@ -28,7 +28,7 @@ public class FolderOfTaskRecyclerViewAdapter
     private static final int TYPE_FOOTER = 1;
     private static final int TYPE_ITEM = 0;
 
-    RealmList<FolderObject> realmListFolder;
+    RealmList<FolderTaskObject> realmListFolder;
     OnHolderTextViewOnClickListener onHolderTextViewOnClickListener;
     OnHolderTextViewOnLongClickListener onHolderTextViewOnLongClickListener;
     OnFooterTextViewOnClickListener onFooterTextViewOnClickListener;
@@ -52,7 +52,7 @@ public class FolderOfTaskRecyclerViewAdapter
     }
 
 
-    public FolderOfTaskRecyclerViewAdapter(RealmList<FolderObject> realmListFolder, Activity activity){
+    public FolderOfTaskRecyclerViewAdapter(RealmList<FolderTaskObject> realmListFolder, Activity activity){
         this.realmListFolder = realmListFolder;
     }
 

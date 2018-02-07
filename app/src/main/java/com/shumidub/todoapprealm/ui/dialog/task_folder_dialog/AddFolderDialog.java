@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 
@@ -39,7 +39,7 @@ public class AddFolderDialog extends android.support.v4.app.DialogFragment {
                 .setPositiveButton("Add", (dialogInterface, i) -> {
                         String text = ((EditText) getDialog().findViewById(R.id.name)).getText().toString();
                         if (!text.isEmpty()){
-                            long idFolder = FolderRealmController.addFolder(text);
+                            long idFolder = FolderTaskRealmController.addFolder(text);
                             Toast.makeText(getContext(),"Done", Toast.LENGTH_SHORT).show();
                             activity = (MainActivity) getActivity();
                             for (Fragment fragment : activity.getSupportFragmentManager().getFragments()){

@@ -2,10 +2,11 @@ package com.shumidub.todoapprealm;
 
 import android.app.Application;
 
-import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
-import com.shumidub.todoapprealm.realmmodel.FolderObject;
+import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
+import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -21,7 +22,8 @@ public class App extends Application {
 
     public static Realm realm;
     public static RealmFoldersContainer realmFoldersContainer;
-    public static RealmList<FolderObject> folderOfTasksListFromContainer;
+    public static RealmList<FolderTaskObject> folderOfTasksListFromContainer;
+    public static RealmList<FolderNotesObject> folderOfNotesContainerList;
 
     @Override
     public void onCreate() {
@@ -33,7 +35,7 @@ public class App extends Application {
                 .build());
         initRealm();
         initContainers();
-        if(BuildConfig.DEBUG && FolderRealmController.listOfFolderIsEmpty()) addContent();
+        if(BuildConfig.DEBUG && FolderTaskRealmController.listOfFolderIsEmpty()) addContent();
     }
 
     public static void initRealm() {
@@ -47,14 +49,16 @@ public class App extends Application {
     private static void initContainers(){
         App.initRealm();
         realm.executeTransaction((realm) -> {
-            if (!FolderRealmController.containerOfFolderIsExist()){
+            if (!FolderTaskRealmController.containerOfFolderIsExist()){
                 realmFoldersContainer = realm.createObject(RealmFoldersContainer.class);
             } else {
-                realmFoldersContainer= realm.where(RealmFoldersContainer.class).findFirst();
+                realmFoldersContainer = realm.where(RealmFoldersContainer.class).findFirst();
             }
+
         });
 
         folderOfTasksListFromContainer = realmFoldersContainer.folderOfTasksList;
+        folderOfNotesContainerList = realmFoldersContainer.folderOfNotesList;
     }
 
     private void addContent() {
@@ -63,13 +67,13 @@ public class App extends Application {
 
         realm.executeTransaction((Realm realm) -> {
 
-            final FolderObject folderObject
-                    = realm.createObject(FolderObject.class);
+            final FolderTaskObject folderObject
+                    = realm.createObject(FolderTaskObject.class);
             folderObject.setId(System.currentTimeMillis());
             folderObject.setName("folderObject 1");
 
-            final FolderObject folderObject2
-                    = realm.createObject(FolderObject.class);
+            final FolderTaskObject folderObject2
+                    = realm.createObject(FolderTaskObject.class);
             folderObject2.setId(System.currentTimeMillis());
             folderObject2.setName("folderObject 2");
 
@@ -79,7 +83,7 @@ public class App extends Application {
 
             final RealmModel gettedFolderObject = folderOfTasksListFromContainer.get(0);
 
-            folderId[0] = ((FolderObject)gettedFolderObject).getId();
+            folderId[0] = ((FolderTaskObject)gettedFolderObject).getId();
 
         });
 

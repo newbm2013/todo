@@ -24,9 +24,9 @@ import android.widget.TextView;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
-import com.shumidub.todoapprealm.realmmodel.FolderObject;
+import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
 import com.shumidub.todoapprealm.realmmodel.RealmInteger;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
@@ -41,7 +41,7 @@ import java.util.Calendar;
 import java.util.List;
 import io.realm.RealmList;
 
-import static com.shumidub.todoapprealm.realmcontrollers.FolderRealmController.listOfFolderIsEmpty;
+import static com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController.listOfFolderIsEmpty;
 
 
 /**
@@ -82,7 +82,7 @@ public class FolderSlidingPanelFragment extends Fragment {
     // FOLDER VARIABLES, DATA
     RealmFoldersContainer realmFoldersContainer;
 //    RealmResults<FolderObject> folderObjects;
-    RealmList<FolderObject> folderObjects;
+    RealmList<FolderTaskObject> folderObjects;
     public static Long idFolderFromTag;
     private static String title;
     public static String titleFolder;
@@ -126,7 +126,6 @@ public class FolderSlidingPanelFragment extends Fragment {
         llBottomSmallTasksLabel.setVisibility(View.VISIBLE);
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
-        //todo realise
         slidingUpPanelLayout.setStateListAnimator(new StateListAnimator());
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
@@ -151,7 +150,7 @@ public class FolderSlidingPanelFragment extends Fragment {
         ///////////////////////    FOLDER VIEWS (onViewCreated)     //////////////////////
         findFolderViews(view);
         rvFolders.setLayoutManager(new LinearLayoutManager(getContext()));
-        folderObjects = FolderRealmController.getFoldersList();
+        folderObjects = FolderTaskRealmController.getFoldersList();
 
         //set empty state for folder // todo need redesign view
         setEmptyStateIfFoldersIsEmpty(view);
@@ -192,7 +191,7 @@ public class FolderSlidingPanelFragment extends Fragment {
 
                     smallTasksViewPager.setCurrentItem(position);
 
-                    setTitle(FolderRealmController.getFolder(idFolderFromTag).getName());
+                    setTitle(FolderTaskRealmController.getFolder(idFolderFromTag).getName());
                     slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
             };
@@ -200,7 +199,7 @@ public class FolderSlidingPanelFragment extends Fragment {
         onHolderTextViewOnLongClickListener
             = (FolderOfTaskRecyclerViewAdapter.ViewHolder holder, int position) -> {
             idFolderFromTag = (Long) holder.itemView.findViewById(R.id.item_text).getTag();
-            titleFolder = FolderRealmController.getFolder(idFolderFromTag).getName();
+            titleFolder = FolderTaskRealmController.getFolder(idFolderFromTag).getName();
             finishActionMode();
             actionMode = getActivity().startActionMode(getCallback(FOLDER_ACTIONMODE));
 
@@ -224,7 +223,7 @@ public class FolderSlidingPanelFragment extends Fragment {
         App.initRealm();
         realmFoldersContainer = App.realm.where(RealmFoldersContainer.class).findFirst();
         //todo try is it working, or need not use linked variable
-        RealmList<FolderObject> folderOfTasksLis = realmFoldersContainer.folderOfTasksList;
+        RealmList<FolderTaskObject> folderOfTasksLis = realmFoldersContainer.folderOfTasksList;
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                     ItemTouchHelper.UP | ItemTouchHelper.DOWN ,0) {
 
