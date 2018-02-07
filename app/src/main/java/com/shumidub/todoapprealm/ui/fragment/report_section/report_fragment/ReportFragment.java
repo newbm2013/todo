@@ -1,7 +1,9 @@
 package com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.view.ActionMode;
@@ -21,6 +23,7 @@ import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.actionmode.report.ReportActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.dialog.report_dialog.AddReportDialog;
+import com.shumidub.todoapprealm.ui.dialog.report_dialog.FullSizeReportDialog;
 
 import java.util.List;
 
@@ -45,6 +48,7 @@ public class ReportFragment extends Fragment{
         return view;
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -60,7 +64,8 @@ public class ReportFragment extends Fragment{
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         reportRecyclerViewAdapter.setOnClicked((v, position, reportId)->{
-            //todo open full size
+            FullSizeReportDialog dialogFullSize = FullSizeReportDialog.newInstance(reportId);
+            if (dialogFullSize!=null) dialogFullSize.show(getFragmentManager(), "Full_size");
         });
         reportRecyclerViewAdapter.setOnLongClicked((v, position, reportId)->{
             setId(reportId);
@@ -99,6 +104,7 @@ public class ReportFragment extends Fragment{
         id = idReport;
     }
 
+    @SuppressLint("RestrictedApi")
     public void finishActionMode(){
         actionBar.startActionMode(new EmptyActionModeCallback());
         actionModeIsEnabled = false;

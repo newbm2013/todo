@@ -5,6 +5,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -60,7 +61,6 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (!reportObjects.isEmpty()) {
             ReportObject reportObject = reportObjects.get(position);
-            holder.tvDate.setText(reportObject.getDate());
             holder.tvDayCount.setText(String.valueOf(reportObject.getCountOfDay()));
             holder.tvRetortText.setText(reportObject.getReportText());
             holder.ratingBarSoul.setRating(reportObject.getSoulRating());
@@ -76,6 +76,12 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
             if (reportObject.isWeekReport()){
                 holder.tvDate.setText("Week " + reportObject.getWeekNumber());
                 holder.tvDayCountFieldName.setText("Week count");
+//                holder.llDivider.setVisibility(View.VISIBLE);
+                holder.itemView.setPadding(2,2,2,24);
+            }
+            else{
+                holder.tvDate.setText(reportObject.getDate());
+                holder.itemView.setPadding(2,2,2,12);
             }
         }
     }
@@ -96,6 +102,8 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
         RatingBar ratingBarSoul;
         RatingBar ratingBarHealth;
 
+        LinearLayout llDivider;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -107,6 +115,8 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
                 ratingBarSoul = itemView.findViewById(R.id.ratingbar_soul);
                 ratingBarHealth = itemView.findViewById(R.id.ratingbar_health);
                 tvDayCountFieldName = itemView.findViewById(R.id.tv_count_field_name);
+                llDivider = itemView.findViewById(R.id.ll_divider);
+
             }
         }
     }
