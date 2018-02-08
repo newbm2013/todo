@@ -77,4 +77,6 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     public void setOnLongClickListener(OnLongClickListener onLongClickListener) {
         this.onLongClickListener = onLongClickListener;
     }
+
+
 }

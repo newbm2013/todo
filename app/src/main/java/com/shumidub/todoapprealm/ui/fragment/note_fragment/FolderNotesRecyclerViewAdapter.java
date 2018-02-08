@@ -39,7 +39,7 @@ public class FolderNotesRecyclerViewAdapter extends RecyclerView.Adapter<FolderN
 
     @Override
     public FolderNotesRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_fragment_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_card_view, parent, false);
         return new ViewHolder(view);
     }
 
@@ -76,4 +76,8 @@ public class FolderNotesRecyclerViewAdapter extends RecyclerView.Adapter<FolderN
     public void setOnLongClickListener(OnLongClickListener onLongClickListener) {
         this.onLongClickListener = onLongClickListener;
     }
+
+
+
+
 }

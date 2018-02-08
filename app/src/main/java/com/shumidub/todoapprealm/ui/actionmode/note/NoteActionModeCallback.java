@@ -1,9 +1,8 @@
-package com.shumidub.todoapprealm.ui.actionmode.report;
+package com.shumidub.todoapprealm.ui.actionmode.note;
 
 
 
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +11,6 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.dialog.report_dialog.DellReportDialog;
 import com.shumidub.todoapprealm.ui.dialog.report_dialog.EditReportDialog;
-import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 
 
@@ -21,7 +19,7 @@ import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_f
  *
  */
 
-public class ReportActionModeCallback {
+public class NoteActionModeCallback {
 
     ActionMode.Callback mCallback;
     FolderSlidingPanelFragment folderSlidingPanelFragment;

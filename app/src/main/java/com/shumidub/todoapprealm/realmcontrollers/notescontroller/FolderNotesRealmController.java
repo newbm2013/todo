@@ -10,16 +10,16 @@ import io.realm.RealmList;
 public class FolderNotesRealmController implements INotesController {
 
     //FolderNotesContainer
-    static RealmList<FolderNotesObject> getFolderNotesContainerList(){return null;}
+    public static RealmList<FolderNotesObject> getFolderNotesContainerList(){return null;}
 
     //FolderNotes
 
-    static FolderNotesObject getFolderNote(long id) {
+    public static FolderNotesObject getFolderNote(long id) {
         App.initRealm();
         return App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst();
     }
 
-    static long addFolderNote(String name){
+    public static long addFolderNote(String name){
         long id = getNewValidFolderNotesId();
         App.initRealm();
         App.realm.executeTransaction((realm -> {
@@ -31,21 +31,21 @@ public class FolderNotesRealmController implements INotesController {
         return id;
     }
 
-    static void editFolderNote(long id, String name){
+    public static void editFolderNote(long id, String name){
         App.initRealm();
         App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst().setName(name);
     }
 
-    static void delFolderNote(long id){
+    public static void delFolderNote(long id){
         App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst().deleteFromRealm();
     }
 
 
-    static void reorderFolderNote(int from, int to){
+    public static void reorderFolderNote(int from, int to){
         App.folderOfNotesContainerList.add(to, App.folderOfNotesContainerList.remove(from));
     }
 
-    static long getNewValidFolderNotesId() {
+    public static long getNewValidFolderNotesId() {
         long id =  System.currentTimeMillis();
         while ((App.realm.where(FolderNotesObject.class).equalTo("id", id)).findFirst()!=null){
             id ++;
@@ -55,16 +55,16 @@ public class FolderNotesRealmController implements INotesController {
 
     //Notes
 
-    static RealmList<NoteObject> getNotesList(long idFolderNotesObject){
+    public static RealmList<NoteObject> getNotesList(long idFolderNotesObject){
         return getFolderNote(idFolderNotesObject).getTasks();
     }
 
-    static NoteObject getNote(long idNotesObject){
+    public static NoteObject getNote(long idNotesObject){
         App.initRealm();
         return App.realm.where(NoteObject.class).equalTo("id", idNotesObject).findFirst();
     }
 
-    static long addNote(long idFolderNotesObject, String text){
+    public static long addNote(long idFolderNotesObject, String text){
         long id = getNewValidNotesId();
         App.initRealm();
         FolderNotesObject folderNotesObject
@@ -79,19 +79,19 @@ public class FolderNotesRealmController implements INotesController {
         return id;
     }
 
-    static void editNote(long idNotesObject, String text ){
+    public static void editNote(long idNotesObject, String text ){
         App.initRealm();
         App.realm.where(NoteObject.class).equalTo("id", idNotesObject)
                 .findFirst().setText(text);
     }
 
-    static void delNote(long idNotesObject){
+    public static void delNote(long idNotesObject){
         App.initRealm();
         App.realm.where(NoteObject.class).equalTo("id", idNotesObject)
                 .findFirst().deleteFromRealm();
     }
 
-    static void reorderNote(long idFolderNotesObject, long idNotesObject, int from, int to){
+    public static void reorderNote(long idFolderNotesObject, long idNotesObject, int from, int to){
         App.initRealm();
         RealmList <NoteObject> notesList
                 = App.realm.where(FolderNotesObject.class)
@@ -100,7 +100,7 @@ public class FolderNotesRealmController implements INotesController {
         notesList.add(to, notesList.remove(from));
     }
 
-    static long getNewValidNotesId() {
+    public static long getNewValidNotesId() {
         long id =  System.currentTimeMillis();
         while ((App.realm.where(NoteObject.class).equalTo("id", id)).findFirst()!=null){
             id ++;
