@@ -295,12 +295,12 @@ public class FolderSlidingPanelFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         setDayScopeValue();
         menu.clear();
         MenuItem dayScopeMenu = menu.add(100,100,100,"" + dayScope);
         dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         dayScopeMenu.setOnMenuItemClickListener((v)->{dayScope=+1; return true;});
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     //FOLDER

@@ -49,7 +49,7 @@ public class NoteFragmentContainer extends Fragment{
 
 
         fragmentManager.beginTransaction()
-                .add(R.id.frame_layout, folderNoteFragment).addToBackStack("note_folder").commit();
+                .replace(R.id.frame_layout, folderNoteFragment).addToBackStack("note_folder").commit();
 
 
         folderNoteFragment.setIOnClick((id)->{

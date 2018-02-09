@@ -30,8 +30,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             return new FolderSlidingPanelFragment();
         }else if (position == 2){
             return new ReportFragment();
-        } else {
-            return new NoteFragmentContainer();
+        } else if (position == 0) {
+            return new FolderNoteFragment();
+        }
+        else {
+            return null;
         }
     }
 }
