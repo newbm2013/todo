@@ -3,6 +3,7 @@ package com.shumidub.todoapprealm.ui.fragment.note_fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.realmcontrollers.notescontroller.FolderNotesRealmController;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.dialog.note_dialog.AddNoteDialog;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
+
+import static com.shumidub.todoapprealm.ui.dialog.note_dialog.AddNoteDialog.TYPE_NOTE;
 
 
 /**
@@ -26,25 +30,41 @@ import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_f
 
 public class FolderNoteFragment extends Fragment{
 
-    RecyclerView rv;
-    FolderNotesRecyclerViewAdapter adapter;
     ActionBar actionBar;
-    ViewGroup container;
+
+    RecyclerView rv;
+
+    FolderNotesRecyclerViewAdapter folderAdapter;
+    NotesRecyclerViewAdapter noteAdapter;
+
+    int type = AddNoteDialog.TYPE_FOLDER;
+
+    public boolean isNoteFragment = false;
+
+    String title = "Notes";
+
 
     interface IOnClick{
-        void doOnClick(long id);
+        void doOnClick(long idFolderFromAdapter);
     }
 
-    IOnClick onClick;
+    IOnClick onClick = new IOnClick() {
+        @Override
+        public void doOnClick(long idFolderFromAdapter) {
+            setNoteViews(idFolderFromAdapter);
+        }
+    };
 
-    long id = 0;
-    int type;
+    long idFolderNoteObject = 0;
+    long idNoteObject = 0;
+    long id;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.note_fragment_layout, container, false);
-        this.container = container;
+        actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         return view;
     }
 
@@ -53,42 +73,14 @@ public class FolderNoteFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         rv = view.findViewById(R.id.recycle_view);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        setAdapter();
+        setFolderNoteViews();
         actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         setHasOptionsMenu(true);
         actionBar.setTitle("Notes");
+        id = idFolderNoteObject;
     }
 
-    protected void setAdapter(){
 
-        //todo need replace
-        type = AddNoteDialog.TYPE_FOLDER;
-
-        adapter = new FolderNotesRecyclerViewAdapter();
-        adapter.setOnClickListener((h,p,id)->{
-
-            onClick.doOnClick(id);
-
-//            for (Fragment fragment: getActivity().getSupportFragmentManager().getFragments()){
-//                if (fragment instanceof NoteFragmentContainer){
-//                    ((NoteFragmentContainer) fragment).startNoteFragment(id);
-//                }
-//            }
-
-//            NoteFragmentContainer.fragmentManager.
-//                    beginTransaction()
-//                    .replace(container.getId(), NoteFragment.newInstance(id))
-//                    .commit();
-//
-
-
-        });
-        adapter.setOnLongClickListener((h,p,id)->{
-
-            return true;
-        });
-        rv.setAdapter(adapter);
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -111,12 +103,63 @@ public class FolderNoteFragment extends Fragment{
     }
 
     public void notifyDataChanged(){
-       adapter.notifyDataSetChanged();
+        try {
+            folderAdapter.notifyDataSetChanged();
+        }catch(NullPointerException e){}
+
+        try {
+            noteAdapter.notifyDataSetChanged();
+        }catch (NullPointerException e){}
+
     }
 
 
     public void setIOnClick(IOnClick iOnClick){
         onClick = iOnClick;
+    }
+
+
+    public void setFolderNoteViews(){
+        title = "Notes";
+        actionBar.setTitle(title);
+
+        type = AddNoteDialog.TYPE_FOLDER;
+        isNoteFragment = false;
+
+        folderAdapter = new FolderNotesRecyclerViewAdapter();
+        folderAdapter.setOnClickListener((h,p,idFolderFromAdapter)->{
+
+            onClick.doOnClick(idFolderFromAdapter);
+
+
+        });
+        folderAdapter.setOnLongClickListener((h,p,id)->{
+
+            return true;
+        });
+        rv.setAdapter(folderAdapter);
+
+    }
+
+    public void setNoteViews(long idFolderFromAdapter){
+        title = "<  " + FolderNotesRealmController.getFolderNote(idFolderFromAdapter).getName();
+        actionBar.setTitle(title);
+
+        isNoteFragment = true;
+
+        type = TYPE_NOTE;
+        id = idFolderFromAdapter;
+
+        noteAdapter = new NotesRecyclerViewAdapter(idFolderFromAdapter);
+        rv.setAdapter(noteAdapter);
+        noteAdapter.setOnClickListener((h,p,id)->{
+
+        });
+        noteAdapter.setOnLongClickListener((h,p,id)->{
+
+            return true;
+        });
+        rv.setAdapter(noteAdapter);
     }
 
 }

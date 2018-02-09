@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.ui.fragment.note_fragment.FolderNoteFragment;
 import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -43,8 +44,10 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 if (position==1){
                     actionBar.setTitle(FolderSlidingPanelFragment.getTitle());
+                }if (position ==0){
+//                    actionBar.setTitle("Notes");
                 }else {
-                    actionBar.setTitle("Notes/Reports");
+                    actionBar.setTitle("Reports");
                 }
                 actionMode = startSupportActionMode(new EmptyActionModeCallback());
             }
@@ -103,6 +106,17 @@ public class MainActivity extends AppCompatActivity {
                 if (fragment instanceof ReportFragment) {
                     if (((ReportFragment) fragment).actionModeIsEnabled) {
                         ((ReportFragment) fragment).finishActionMode();
+                    } else {
+                        onBackPressedWithTimer();
+                        return;
+                    }
+                }
+            }
+        } else if (currentFragmentItem ==0){
+            for (Fragment fragment: getSupportFragmentManager ().getFragments()){
+                if (fragment instanceof FolderNoteFragment) {
+                    if (((FolderNoteFragment) fragment).isNoteFragment) {
+                        ((FolderNoteFragment) fragment).setFolderNoteViews();
                     } else {
                         onBackPressedWithTimer();
                         return;

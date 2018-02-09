@@ -54,6 +54,7 @@ public class AddNoteDialog extends android.support.v4.app.DialogFragment {
         @Override
         public void onClick() {
             String text = etText.getText().toString();
+            Log.d("DTAG", "onClick: id = " + id);
 
             if(type == TYPE_FOLDER){
                 FolderNotesRealmController.addFolderNote(text);
@@ -85,7 +86,7 @@ public class AddNoteDialog extends android.support.v4.app.DialogFragment {
 
         if (getArguments() != null){
             type = getArguments().getInt(TYPE, -1);
-            id = getArguments().getInt(ID, -1);
+            id = getArguments().getLong(ID, -1);
 
             if ((type != TYPE_FOLDER && type != TYPE_NOTE) ){
                 return null;

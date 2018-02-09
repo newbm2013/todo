@@ -38,27 +38,26 @@ public class NoteFragment extends FolderNoteFragment{
         return fragment;
     }
 
-    @Override
-    protected void setAdapter() {
-
-        type = TYPE_NOTE;
 
 
-        if (getArguments()!= null){
-            id = getArguments().getLong("id", 0);
-        }
-        if (id !=0){
-            adapter = new NotesRecyclerViewAdapter(id);
-            adapter.setOnClickListener((h,p,id)->{
 
-            });
-            adapter.setOnLongClickListener((h,p,id)->{
 
-                return true;
-            });
-            rv.setAdapter(adapter);
-        }
-    }
+
+//        if (getArguments()!= null){
+//            id = getArguments().getLong("id", 0);
+//        }
+//        if (id !=0){
+//            adapter = new NotesRecyclerViewAdapter(id);
+//            adapter.setOnClickListener((h,p,id)->{
+//
+//            });
+//            adapter.setOnLongClickListener((h,p,id)->{
+//
+//                return true;
+//            });
+//            rv.setAdapter(adapter);
+////        }
+//    }
 
     public void notifyDataChanged(){
         adapter.notifyDataSetChanged();
