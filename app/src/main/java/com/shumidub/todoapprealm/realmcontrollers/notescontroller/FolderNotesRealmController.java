@@ -33,16 +33,25 @@ public class FolderNotesRealmController implements INotesController {
 
     public static void editFolderNote(long id, String name){
         App.initRealm();
-        App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst().setName(name);
+        App.realm.executeTransaction((r) -> {
+            App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst().setName(name);
+        });
+
     }
 
     public static void delFolderNote(long id){
-        App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst().deleteFromRealm();
+        App.initRealm();
+        App.realm.executeTransaction((r) -> {
+            App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst().deleteFromRealm();
+        });
     }
 
 
     public static void reorderFolderNote(int from, int to){
-        App.folderOfNotesContainerList.add(to, App.folderOfNotesContainerList.remove(from));
+        App.initRealm();
+        App.realm.executeTransaction((r) -> {
+            App.folderOfNotesContainerList.add(to, App.folderOfNotesContainerList.remove(from));
+        });
     }
 
     public static long getNewValidFolderNotesId() {
@@ -81,14 +90,20 @@ public class FolderNotesRealmController implements INotesController {
 
     public static void editNote(long idNotesObject, String text ){
         App.initRealm();
-        App.realm.where(NoteObject.class).equalTo("id", idNotesObject)
-                .findFirst().setText(text);
+        App.initRealm();
+        App.realm.executeTransaction((r) -> {
+            App.realm.where(NoteObject.class).equalTo("id", idNotesObject)
+                    .findFirst().setText(text);
+        });
     }
 
     public static void delNote(long idNotesObject){
         App.initRealm();
-        App.realm.where(NoteObject.class).equalTo("id", idNotesObject)
-                .findFirst().deleteFromRealm();
+        App.initRealm();
+        App.realm.executeTransaction((r) -> {
+            App.realm.where(NoteObject.class).equalTo("id", idNotesObject)
+                    .findFirst().deleteFromRealm();
+        });
     }
 
     public static void reorderNote(long idFolderNotesObject, long idNotesObject, int from, int to){
@@ -96,8 +111,9 @@ public class FolderNotesRealmController implements INotesController {
         RealmList <NoteObject> notesList
                 = App.realm.where(FolderNotesObject.class)
                 .equalTo("id", idFolderNotesObject).findFirst().getTasks();
-
-        notesList.add(to, notesList.remove(from));
+        App.realm.executeTransaction((r) -> {
+            notesList.add(to, notesList.remove(from));
+        });
     }
 
     public static long getNewValidNotesId() {

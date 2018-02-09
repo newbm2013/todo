@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,9 +16,10 @@ import android.view.ViewGroup;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.notescontroller.FolderNotesRealmController;
+import com.shumidub.todoapprealm.ui.actionmode.note.FolderNoteActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.dialog.note_dialog.AddNoteDialog;
-import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
+import com.shumidub.todoapprealm.ui.dialog.note_dialog.EditNoteDialog;
 
 import static com.shumidub.todoapprealm.ui.dialog.note_dialog.AddNoteDialog.TYPE_NOTE;
 
@@ -43,18 +43,6 @@ public class FolderNoteFragment extends Fragment{
     public boolean isNoteFragment = false;
 
     String title = "Notes";
-
-
-    interface IOnClick{
-        void doOnClick(long idFolderFromAdapter);
-    }
-
-    IOnClick onClick = new IOnClick() {
-        @Override
-        public void doOnClick(long idFolderFromAdapter) {
-            setNoteViews(idFolderFromAdapter);
-        }
-    };
 
     long idFolderNoteObject = 0;
     long idNoteObject = 0;
@@ -115,10 +103,6 @@ public class FolderNoteFragment extends Fragment{
     }
 
 
-    public void setIOnClick(IOnClick iOnClick){
-        onClick = iOnClick;
-    }
-
 
     public void setFolderNoteViews(){
 
@@ -132,13 +116,12 @@ public class FolderNoteFragment extends Fragment{
 
         folderAdapter = new FolderNotesRecyclerViewAdapter();
         folderAdapter.setOnClickListener((h,p,idFolderFromAdapter)->{
-
-            onClick.doOnClick(idFolderFromAdapter);
-
-
+            setNoteViews(idFolderFromAdapter);
         });
-        folderAdapter.setOnLongClickListener((h,p,id)->{
-
+        folderAdapter.setOnLongClickListener((h,p,id1)->{
+            actionBar.startActionMode(new FolderNoteActionModeCallback()
+                            .getFolderNoteActionMode((MainActivity) getActivity(),
+                                    EditNoteDialog.TYPE_FOLDER, id1));
             return true;
         });
         rv.setAdapter(folderAdapter);
@@ -158,12 +141,13 @@ public class FolderNoteFragment extends Fragment{
         id = idFolderFromAdapter;
 
         noteAdapter = new NotesRecyclerViewAdapter(idFolderFromAdapter);
+        noteAdapter.setId(idFolderFromAdapter);
         rv.setAdapter(noteAdapter);
-        noteAdapter.setOnClickListener((h,p,id)->{
-
-        });
+        noteAdapter.setOnClickListener((h,p,id)-> setFolderNoteViews());
         noteAdapter.setOnLongClickListener((h,p,id)->{
-
+            actionBar.startActionMode(new FolderNoteActionModeCallback()
+                    .getFolderNoteActionMode((MainActivity) getActivity(),
+                            EditNoteDialog.TYPE_NOTE, id));
             return true;
         });
         rv.setAdapter(noteAdapter);

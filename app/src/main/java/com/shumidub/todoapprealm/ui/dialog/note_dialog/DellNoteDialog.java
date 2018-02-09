@@ -24,11 +24,7 @@ import java.util.List;
  *
  */
 
-public class AddNoteDialog extends android.support.v4.app.DialogFragment {
-
-    protected MainActivity activity;
-    protected EditText etText;
-    protected TextInputLayout tilText;
+public class DellNoteDialog extends android.support.v4.app.DialogFragment {
 
     int type;
     long id;
@@ -43,31 +39,13 @@ public class AddNoteDialog extends android.support.v4.app.DialogFragment {
     public static final String ID_KEY = "Id";
 
 
-    String positiveButtonText = "Add";
-    PositiveButtonInterface positiveButtonInterface = new PositiveButtonInterface() {
-        @Override
-        public void onClick() {
-            String text = etText.getText().toString();
-            Log.d("DTAG", "onClick: id = " + id);
 
-            if(type == TYPE_FOLDER){
-                FolderNotesRealmController.addFolderNote(text);
-            }else if(type == TYPE_NOTE){
-                FolderNotesRealmController.addNote(id, text);
-            }
-        }
-    };
-
-    interface PositiveButtonInterface {
-        void onClick();
-    }
-
-    public static AddNoteDialog newInstance(int type, long id) {
+    public static DellNoteDialog newInstance(int type, long id) {
 
         Bundle args = new Bundle();
         args.putLong(ID_KEY,id);
         args.putInt(TYPE_KEY,type);
-        AddNoteDialog fragment = new AddNoteDialog();
+        DellNoteDialog fragment = new DellNoteDialog();
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,7 +55,6 @@ public class AddNoteDialog extends android.support.v4.app.DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        setParametres();
 
         if (getArguments() != null){
             type = getArguments().getInt(TYPE_KEY, -1);
@@ -88,19 +65,21 @@ public class AddNoteDialog extends android.support.v4.app.DialogFragment {
             }
         }
 
-        activity = (MainActivity) getActivity();
 
         View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.note_and_folder_add_edit_dialog, null);
 
-        etText = view.findViewById(R.id.note_text);
-        tilText = view.findViewById(R.id.til_note_text);
-
-        setEtText();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder .setView(view)
-                .setPositiveButton(positiveButtonText, (di,i)-> {})
+        builder .setMessage("Are you sure?")
+                .setPositiveButton("Dell", (di,i)-> {
+                    if(type == TYPE_FOLDER){
+                        FolderNotesRealmController.delFolderNote(id);
+                    }else if(type == TYPE_NOTE){
+                        FolderNotesRealmController.delNote(id);
+                    }
+                    notifyDataChanged();
+                    dialog.dismiss();
+                })
                 .setNegativeButton("Cancel", (dialog, i) -> dialog.cancel());
 
         dialog = builder.create();
@@ -129,25 +108,6 @@ public class AddNoteDialog extends android.support.v4.app.DialogFragment {
         }
     }
 
-    protected void setEtText(){}
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener((v)->{
-            if (etText.getText().toString().isEmpty()) {
-                tilText.setErrorEnabled(true);
-                tilText.setError("Should be filled");
-            } else{
-                positiveButtonInterface.onClick();
-                notifyDataChanged();
-                dialog.dismiss();
-            }
-        });
-    }
-
-    protected void setParametres(){
-
-    }
 
 }

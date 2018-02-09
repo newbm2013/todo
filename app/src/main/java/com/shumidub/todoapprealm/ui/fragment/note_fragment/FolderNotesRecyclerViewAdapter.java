@@ -1,6 +1,8 @@
 package com.shumidub.todoapprealm.ui.fragment.note_fragment;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +80,67 @@ public class FolderNotesRecyclerViewAdapter extends RecyclerView.Adapter<FolderN
     }
 
 
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
 
 
+        // set ITEM TOUCH HELPER for folder rv
+        App.initRealm();
+        RealmList<FolderNotesObject> folderOfNotesContainerList = App.folderOfNotesContainerList;
+        //todo try is it working, or need not use linked variable
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN ,0) {
+
+            int dragFrom = -1;
+            int dragTo = -1;
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+
+                if (dragFrom == -1) {
+                    dragFrom = fromPosition;
+                }
+                dragTo = toPosition;
+
+                notifyItemMoved(fromPosition, toPosition);
+                return true;
+            }
+
+            // todo need fix if move bellow "add list"
+            private void reallyMoved(int from, int to) {
+                App.initRealm();
+                // because  folderOfTasksLis.size()-1 == footerView
+                if (from < folderOfNotesContainerList.size()-1 ){
+                    App.realm.executeTransaction((realm) -> {
+                        int to2 = to<folderOfNotesContainerList.size() ? to : folderOfNotesContainerList.size()-1;
+                        folderOfNotesContainerList.add(to2, folderOfNotesContainerList.remove(from));
+                    });
+                }
+                Log.d("MOVED_DTAG", "reallyMoved: " + to + " " + from);
+            }
+
+            @Override
+            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+
+                if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+                    reallyMoved(dragFrom, dragTo);
+                }
+                dragFrom = dragTo = -1;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) { }
+
+        });
+
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+    }
 }

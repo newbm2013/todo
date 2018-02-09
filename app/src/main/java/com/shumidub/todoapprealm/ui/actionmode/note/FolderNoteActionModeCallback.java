@@ -9,8 +9,8 @@ import android.view.MenuItem;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
-import com.shumidub.todoapprealm.ui.dialog.report_dialog.DellReportDialog;
-import com.shumidub.todoapprealm.ui.dialog.report_dialog.EditReportDialog;
+import com.shumidub.todoapprealm.ui.dialog.note_dialog.DellNoteDialog;
+import com.shumidub.todoapprealm.ui.dialog.note_dialog.EditNoteDialog;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 
 
@@ -23,10 +23,17 @@ public class FolderNoteActionModeCallback {
 
     ActionMode.Callback mCallback;
     FolderSlidingPanelFragment folderSlidingPanelFragment;
-    Activity activity;
+    MainActivity activity;
+
+    interface onMenuItemClick{
+        void onEditMenuItemClick();
+        void onDeleteMenuItemClick();
+    }
+
+    onMenuItemClick onMenuItemClick;
 
 
-    public ActionMode.Callback getReportActionMode(Activity activity, long id){
+    public ActionMode.Callback getFolderNoteActionMode(MainActivity activity,int type, long id){
 
         return new ActionMode.Callback() {
             @Override
@@ -34,8 +41,8 @@ public class FolderNoteActionModeCallback {
                 MenuItem editList = menu.add("edit ");
                 editList.setIcon(R.drawable.ic_edit);
                 editList.setOnMenuItemClickListener((MenuItem a) -> {
-                    EditReportDialog dialog = new EditReportDialog();
-                    dialog.show(((MainActivity) activity).getSupportFragmentManager(), EditReportDialog.EDIT_REPORT_TITLE);
+                    EditNoteDialog editNoteDialog = EditNoteDialog.newInstance(type, id);
+                    editNoteDialog.show(((MainActivity) activity).getSupportFragmentManager(), "edit_note_folder");
                     actionMode.finish();
                     return true;
                 });
@@ -44,16 +51,18 @@ public class FolderNoteActionModeCallback {
                 MenuItem deleteList = menu.add("delete ");
                 deleteList.setIcon(R.drawable.ic_del);
                 deleteList.setOnMenuItemClickListener((MenuItem a) -> {
-                    new DellReportDialog().show(((MainActivity)activity).getSupportFragmentManager(), "DELL");
+                    DellNoteDialog dellNoteDialog = DellNoteDialog.newInstance(type, id);
+                    dellNoteDialog.show(((MainActivity) activity).getSupportFragmentManager(), "dell_note_folder");
                     actionMode.finish();
                     return true;
+
                 });
                 return true;
             }
 
             @Override
             public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                actionMode.setTitle("Report");
+                actionMode.setTitle("Note");
                 return false;
             }
 
@@ -71,90 +80,19 @@ public class FolderNoteActionModeCallback {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-
-    public ActionMode.Callback getListActionModeCallback(MainActivity activity, FolderSlidingPanelFragment folderSlidingPanelFragment, long idOnTag) {
-
-        this.folderSlidingPanelFragment = folderSlidingPanelFragment;
-
-        mCallback = new ActionMode.Callback() {
+    public void setFolderNoteActionMode(){
+        onMenuItemClick = new onMenuItemClick() {
             @Override
-            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            public void onEditMenuItemClick() {
 
-
-                MenuItem editList = menu.add("edit ");
-                editList.setIcon(R.drawable.ic_edit);
-                editList.setOnMenuItemClickListener((MenuItem a) -> {
-
-//                    EditDelFolderDialog dialog = EditDelFolderDialog.newInstance(idOnTag, EDIT_LIST, folderSlidingPanelFragment);
-//                    dialog.show(activity.getSupportFragmentManager(), "editlist");
-
-
-
-                    return true;
-                });
-
-
-                MenuItem deleteList = menu.add("delete ");
-                deleteList.setIcon(R.drawable.ic_del);
-                deleteList.setOnMenuItemClickListener((MenuItem a) -> {
-
-//
-//                    EditDelFolderDialog dialog = EditDelFolderDialog.newInstance(idOnTag, DELETE_LIST, folderSlidingPanelFragment);
-//                    dialog.show(activity.getSupportFragmentManager(), "deletelist");
-//
-
-
-                    return true;
-                });
-                return true;
             }
 
             @Override
-            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                actionMode.setTitle("Report");
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                return false;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode actionMode) {
+            public void onDeleteMenuItemClick() {
 
             }
         };
-        return mCallback;
     }
-
-    */
 
 
 
