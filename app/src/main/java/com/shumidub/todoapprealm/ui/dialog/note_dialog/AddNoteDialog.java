@@ -10,18 +10,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.Switch;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.notescontroller.FolderNotesRealmController;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.note_fragment.FolderNoteFragment;
-import com.shumidub.todoapprealm.ui.fragment.note_fragment.NoteFragment;
-import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
 
-import java.util.Calendar;
 import java.util.List;
 
 
@@ -130,10 +124,7 @@ public class AddNoteDialog extends android.support.v4.app.DialogFragment {
                 = (getActivity()).getSupportFragmentManager().getFragments();
 
         for (android.support.v4.app.Fragment fragment : fragments) {
-            if (fragment instanceof NoteFragment) {
-                ((NoteFragment) fragment).notifyDataChanged();
-            }
-            else if (fragment instanceof FolderNoteFragment) {
+            if (fragment instanceof FolderNoteFragment) {
                 ((FolderNoteFragment) fragment).notifyDataChanged();
             }
         }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -120,6 +121,9 @@ public class FolderNoteFragment extends Fragment{
 
 
     public void setFolderNoteViews(){
+
+        actionBar.setDisplayHomeAsUpEnabled(false);
+
         title = "Notes";
         actionBar.setTitle(title);
 
@@ -142,7 +146,10 @@ public class FolderNoteFragment extends Fragment{
     }
 
     public void setNoteViews(long idFolderFromAdapter){
-        title = "<  " + FolderNotesRealmController.getFolderNote(idFolderFromAdapter).getName();
+        
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        
+        title = FolderNotesRealmController.getFolderNote(idFolderFromAdapter).getName();
         actionBar.setTitle(title);
 
         isNoteFragment = true;
@@ -162,4 +169,11 @@ public class FolderNoteFragment extends Fragment{
         rv.setAdapter(noteAdapter);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home ){
+            setFolderNoteViews();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

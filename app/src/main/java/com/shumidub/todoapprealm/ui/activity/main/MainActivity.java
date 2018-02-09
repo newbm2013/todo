@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewpager);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mainPagerAdapter);
+        viewPager.setOffscreenPageLimit(5);
         viewPager.setCurrentItem(1);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -43,10 +44,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position==1){
+                    actionBar.setDisplayHomeAsUpEnabled(false);
                     actionBar.setTitle(FolderSlidingPanelFragment.getTitle());
                 }if (position ==0){
-//                    actionBar.setTitle("Notes");
+
+                    /*
+                    try use
+                    private static String makeFragmentName(int viewId, long id) {
+                        return "android:switcher:" + viewId + ":" + id;
+                    }
+                     */
+
+
+                    for (Fragment fragment: getSupportFragmentManager ().getFragments()){
+                        if (fragment instanceof FolderNoteFragment){
+                            if (((FolderNoteFragment) fragment).isNoteFragment){
+                                actionBar.setDisplayHomeAsUpEnabled(true);
+                            }
+                        }
+                    }
                 }else {
+                    actionBar.setDisplayHomeAsUpEnabled(false);
                     actionBar.setTitle("Reports");
                 }
                 actionMode = startSupportActionMode(new EmptyActionModeCallback());
