@@ -14,6 +14,8 @@ import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 
 
 import java.util.List;
@@ -34,6 +36,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     private OnItemClicked onItemClicked;
     private ItemTouchHelper itemTouchHelper;
     private ItemTouchHelper.SimpleCallback itemTouchHelperSimpleCallback;
+    MainActivity activity;
 
     public interface OnItemLongClicked{
         void onLongClick (View view, int position);
@@ -52,7 +55,8 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     }
 
 
-    public TasksRecyclerViewAdapter(List<TaskObject> tasks, List<TaskObject> doneTasks, SmallTasksFragment smallTasksFragment){
+    public TasksRecyclerViewAdapter(MainActivity activity, List<TaskObject> tasks, List<TaskObject> doneTasks, SmallTasksFragment smallTasksFragment){
+        this.activity = activity;
         this.tasks = tasks;
         this.doneTasks = doneTasks;
         this.smallTasksFragment = smallTasksFragment;
@@ -221,6 +225,8 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
+
+                activity.getSupportActionBar().startActionMode(new EmptyActionModeCallback());
 
                 int fromPosition = viewHolder.getAdapterPosition();
                 int toPosition = target.getAdapterPosition();

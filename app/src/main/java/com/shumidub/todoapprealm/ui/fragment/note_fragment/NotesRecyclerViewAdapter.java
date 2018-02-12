@@ -12,6 +12,8 @@ import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
 import com.shumidub.todoapprealm.realmmodel.notes.NoteObject;
+import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 
 import io.realm.RealmList;
 
@@ -25,6 +27,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     RealmList<NoteObject> notesList;
     OnClickListener onClickListener;
     OnLongClickListener onLongClickListener;
+    MainActivity activity;
 
     long id = 0;
 
@@ -35,7 +38,8 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
         boolean onLongClick(ViewHolder holder, int position, long id);
     }
 
-    public NotesRecyclerViewAdapter(long folderNotesId) {
+    public NotesRecyclerViewAdapter(long folderNotesId, MainActivity activity) {
+        this.activity = activity;
         App.initRealm();
         notesList = App.realm.where(FolderNotesObject.class)
                 .equalTo("id", folderNotesId).findFirst().getTasks();
@@ -104,6 +108,8 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
 
+                activity.getSupportActionBar().startActionMode(new EmptyActionModeCallback());
+
                 int fromPosition = viewHolder.getAdapterPosition();
                 int toPosition = target.getAdapterPosition();
 
@@ -119,14 +125,13 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
             // todo need fix if move bellow "add list"
             private void reallyMoved(int from, int to) {
                 App.initRealm();
-                // because  folderOfTasksLis.size()-1 == footerView
-                if (from < noteList.size()-1 ){
+                if (from < noteList.size() ){
                     App.realm.executeTransaction((realm) -> {
                         int to2 = to<noteList.size() ? to : noteList.size()-1;
                         noteList.add(to2, noteList.remove(from));
+                        Log.d("DTAG", "reallyMoved: to2 =" + to2 + "from = " + from);
                     });
                 }
-                Log.d("MOVED_DTAG", "reallyMoved: " + to + " " + from);
             }
 
             @Override
@@ -134,6 +139,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
                 super.clearView(recyclerView, viewHolder);
 
                 if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+
                     reallyMoved(dragFrom, dragTo);
                 }
                 dragFrom = dragTo = -1;

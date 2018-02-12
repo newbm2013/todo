@@ -114,7 +114,7 @@ public class FolderNoteFragment extends Fragment{
         type = AddNoteDialog.TYPE_FOLDER;
         isNoteFragment = false;
 
-        folderAdapter = new FolderNotesRecyclerViewAdapter();
+        folderAdapter = new FolderNotesRecyclerViewAdapter((MainActivity) getActivity());
         folderAdapter.setOnClickListener((h,p,idFolderFromAdapter)->{
             setNoteViews(idFolderFromAdapter);
         });
@@ -140,7 +140,7 @@ public class FolderNoteFragment extends Fragment{
         type = TYPE_NOTE;
         id = idFolderFromAdapter;
 
-        noteAdapter = new NotesRecyclerViewAdapter(idFolderFromAdapter);
+        noteAdapter = new NotesRecyclerViewAdapter(idFolderFromAdapter, (MainActivity) getActivity());
         noteAdapter.setId(idFolderFromAdapter);
         rv.setAdapter(noteAdapter);
         noteAdapter.setOnClickListener((h,p,id)-> setFolderNoteViews());

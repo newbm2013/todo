@@ -11,7 +11,8 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
-
+import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 
 
 import io.realm.RealmList;
@@ -26,6 +27,7 @@ public class FolderNotesRecyclerViewAdapter extends RecyclerView.Adapter<FolderN
     RealmList<FolderNotesObject> folderNotesList;
     OnClickListener onClickListener;
     OnLongClickListener onLongClickListener;
+    MainActivity activity;
 
     public interface OnClickListener {
         void onClick(ViewHolder holder, int position, long id);
@@ -34,7 +36,8 @@ public class FolderNotesRecyclerViewAdapter extends RecyclerView.Adapter<FolderN
         boolean onLongClick(ViewHolder holder, int position, long id);
     }
 
-    public FolderNotesRecyclerViewAdapter() {
+    public FolderNotesRecyclerViewAdapter(MainActivity activity) {
+        this.activity = activity;
         App.initRealm();
         folderNotesList = App.folderOfNotesContainerList;
     }
@@ -100,6 +103,8 @@ public class FolderNotesRecyclerViewAdapter extends RecyclerView.Adapter<FolderN
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
 
+                activity.getSupportActionBar().startActionMode(new EmptyActionModeCallback());
+
                 int fromPosition = viewHolder.getAdapterPosition();
                 int toPosition = target.getAdapterPosition();
 
@@ -114,15 +119,16 @@ public class FolderNotesRecyclerViewAdapter extends RecyclerView.Adapter<FolderN
 
             // todo need fix if move bellow "add list"
             private void reallyMoved(int from, int to) {
+                Log.d("DTAG", "reallyMoved: ++++");
                 App.initRealm();
-                // because  folderOfTasksLis.size()-1 == footerView
-                if (from < folderOfNotesContainerList.size()-1 ){
+                if (from < folderOfNotesContainerList.size() ){
                     App.realm.executeTransaction((realm) -> {
                         int to2 = to<folderOfNotesContainerList.size() ? to : folderOfNotesContainerList.size()-1;
                         folderOfNotesContainerList.add(to2, folderOfNotesContainerList.remove(from));
+                        Log.d("DTAG", "reallyMoved: from " + from +  " to " + to2);
                     });
                 }
-                Log.d("MOVED_DTAG", "reallyMoved: " + to + " " + from);
+
             }
 
             @Override

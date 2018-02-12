@@ -82,21 +82,6 @@ public class FolderOfTaskRecyclerViewAdapter
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
                         then = System.currentTimeMillis();
 
-                        runnable = new Runnable() {
-                            @Override
-                            public void run() {
-                               try {
-                                    TimeUnit.MILLISECONDS.sleep(longClickDuration);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                v.post(() ->  {
-                                    if ((System.currentTimeMillis() - then) > longClickDuration) {
-                                        onHolderTextViewOnLongClickListener.onLongClick(holder, position);
-                                    }
-                                });
-                            }
-                        };
 
                         thread = new Thread(runnable);
                         thread.start();

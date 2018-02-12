@@ -103,7 +103,7 @@ public class SmallTasksFragment extends Fragment {
         }
         llm = new LinearLayoutManager(getContext());
         rvTasks.setLayoutManager(llm);
-        tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+        tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
         rvTasks.setAdapter(tasksRecyclerViewAdapter);
 
         tasksRecyclerViewAdapter.setOnLongClicked(onItemLongClicked);
@@ -113,7 +113,7 @@ public class SmallTasksFragment extends Fragment {
     public void notifyDataChanged(){
         //tasksRecyclerViewAdapter, reset task and done task
         if (tasksRecyclerViewAdapter ==null){
-            tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
+            tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
         }
         else{
 //          setTasks(); or bellow
@@ -127,7 +127,7 @@ public class SmallTasksFragment extends Fragment {
             int position = llm.findFirstVisibleItemPosition();
             if (tasksFolderId == 0) tasks = TasksRealmController.getTasks();
             else tasks = TasksRealmController.getTasks(tasksFolderId);
-            tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
+            tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter((MainActivity) getActivity(),tasks,doneTasks, this);
             tasksRecyclerViewAdapter.setOnLongClicked(onItemLongClicked);
             tasksRecyclerViewAdapter.setOnClicked(onItemClicked);
             rvTasks.setAdapter(tasksRecyclerViewAdapter);
@@ -136,7 +136,7 @@ public class SmallTasksFragment extends Fragment {
         } else if (isAllTaskShowing){
             if (tasksFolderId == 0) tasks = TasksRealmController.getNotDoneTasks();
             else tasks = TasksRealmController.getNotDoneTasks(tasksFolderId);
-            tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(tasks,doneTasks, this);
+            tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter((MainActivity) getActivity(),tasks,doneTasks, this);
             tasksRecyclerViewAdapter.setOnLongClicked(onItemLongClicked);
             tasksRecyclerViewAdapter.setOnClicked(onItemClicked);
             rvTasks.setAdapter(tasksRecyclerViewAdapter);
