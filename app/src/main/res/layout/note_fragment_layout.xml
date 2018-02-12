@@ -7,9 +7,11 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_view"
+        android:background="@color/colorPrimaryLigth"
+        android:padding="6dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@android:layout/simple_list_item_checked">
+        tools:listitem="@android:layout/simple_list_item_1">
 
     </android.support.v7.widget.RecyclerView>
 

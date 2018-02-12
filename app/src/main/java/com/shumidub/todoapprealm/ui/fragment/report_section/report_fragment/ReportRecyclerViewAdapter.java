@@ -88,15 +88,16 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
                 return onItemLongClicked.onLongClick(view, position, reportObject.getId());
             });
 
+
             if (reportObject.isWeekReport()){
                 holder.tvDate.setText("Week " + reportObject.getWeekNumber());
                 holder.tvDayCountFieldName.setText("Week count");
 //                holder.llDivider.setVisibility(View.VISIBLE);
-                holder.itemView.setPadding(2,2,2,24);
+//                holder.itemView.setPadding(2,2,2,24);
             }
             else{
                 holder.tvDate.setText(reportObject.getDate());
-                holder.itemView.setPadding(2,2,2,12);
+//                holder.itemView.setPadding(2,2,2,12);
             }
         }
     }

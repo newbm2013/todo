@@ -6,7 +6,7 @@
     <color name="colorAccent">#daff41c0</color>
     <color name="colorGray">#ae817d7f</color>
     <color name="colorLightGray">#160027ff</color>
-    <color name="colorWhite">#aeffffff</color>
-    <color name="colorTransparent">#00edebeb</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorTransparent">#00ffffff</color>
 
 </resources>
