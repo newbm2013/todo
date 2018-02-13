@@ -113,10 +113,18 @@ public class FolderSlidingPanelFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
+
+
+
         ///////////////////////    ACTION BAR, MODE (onViewCreated)    ///////////////////////
         actionBar = ((MainActivity)getActivity()).getSupportActionBar();
         setHasOptionsMenu(true);
         setTitle("Tasks");
+
+//        setDayScopeValue();
+//        actionBar.setSubtitle("" + dayScope);
 
         ///////////////////////    SLIDING VIEWS (onViewCreated)     ///////////////////////
         slidingUpPanelLayout = view.findViewById(R.id.slidingup_panel_layout);
@@ -298,9 +306,15 @@ public class FolderSlidingPanelFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         setDayScopeValue();
         menu.clear();
+
+
         MenuItem dayScopeMenu = menu.add(100,100,100,"" + dayScope);
         dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         dayScopeMenu.setOnMenuItemClickListener((v)->{dayScope=+1; return true;});
+
+        MenuItem add = menu.add(101,101,101,"add ");
+        add.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        add.setIcon(R.drawable.ic_add);
     }
 
     //FOLDER

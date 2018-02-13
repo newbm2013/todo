@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 import com.shumidub.todoapprealm.App;
@@ -107,6 +109,15 @@ public class MainActivity extends AppCompatActivity {
 ////          FolderSlidingPanelFragment.newInstance(listId)).commit();
 //        }
         super.onRestart();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //todo - general and set intarface
+        MenuItem dayScopeMenu = menu.add(100,100,100,"" + 55);
+        dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
