@@ -9,5 +9,7 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorTransparent">#00ffffff</color>
     <color name="colorBackgroundActivity">#e73f66b5</color>
+    <color name="colorActionModeOldGood">#3285cc</color>
+    <color name="colorActionMode">#0769be</color>
 
 </resources>

@@ -10,14 +10,11 @@ import android.widget.TextView;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmmodel.BaseRealmObject;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
 import com.shumidub.todoapprealm.realmmodel.notes.NoteObject;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 
 import io.realm.RealmList;
-import io.realm.RealmModel;
-import io.realm.RealmObject;
 
 /**
  * Created by A.shumidub on 07.02.18.
