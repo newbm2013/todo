@@ -8,5 +8,6 @@
     <color name="colorLightGray">#160027ff</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorTransparent">#00ffffff</color>
+    <color name="colorBackgroundActivity">#e73f66b5</color>
 
 </resources>

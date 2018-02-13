@@ -1,5 +1,7 @@
 package com.shumidub.todoapprealm.realmmodel.notes;
 
+import com.shumidub.todoapprealm.realmmodel.BaseRealmObject;
+
 import io.realm.RealmObject;
 
 /**
@@ -7,7 +9,7 @@ import io.realm.RealmObject;
  *
  */
 
-public class NoteObject extends RealmObject {
+public class NoteObject extends BaseRealmObject {
 
     private long id;
     private String text;
