@@ -82,7 +82,7 @@ public class ReportFragment extends Fragment{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        MenuItem add = menu.add("add ");
+        MenuItem add = menu.add(2,2,2,"add ");
         add.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         add.setIcon(R.drawable.ic_add);
         add.setOnMenuItemClickListener((MenuItem a) -> {

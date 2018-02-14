@@ -27,6 +27,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     OnClickListener onClickListener;
     OnLongClickListener onLongClickListener;
     MainActivity activity;
+    RealmList<NoteObject> noteList;
 
 
 
@@ -59,7 +60,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
         holder.text.setText(notesList.get(position).getText());
         holder.text.setTag(id);
 
-        holder.text.setOnClickListener((v)-> onClickListener.onClick(holder,position,id));
+//        holder.text.setOnClickListener((v)-> onClickListener.onClick(holder,position,id));
         holder.text.setOnLongClickListener((v)-> onLongClickListener.onLongClick(holder,position,id));
 
     }
@@ -88,75 +89,21 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     }
 
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-
-
-        // set ITEM TOUCH HELPER for folder rv
+    public void itemMove(int from, int to){
         App.initRealm();
-        RealmList<NoteObject> noteList = App.realm.where(FolderNotesObject.class)
-                .equalTo("id", id).findFirst().getTasks();
 
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.UP | ItemTouchHelper.DOWN ,0) {
-
-            int dragFrom = -1;
-            int dragTo = -1;
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                  RecyclerView.ViewHolder target) {
-
-
-
-                int fromPosition = viewHolder.getAdapterPosition();
-                int toPosition = target.getAdapterPosition();
-
-                if (dragFrom == -1) {
-                    dragFrom = fromPosition;
-                }
-                dragTo = toPosition;
-
-                notifyItemMoved(fromPosition, toPosition);
-                return true;
-            }
-
-            // todo need fix if move bellow "add list"
-            private void reallyMoved(int from, int to) {
-                App.initRealm();
-                if (from < noteList.size() ){
-                    App.realm.executeTransaction((realm) -> {
-                        int to2 = to<noteList.size() ? to : noteList.size()-1;
-                        noteList.add(to2, noteList.remove(from));
-                        Log.d("DTAG", "reallyMoved: to2 =" + to2 + "from = " + from);
-                    });
-                }
-            }
-
-            @Override
-            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                super.clearView(recyclerView, viewHolder);
-
-                if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
-
-                    reallyMoved(dragFrom, dragTo);
-                }
-                dragFrom = dragTo = -1;
-            }
-
-            @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) { }
-
-        });
-
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
+        if (from < noteList.size() ){
+            App.realm.executeTransaction((realm) -> {
+                int to2 = to<noteList.size() ? to : noteList.size()-1;
+                noteList.add(to2, noteList.remove(from));
+            });
+        }
 
     }
 
     public void setId(long id){
         this.id = id;
+        noteList = App.realm.where(FolderNotesObject.class)
+                .equalTo("id", id).findFirst().getTasks();
     }
 }

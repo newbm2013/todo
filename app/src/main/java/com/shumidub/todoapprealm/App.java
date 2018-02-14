@@ -6,7 +6,12 @@ import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
+import com.shumidub.todoapprealm.realmmodel.RealmInteger;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
+
+import java.util.Calendar;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -24,6 +29,8 @@ public class App extends Application {
     public static RealmFoldersContainer realmFoldersContainer;
     public static RealmList<FolderTaskObject> folderOfTasksListFromContainer;
     public static RealmList<FolderNotesObject> folderOfNotesContainerList;
+
+    public static int dayScope;
 
     @Override
     public void onCreate() {
@@ -97,4 +104,27 @@ public class App extends Application {
         folderOfTasksListFromContainer.toArray();
 
     }
+
+    public static void setDayScopeValue(){
+        // done and not done tasks but where countAccumulation more than 0
+        List<TaskObject> allDoneAndParticullaryDoneTasks = TasksRealmController.getDoneAndPartiallyDoneTasks();
+
+        int todayDate = Integer.valueOf("" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
+                Calendar.getInstance().get(Calendar.YEAR));
+
+        App.dayScope = 0;
+
+        for (TaskObject task : allDoneAndParticullaryDoneTasks) {
+            if (task.getLastDoneDate() == todayDate) {
+                int equalDateCount = 0;
+                for (RealmInteger realmInteger : task.getDateCountAccumulation()) {
+                    if (realmInteger.getMyInteger() == todayDate) {
+                        equalDateCount++;
+                    }
+                }
+                App.dayScope = App.dayScope + task.getCountValue() * equalDateCount;
+            }
+        }
+    }
+
 }

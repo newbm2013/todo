@@ -55,7 +55,7 @@ public class FolderSlidingPanelFragment extends Fragment {
     static ActionMode actionMode;
     ActionMode.Callback folderCallback;
     static final int FOLDER_ACTIONMODE = 2;
-    public static int dayScope;
+
 
     // SLIDING VIEW
     public SlidingUpPanelLayout slidingUpPanelLayout;
@@ -77,7 +77,7 @@ public class FolderSlidingPanelFragment extends Fragment {
     // FOLDER LISTENERS
     FolderOfTaskRecyclerViewAdapter.OnHolderTextViewOnClickListener onHolderTextViewOnClickListener;
     FolderOfTaskRecyclerViewAdapter.OnHolderTextViewOnLongClickListener onHolderTextViewOnLongClickListener;
-    FolderOfTaskRecyclerViewAdapter.OnFooterTextViewOnClickListener onFooterTextViewOnClickListener;
+
 
     // FOLDER VARIABLES, DATA
     RealmFoldersContainer realmFoldersContainer;
@@ -124,7 +124,7 @@ public class FolderSlidingPanelFragment extends Fragment {
         setTitle("Tasks");
 
 //        setDayScopeValue();
-//        actionBar.setSubtitle("" + dayScope);
+//        actionBar.setSubtitle("" + App.dayScope);
 
         ///////////////////////    SLIDING VIEWS (onViewCreated)     ///////////////////////
         slidingUpPanelLayout = view.findViewById(R.id.slidingup_panel_layout);
@@ -181,14 +181,16 @@ public class FolderSlidingPanelFragment extends Fragment {
                 if (!text.isEmpty() || !text.equals("")) {
 
                     TasksRealmController.addTask(text, count , maxAccumulation, cycling, priority,
-                            ((Long) holder.itemView.findViewById(R.id.item_text).getTag()) );
+                            ((Long) holder.itemView.findViewById(R.id.tv_note_text).getTag()) );
+//                            ((Long) holder.itemView.findViewById(R.id.item_text).getTag()) );
 
                     //todo reset view
                     priority = 0;
                     cycling = false;
                     et.setText("");
                 } else {
-                    idFolderFromTag = (Long) holder.itemView.findViewById(R.id.item_text).findViewById(R.id.item_text).getTag();
+//                    idFolderFromTag = (Long) holder.itemView.findViewById(R.id.item_text)getTag();
+                    idFolderFromTag = (Long) holder.itemView.findViewById(R.id.tv_note_text).getTag();
 
                     // setTasks(); //todo check if it need
 
@@ -206,7 +208,8 @@ public class FolderSlidingPanelFragment extends Fragment {
 
         onHolderTextViewOnLongClickListener
             = (FolderOfTaskRecyclerViewAdapter.ViewHolder holder, int position) -> {
-            idFolderFromTag = (Long) holder.itemView.findViewById(R.id.item_text).getTag();
+//            idFolderFromTag = (Long) holder.itemView.findViewById(R.id.item_text).getTag();
+            idFolderFromTag = (Long) holder.itemView.findViewById(R.id.tv_note_text).getTag();
             titleFolder = FolderTaskRealmController.getFolder(idFolderFromTag).getName();
             finishActionMode();
             actionMode = getActivity().startActionMode(getCallback(FOLDER_ACTIONMODE));
@@ -217,15 +220,10 @@ public class FolderSlidingPanelFragment extends Fragment {
             */
         };
 
-        onFooterTextViewOnClickListener
-            = (FolderOfTaskRecyclerViewAdapter.ViewHolder holder, int position) -> {
-            AddFolderDialog addFolderDialog = new AddFolderDialog();
-            addFolderDialog.show(getActivity().getSupportFragmentManager(), "addfolder");
-        };
 
         folderOfTaskRVAdapter.setOnHolderTextViewOnClickListener(onHolderTextViewOnClickListener);
         folderOfTaskRVAdapter.setOnHolderTextViewOnLongClickListener(onHolderTextViewOnLongClickListener);
-        folderOfTaskRVAdapter.setOnFooterTextViewSetOnClickListener(onFooterTextViewOnClickListener);
+
 
         // set ITEM TOUCH HELPER for folder rv
         App.initRealm();
@@ -242,6 +240,8 @@ public class FolderSlidingPanelFragment extends Fragment {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
 
+                actionBar.startActionMode(new EmptyActionModeCallback());
+
                 int fromPosition = viewHolder.getAdapterPosition();
                 int toPosition = target.getAdapterPosition();
 
@@ -257,14 +257,12 @@ public class FolderSlidingPanelFragment extends Fragment {
             // todo need fix if move bellow "add list"
             private void reallyMoved(int from, int to) {
                 App.initRealm();
-                // because  folderOfTasksLis.size()-1 == footerView
-                if (from < folderOfTasksLis.size()-1 ){
+                if (from < folderOfTasksLis.size()){
                     App.realm.executeTransaction((realm) -> {
                         int to2 = to<folderOfTasksLis.size() ? to : folderOfTasksLis.size()-1;
                         folderOfTasksLis.add(to2, folderOfTasksLis.remove(from));
                     });
                 }
-                Log.d("MOVED_DTAG", "reallyMoved: " + to + " " + from);
             }
 
             @Override
@@ -304,17 +302,15 @@ public class FolderSlidingPanelFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        setDayScopeValue();
-        menu.clear();
-
-
-        MenuItem dayScopeMenu = menu.add(100,100,100,"" + dayScope);
-        dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        dayScopeMenu.setOnMenuItemClickListener((v)->{dayScope=+1; return true;});
-
-        MenuItem add = menu.add(101,101,101,"add ");
+        MenuItem add = menu.add(2,2,2,"add ");
         add.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         add.setIcon(R.drawable.ic_add);
+        add.setOnMenuItemClickListener((v)->{
+            if (!(slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)) {
+                AddFolderDialog addFolderDialog = new AddFolderDialog();
+                addFolderDialog.show(getActivity().getSupportFragmentManager(), "addfolder");
+            }
+         return true;});
     }
 
     //FOLDER
@@ -409,29 +405,9 @@ public class FolderSlidingPanelFragment extends Fragment {
         ((MainActivity) getActivity()).startSupportActionMode(new EmptyActionModeCallback());
     }
 
-    private void setDayScopeValue(){
-        // done and not done tasks but where countAccumulation more than 0
-        List<TaskObject> allDoneAndParticullaryDoneTasks = TasksRealmController.getDoneAndPartiallyDoneTasks();
 
-        int todayDate = Integer.valueOf("" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
-                Calendar.getInstance().get(Calendar.YEAR));
+    public static int getDayScopeValue(){return App.dayScope;}
 
-        dayScope = 0;
-
-        for (TaskObject task : allDoneAndParticullaryDoneTasks) {
-            if (task.getLastDoneDate() == todayDate) {
-                int equalDateCount = 0;
-                for (RealmInteger realmInteger : task.getDateCountAccumulation()) {
-                    if (realmInteger.getMyInteger() == todayDate) {
-                        equalDateCount++;
-                    }
-                }
-                dayScope = dayScope + task.getCountValue() * equalDateCount;
-            }
-        }
-    }
-
-    public static int getDayScopeValue(){return dayScope;}
 
     /** update done status and number of doing on cycling tasks if done day != today*/
     private void resetTasksCountAccumulation(){
@@ -460,20 +436,10 @@ public class FolderSlidingPanelFragment extends Fragment {
     }
 
 
-// old unused method    , todo thinc about logic открытия таск панели если нет фолдеров или какой по умоллчанию откроется (видимо откроется первый и использовать эмпти стэйт или запретить экспандить панель)
-//    public void setTasks(){
-//            if (tasksListId == 0) return;
-//            else{
-//                tasks = TasksRealmController.getNotDoneTasks(tasksListId);
-//                doneTasks = TasksRealmController.getDoneTasks(tasksListId);
-//                ((MainActivity) getActivity()).getSupportActionBar()
-//                        .setTitle((CharSequence) FolderRealmController.getFolder(tasksListId).getName());
-//            }
-//            adapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
-//            rvItems.setAdapter(adapter);
-//            adapter.setOnLongClicked(onItemLongClicked);
-//            adapter.setOnClicked(onItemClicked);
-//    }
+
+
+// todo thinc about logic открытия таск панели если нет фолдеров или какой по умоллчанию откроется (видимо откроется первый и использовать эмпти стэйт или запретить экспандить панель)
+
 }
 
 

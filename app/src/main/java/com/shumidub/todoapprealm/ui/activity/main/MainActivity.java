@@ -13,11 +13,17 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
+import com.shumidub.todoapprealm.realmmodel.RealmInteger;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.note_fragment.FolderNoteFragment;
 import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        App.setDayScopeValue();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -114,10 +122,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //todo - general and set intarface
-        MenuItem dayScopeMenu = menu.add(100,100,100,"" + 55);
+        MenuItem dayScopeMenu = menu.add(1,1,1,"" + App.dayScope);
         dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//      dayScopeMenu.setOnMenuItemClickListener((v)->{dayScope=+1; return true;});
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void invalidateOptionsMenu() {
+        App.setDayScopeValue();
+        super.invalidateOptionsMenu();
     }
 
     @Override
@@ -171,5 +185,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("DTAG", "onBackPressedWithTimer: ");
         }
     }
+
     
 }
