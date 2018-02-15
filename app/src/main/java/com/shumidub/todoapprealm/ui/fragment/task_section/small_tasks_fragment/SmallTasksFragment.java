@@ -10,6 +10,7 @@ import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
@@ -27,8 +28,10 @@ import java.util.List;
 
 public class SmallTasksFragment extends Fragment {
 
+
     //TASKS VIEW, ADAPTER
     RecyclerView rvTasks;
+    LinearLayout emptyState;
     LinearLayoutManager llm;
     TasksRecyclerViewAdapter tasksRecyclerViewAdapter;
     static ActionMode actionMode;
@@ -56,6 +59,7 @@ public class SmallTasksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.rv_fragment_template_layout, container, false);
+        emptyState = view.findViewById(R.id.empty_state);
         return view;
     }
 
@@ -70,6 +74,7 @@ public class SmallTasksFragment extends Fragment {
         rvTasks = view.findViewById(R.id.rv);
         setTasksListClickListeners();
         setTasks();
+        setEmptyStateIfNeed();
     }
 
     private void setTasksListClickListeners(){
@@ -119,6 +124,9 @@ public class SmallTasksFragment extends Fragment {
 //          setTasks(); or bellow
             tasksRecyclerViewAdapter.notifyDataSetChanged();
         }
+        try{
+        setEmptyStateIfNeed();
+        } catch (NullPointerException e){}
     }
 
     //Show Done and Not done Tasks
@@ -151,6 +159,17 @@ public class SmallTasksFragment extends Fragment {
     public void finishActionMode(){
         ((MainActivity) getActivity()).startSupportActionMode(new EmptyActionModeCallback());
     }
+
+    private void setEmptyStateIfNeed(){
+
+
+        if (tasksRecyclerViewAdapter.getItemCount() == 0){
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+        }
+    }
+
 }
 
 

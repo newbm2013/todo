@@ -80,6 +80,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_card_view, parent, false);
                 return new NormalViewHolder(view);
             }else{
+                //todo empty state need fix maybe
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_card_view_done_tasks, parent, false);
                 return new FooterViewHolder(view);
             }
@@ -160,19 +161,26 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
     @Override
     public int getItemViewType(int position) {
+
         if (position == tasks.size() && tasks.size() > 0) {
             return FOOTER_VIEW;
-        }if (tasks.size() <= 0 && doneTasks.size()>0
+        }
+
+        else if (tasks.size() == 0 && doneTasks.size()>0
 //                && position==tasks.size()
                 ) {
             return FOOTER_VIEW;
         }
+
+
+
         return super.getItemViewType(position);
     }
 
     @Override
     public int getItemCount() {
-        return ((tasks != null && !tasks.isEmpty() && tasks.size() > 0))
+        return
+                ((tasks != null && !tasks.isEmpty() && tasks.size() > 0))
                 || (doneTasks!=null && !doneTasks.isEmpty() && doneTasks.size()>0)
                 ? tasks.size()+1 : 1;
     }
