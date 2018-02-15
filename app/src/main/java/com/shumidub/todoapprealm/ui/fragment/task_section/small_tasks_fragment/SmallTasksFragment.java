@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,6 +108,7 @@ public class SmallTasksFragment extends Fragment {
                     .setTitle((CharSequence) FolderTaskRealmController.getFolder(tasksFolderId).getName());
         }
         llm = new LinearLayoutManager(getContext());
+
         rvTasks.setLayoutManager(llm);
         tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
         rvTasks.setAdapter(tasksRecyclerViewAdapter);
@@ -116,17 +118,29 @@ public class SmallTasksFragment extends Fragment {
     }
 
     public void notifyDataChanged(){
-        //tasksRecyclerViewAdapter, reset task and done task
-        if (tasksRecyclerViewAdapter ==null){
-            tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
-        }
-        else{
-//          setTasks(); or bellow
-            tasksRecyclerViewAdapter.notifyDataSetChanged();
-        }
-        try{
+//        //tasksRecyclerViewAdapter, reset task and done task
+//        if (tasksRecyclerViewAdapter ==null){
+//            tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
+//            rvTasks.setAdapter(tasksRecyclerViewAdapter);
+//            Log.d("DTAG", "notifyDataChanged: 1");
+//        }
+//        else{
+////          setTasks(); or bellow
+//            tasksRecyclerViewAdapter.notifyDataSetChanged();
+//            Log.d("DTAG", "notifyDataChanged: 2");
+//        }
+//
+//        try{
+//            setEmptyStateIfNeed();
+//            Log.d("DTAG", "notifyDataChanged: 3");
+//        } catch (NullPointerException e){}
+
+
+        rvTasks = getView().findViewById(R.id.rv);
+
+        setTasks();
         setEmptyStateIfNeed();
-        } catch (NullPointerException e){}
+
     }
 
     //Show Done and Not done Tasks

@@ -162,14 +162,20 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     @Override
     public int getItemViewType(int position) {
 
-        if (position == tasks.size() && tasks.size() > 0) {
+        if (tasks.size() > 0 && position == tasks.size() ) {
             return FOOTER_VIEW;
         }
 
-        else if (tasks.size() == 0 && doneTasks.size()>0
-//                && position==tasks.size()
-                ) {
+        else if (tasks.size() == 0 && position == 0 && doneTasks.size()>0 ) {
             return FOOTER_VIEW;
+        }
+
+        else if (tasks.size()>0 && position<tasks.size()){
+
+        }
+
+        else if (tasks.size() == 0 && doneTasks.size() == 0){
+            isNotEmpty = false;
         }
 
 
