@@ -4,7 +4,7 @@ import android.util.Log;
 import android.widget.CompoundButton;
 
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
-import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
+import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

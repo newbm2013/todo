@@ -14,4 +14,13 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <LinearLayout
+        android:id="@+id/empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/empty_state"></include>
+    </LinearLayout>
+
+
+
 </android.support.constraint.ConstraintLayout>

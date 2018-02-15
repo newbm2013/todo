@@ -9,11 +9,11 @@ import com.shumidub.todoapprealm.R;
 
 import com.shumidub.todoapprealm.ui.dialog.task_folder_dialog.EditDelFolderDialog;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
-import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
+import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 
 import static com.shumidub.todoapprealm.ui.dialog.task_folder_dialog.EditDelFolderDialog.DELETE_LIST;
 import static com.shumidub.todoapprealm.ui.dialog.task_folder_dialog.EditDelFolderDialog.EDIT_LIST;
-import static com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment.titleFolder;
+import static com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment.titleFolder;
 
 
 /**

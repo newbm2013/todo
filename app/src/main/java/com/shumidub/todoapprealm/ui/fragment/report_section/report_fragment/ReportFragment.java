@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
@@ -35,6 +36,7 @@ import java.util.List;
 public class ReportFragment extends Fragment{
 
     RecyclerView recyclerView;
+    LinearLayout emptyState;
     ActionBar actionBar;
     ReportRecyclerViewAdapter reportRecyclerViewAdapter;
     List<ReportObject> reportObjectList;
@@ -58,6 +60,7 @@ public class ReportFragment extends Fragment{
         actionBar.setTitle("Report");
 
         recyclerView = view.findViewById(R.id.rv);
+        emptyState = view.findViewById(R.id.empty_state);
 
         reportObjectList = ReportRealmController.getReportList();
         reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(reportObjectList);
@@ -75,6 +78,8 @@ public class ReportFragment extends Fragment{
             actionBar.startActionMode(actionModeCallback);
             actionModeIsEnabled = true;
             return true;});
+
+        setEmptyStateIfNeed();
     }
 
 
@@ -96,6 +101,8 @@ public class ReportFragment extends Fragment{
         reportObjectList = ReportRealmController.getReportList();
         reportRecyclerViewAdapter.notifyDataSetChanged();
 
+        setEmptyStateIfNeed();
+
 //        reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(reportObjectList);
 //        recyclerView.setAdapter(reportRecyclerViewAdapter);
 
@@ -109,6 +116,18 @@ public class ReportFragment extends Fragment{
     public void finishActionMode(){
         actionBar.startActionMode(new EmptyActionModeCallback());
         actionModeIsEnabled = false;
+    }
+
+
+    private void setEmptyStateIfNeed(){
+
+        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+
+        if (adapter.getItemCount() == 0){
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+        }
     }
 
 }

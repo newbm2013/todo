@@ -4,9 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context=".ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment">
+    tools:context=".ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment">
 
 
+        <LinearLayout
+            android:id="@+id/empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <include layout="@layout/empty_state"></include>
+        </LinearLayout>
 
 
         <android.support.v7.widget.RecyclerView
@@ -15,6 +21,9 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent">
         </android.support.v7.widget.RecyclerView>
+
+
+
 
 
 

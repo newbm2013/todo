@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment;
+package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment;
 
 
 import android.animation.StateListAnimator;
@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,9 +27,9 @@ import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
-import com.shumidub.todoapprealm.realmmodel.RealmInteger;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.adapter.FolderOfTaskRecyclerViewAdapter;
 import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTasksFragment;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.task.FolderActionModeCallback;
@@ -48,7 +47,9 @@ import static com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmControll
  * Created by Артем on 19.12.2017.
  */
 
-public class FolderSlidingPanelFragment extends Fragment {
+public class FolderSlidingPanelFragment extends Fragment implements IViewFolderSlidingPanelFragment {
+
+    LinearLayout emptyState;
 
     // ACTIONBAR AND ACTIONMODE
     ActionBar actionBar;
@@ -166,6 +167,10 @@ public class FolderSlidingPanelFragment extends Fragment {
         //set adapter for folder rv
         folderOfTaskRVAdapter = new FolderOfTaskRecyclerViewAdapter(folderObjects, getActivity());
         rvFolders.setAdapter(folderOfTaskRVAdapter);
+        //todo empty state
+
+        emptyState = view.findViewById(R.id.ll_empty_state);
+        setEmptyStateIfNeed();
 
 
         // SET LISTENERS
@@ -395,6 +400,7 @@ public class FolderSlidingPanelFragment extends Fragment {
 //      folderOfTaskRVAdapter.notifyDataSetChanged();
         folderOfTaskRVAdapter.notifyDataSetChanged();
         smallTaskFragmentPagerAdapter.notifyDataSetChanged();
+        setEmptyStateIfNeed();
     }
 
 //    protected void tasksDataChanged(){
@@ -435,6 +441,17 @@ public class FolderSlidingPanelFragment extends Fragment {
                         .setTitle(title);
     }
 
+
+    private void setEmptyStateIfNeed(){
+
+        RecyclerView.Adapter adapter = rvFolders.getAdapter();
+
+        if (adapter.getItemCount() == 0){
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+        }
+    }
 
 
 

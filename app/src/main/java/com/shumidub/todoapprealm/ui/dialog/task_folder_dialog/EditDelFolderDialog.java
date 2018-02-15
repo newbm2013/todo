@@ -14,7 +14,7 @@ import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
-import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.FolderSlidingPanelFragment;
+import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 
 import io.reactivex.annotations.NonNull;
 

@@ -8,19 +8,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.notescontroller.FolderNotesRealmController;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
-import com.shumidub.todoapprealm.realmmodel.notes.NoteObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.actionmode.note.FolderNoteActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
@@ -42,6 +41,7 @@ public class FolderNoteFragment extends Fragment{
     ActionBar actionBar;
 
     RecyclerView rv;
+    LinearLayout emptyState;
 
     FolderNotesRecyclerViewAdapter folderAdapter;
     NotesRecyclerViewAdapter noteAdapter;
@@ -70,6 +70,7 @@ public class FolderNoteFragment extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        emptyState =  view.findViewById(R.id.empty_state);
         rv = view.findViewById(R.id.recycle_view);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         setFolderNoteViews();
@@ -78,6 +79,8 @@ public class FolderNoteFragment extends Fragment{
         actionBar.setTitle("Notes");
         setTouchHelper(rv);
         id = idFolderNoteObject;
+
+
     }
 
 
@@ -103,14 +106,20 @@ public class FolderNoteFragment extends Fragment{
     }
 
     public void notifyDataChanged(){
-        try {
+
+        RecyclerView.Adapter adapter = rv.getAdapter();
+
+        if (adapter instanceof FolderNotesRecyclerViewAdapter){
             folderAdapter.notifyDataSetChanged();
-        }catch(NullPointerException e){}
-
-        try {
+        } else{
             noteAdapter.notifyDataSetChanged();
-        }catch (NullPointerException e){}
+        }
 
+        if (adapter.getItemCount() == 0){
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+        }
     }
 
 
@@ -139,6 +148,12 @@ public class FolderNoteFragment extends Fragment{
         });
         rv.setAdapter(folderAdapter);
 
+        if (folderAdapter.getItemCount() == 0){
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+        }
+
     }
 
     public void setNoteViews(long idFolderFromAdapter){
@@ -166,6 +181,12 @@ public class FolderNoteFragment extends Fragment{
             return true;
         });
         rv.setAdapter(noteAdapter);
+
+        if (noteAdapter.getItemCount() == 0){
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+        }
     }
 
     @Override

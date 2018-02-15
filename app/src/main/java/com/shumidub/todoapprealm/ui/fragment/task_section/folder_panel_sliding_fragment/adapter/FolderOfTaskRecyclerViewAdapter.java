@@ -1,11 +1,10 @@
-package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment;
+package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,8 +12,6 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 
-
-import java.util.concurrent.TimeUnit;
 
 import io.realm.RealmList;
 
