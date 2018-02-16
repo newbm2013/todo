@@ -151,6 +151,15 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 holder.textViewDoneTask.setTag("footer");
                 holder.textViewDoneTask.setOnClickListener((v) -> smallTasksFragment.showAllTasks());
             }
+
+            //todo ADDED
+            isNotEmpty = false;
+
+        } else {
+            Log.d("DTAG", "onBindViewHolder: emptystate");
+            Log.d("DTAG", "onBindViewHolder: emptystate");
+            Log.d("DTAG", "onBindViewHolder: emptystate");
+            //emptystate
         }
     }
 

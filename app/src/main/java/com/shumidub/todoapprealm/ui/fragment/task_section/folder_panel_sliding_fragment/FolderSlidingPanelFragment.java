@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
@@ -183,16 +184,25 @@ public class FolderSlidingPanelFragment extends Fragment {
                 } else {
                     idFolderFromTag = (Long) holder.itemView.findViewById(R.id.item_text).findViewById(R.id.item_text).getTag();
 
+
+                    //todo ADDED
                     // setTasks(); //todo check if it need
 
-                    Fragment currentFragment = smallTaskFragmentPagerAdapter.getItem(position);
-                    if (currentFragment instanceof SmallTasksFragment){
-                        ((SmallTasksFragment) currentFragment).notifyDataChanged();
-                    }
+                    //todo ADDED
+
+                    smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+                    smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
+
 
                     smallTasksViewPager.setCurrentItem(position);
 
-                    setTitle(FolderRealmController.getFolder(idFolderFromTag).getName());
+
+                    String name = FolderRealmController.getFolder(idFolderFromTag).getName();
+
+
+                    //todo ADDED
+                    setTitle(name);
+
                     slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
             };
@@ -214,6 +224,10 @@ public class FolderSlidingPanelFragment extends Fragment {
             = (FolderOfTaskRecyclerViewAdapter.ViewHolder holder, int position) -> {
             AddFolderDialog addFolderDialog = new AddFolderDialog();
             addFolderDialog.show(getActivity().getSupportFragmentManager(), "addfolder");
+
+            smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+            smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
+
         };
 
         folderOfTaskRVAdapter.setOnHolderTextViewOnClickListener(onHolderTextViewOnClickListener);

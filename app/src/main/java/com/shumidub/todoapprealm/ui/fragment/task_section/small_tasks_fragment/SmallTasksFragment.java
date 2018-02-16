@@ -10,6 +10,7 @@ import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.FolderRealmController;
@@ -97,10 +98,10 @@ public class SmallTasksFragment extends Fragment {
         if (tasksFolderId == 0) tasks = TasksRealmController.getNotDoneTasks();
         else tasks = TasksRealmController.getNotDoneTasks(tasksFolderId);
 
-        if (tasksFolderId !=0){
-            ((MainActivity) getActivity()).getSupportActionBar()
-                    .setTitle((CharSequence) FolderRealmController.getFolder(tasksFolderId).getName());
-        }
+//        if (tasksFolderId !=0){
+//            ((MainActivity) getActivity()).getSupportActionBar()
+//                    .setTitle((CharSequence) FolderRealmController.getFolder(tasksFolderId).getName() + "0000");
+//        }
         llm = new LinearLayoutManager(getContext());
         rvTasks.setLayoutManager(llm);
         tasksRecyclerViewAdapter = new TasksRecyclerViewAdapter(tasks, doneTasks, this);
@@ -108,6 +109,8 @@ public class SmallTasksFragment extends Fragment {
 
         tasksRecyclerViewAdapter.setOnLongClicked(onItemLongClicked);
         tasksRecyclerViewAdapter.setOnClicked(onItemClicked);
+
+        Toast.makeText(getContext(), "dsfsdf = " + FolderRealmController.getFolder(tasksFolderId).getName(), Toast.LENGTH_SHORT).show();
     }
 
     public void notifyDataChanged(){
@@ -116,12 +119,18 @@ public class SmallTasksFragment extends Fragment {
             tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter(tasks, doneTasks, this);
         }
         else{
+            //todo ADDED
 //          setTasks(); or bellow
             tasksRecyclerViewAdapter.notifyDataSetChanged();
         }
+
+        //todo ADDED
+        rvTasks.setAdapter(tasksRecyclerViewAdapter);
+
+
     }
 
-    //Show Done and Not done Tasks
+    //Show Done and Not done Tasksltk
     public void showAllTasks(){
         if(!isAllTaskShowing) {
             int position = llm.findFirstVisibleItemPosition();
@@ -144,9 +153,9 @@ public class SmallTasksFragment extends Fragment {
         }
     }
 
-    public void tasksDataChanged(){
-        setTasks();
-    }
+//    public void tasksDataChanged(){
+//        setTasks();
+//    }
 
     public void finishActionMode(){
         ((MainActivity) getActivity()).startSupportActionMode(new EmptyActionModeCallback());
