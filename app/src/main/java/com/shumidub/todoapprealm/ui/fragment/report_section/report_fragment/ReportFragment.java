@@ -57,7 +57,7 @@ public class ReportFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         setHasOptionsMenu(true);
-        actionBar.setTitle("Report");
+
 
         recyclerView = view.findViewById(R.id.rv);
         emptyState = view.findViewById(R.id.empty_state);

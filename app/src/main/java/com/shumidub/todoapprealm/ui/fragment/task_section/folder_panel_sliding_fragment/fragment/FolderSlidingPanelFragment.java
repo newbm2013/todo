@@ -152,7 +152,10 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) setTitle("Tasks");
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) finishActionMode();
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED){
+                    finishActionMode();
+                    setTitle(FolderTaskRealmController.getFoldersList().get(smallTasksViewPager.getCurrentItem()).getName());
+                }
             }
         });
 
@@ -199,12 +202,12 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
                     // setTasks(); //todo check if it need
 
-                    Fragment currentFragment = smallTaskFragmentPagerAdapter.getItem(position);
-                    if (currentFragment instanceof SmallTasksFragment){
-                        ((SmallTasksFragment) currentFragment).notifyDataChanged();
-                    }
 
+                    smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+                    smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
                     smallTasksViewPager.setCurrentItem(position);
+
+
 
                     setTitle(FolderTaskRealmController.getFolder(idFolderFromTag).getName());
                     slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
@@ -297,7 +300,10 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
-            public void onPageSelected(int position) { finishActionMode(); }
+            public void onPageSelected(int position) {
+                finishActionMode();
+                setTitle(FolderTaskRealmController.getFoldersList().get(position).getName());
+            }
 
             @Override
             public void onPageScrollStateChanged(int state) {}
@@ -453,6 +459,14 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
         }
     }
 
+
+    public String getValidTitle(){
+
+        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED){
+            return FolderTaskRealmController.getFoldersList().get(smallTasksViewPager.getCurrentItem()).getName();
+        } else return "Tasks";
+
+    }
 
 
 // todo thinc about logic открытия таск панели если нет фолдеров или какой по умоллчанию откроется (видимо откроется первый и использовать эмпти стэйт или запретить экспандить панель)

@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         actionBar = getSupportActionBar();
+        actionBar.setTitle("Tasks");
 
         viewPager = findViewById(R.id.viewpager);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+
+
                 if (position==1){
                     actionBar.setDisplayHomeAsUpEnabled(false);
                     actionBar.setTitle(FolderSlidingPanelFragment.getTitle());
@@ -75,9 +78,33 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }else {
                     actionBar.setDisplayHomeAsUpEnabled(false);
-                    actionBar.setTitle("Reports");
                 }
                 actionMode = startSupportActionMode(new EmptyActionModeCallback());
+
+
+                if (position == 0){
+
+                    for (Fragment fragment: getSupportFragmentManager ().getFragments()){
+                        if (fragment instanceof FolderNoteFragment){
+                            actionBar.setTitle( ((FolderNoteFragment) fragment).getValidTitle() );
+                        }
+                    }
+                }
+
+                else if (position == 1){
+
+                    for (Fragment fragment: getSupportFragmentManager ().getFragments()){
+                        if (fragment instanceof FolderSlidingPanelFragment){
+                            actionBar.setTitle( ((FolderSlidingPanelFragment) fragment).getValidTitle() );
+                            }
+                        }
+                    }
+
+                else if (position == 2){
+                    actionBar.setTitle("Reports");
+                }
+
+
             }
 
             @Override

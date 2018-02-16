@@ -76,7 +76,6 @@ public class FolderNoteFragment extends Fragment{
         setFolderNoteViews();
         actionBar = ((MainActivity) getActivity()).getSupportActionBar();
         setHasOptionsMenu(true);
-        actionBar.setTitle("Notes");
         setTouchHelper(rv);
         id = idFolderNoteObject;
 
@@ -131,6 +130,7 @@ public class FolderNoteFragment extends Fragment{
 
         title = "Notes";
         actionBar.setTitle(title);
+
 
         type = AddNoteDialog.TYPE_FOLDER;
         isNoteFragment = false;
@@ -264,7 +264,9 @@ public class FolderNoteFragment extends Fragment{
     }
 
 
-
+    public String getValidTitle(){
+       return title;
+    }
 
 
 

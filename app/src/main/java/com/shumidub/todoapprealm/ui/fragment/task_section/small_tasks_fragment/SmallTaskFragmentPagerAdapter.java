@@ -48,6 +48,8 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+
+
 //    public void  notifyTaskListChanged(){
 //        setTaskList();
 //        notifyDataSetChanged();

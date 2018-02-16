@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
@@ -103,10 +104,6 @@ public class SmallTasksFragment extends Fragment {
         if (tasksFolderId == 0) tasks = TasksRealmController.getNotDoneTasks();
         else tasks = TasksRealmController.getNotDoneTasks(tasksFolderId);
 
-        if (tasksFolderId !=0){
-            ((MainActivity) getActivity()).getSupportActionBar()
-                    .setTitle((CharSequence) FolderTaskRealmController.getFolder(tasksFolderId).getName());
-        }
         llm = new LinearLayoutManager(getContext());
 
         rvTasks.setLayoutManager(llm);
@@ -118,28 +115,16 @@ public class SmallTasksFragment extends Fragment {
     }
 
     public void notifyDataChanged(){
-//        //tasksRecyclerViewAdapter, reset task and done task
-//        if (tasksRecyclerViewAdapter ==null){
-//            tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
-//            rvTasks.setAdapter(tasksRecyclerViewAdapter);
-//            Log.d("DTAG", "notifyDataChanged: 1");
-//        }
-//        else{
-////          setTasks(); or bellow
-//            tasksRecyclerViewAdapter.notifyDataSetChanged();
-//            Log.d("DTAG", "notifyDataChanged: 2");
-//        }
-//
-//        try{
-//            setEmptyStateIfNeed();
-//            Log.d("DTAG", "notifyDataChanged: 3");
-//        } catch (NullPointerException e){}
+        //tasksRecyclerViewAdapter, reset task and done task
+        if (tasksRecyclerViewAdapter ==null){
+            tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
+            rvTasks.setAdapter(tasksRecyclerViewAdapter);
+        }
+        else{
+            tasksRecyclerViewAdapter.notifyDataSetChanged();
+        }
 
-
-        rvTasks = getView().findViewById(R.id.rv);
-
-        setTasks();
-        setEmptyStateIfNeed();
+        rvTasks.setAdapter(tasksRecyclerViewAdapter);
 
     }
 
