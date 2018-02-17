@@ -2,9 +2,11 @@ package com.shumidub.todoapprealm.ui.actionmode.note;
 
 
 
+import android.content.Context;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
@@ -42,6 +44,10 @@ public class FolderNoteActionModeCallback {
                 editList.setOnMenuItemClickListener((MenuItem a) -> {
                     EditNoteDialog editNoteDialog = EditNoteDialog.newInstance(type, id);
                     editNoteDialog.show(((MainActivity) activity).getSupportFragmentManager(), "edit_note_folder");
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInputFromWindow(
+                            activity.getWindow().getDecorView().getApplicationWindowToken(),
+                            InputMethodManager.SHOW_FORCED, 0);
                     actionMode.finish();
                     return true;
                 });

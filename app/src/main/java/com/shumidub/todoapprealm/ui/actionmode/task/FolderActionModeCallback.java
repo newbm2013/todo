@@ -1,9 +1,11 @@
 package com.shumidub.todoapprealm.ui.actionmode.task;
 
 
+import android.content.Context;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.shumidub.todoapprealm.R;
 
@@ -40,6 +42,10 @@ public class FolderActionModeCallback {
                 editList.setOnMenuItemClickListener((MenuItem a) -> {
                     EditDelFolderDialog dialog = EditDelFolderDialog.newInstance(idOnTag, EDIT_LIST, folderSlidingPanelFragment);
                     dialog.show(activity.getSupportFragmentManager(), "editlist");
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInputFromWindow(
+                            activity.getWindow().getDecorView().getApplicationWindowToken(),
+                            InputMethodManager.SHOW_FORCED, 0);
                     return true;
                 });
 

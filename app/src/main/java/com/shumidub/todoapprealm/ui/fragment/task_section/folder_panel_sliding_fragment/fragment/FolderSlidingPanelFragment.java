@@ -2,6 +2,7 @@ package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_
 
 
 import android.animation.StateListAnimator;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -320,6 +322,10 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
             if (!(slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED)) {
                 AddFolderDialog addFolderDialog = new AddFolderDialog();
                 addFolderDialog.show(getActivity().getSupportFragmentManager(), "addfolder");
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInputFromWindow(
+                        getActivity().getWindow().getDecorView().getApplicationWindowToken(),
+                        InputMethodManager.SHOW_FORCED, 0);
             }
          return true;});
     }

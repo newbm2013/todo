@@ -1,5 +1,6 @@
 package com.shumidub.todoapprealm.ui.fragment.note_fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import com.shumidub.todoapprealm.App;
@@ -95,6 +97,10 @@ public class FolderNoteFragment extends Fragment{
             AddNoteDialog addNoteDialog = AddNoteDialog.newInstance(type, id);
             try {
                 addNoteDialog.show(getActivity().getSupportFragmentManager(), "Add_note");
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInputFromWindow(
+                        getActivity().getWindow().getDecorView().getApplicationWindowToken(),
+                        InputMethodManager.SHOW_FORCED, 0);
             }catch (NullPointerException e){e.printStackTrace();}
 
 

@@ -108,6 +108,10 @@ public class TaskActionModeCallback  {
                         }
                     });
                     dialog.show();
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInputFromWindow(
+                            activity.getWindow().getDecorView().getApplicationWindowToken(),
+                            InputMethodManager.SHOW_FORCED, 0);
                     return true;
                 });
 
@@ -197,6 +201,7 @@ public class TaskActionModeCallback  {
         TasksRealmController.editTask(task, taskText, count, maxAccumulation, taskCycling, priority);
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(dialog.getWindow().getDecorView().getWindowToken(), 0);
+
         dialog.dismiss();
         actionMode.finish();
         smallTasksFragment.notifyDataChanged();

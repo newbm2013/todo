@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import com.shumidub.todoapprealm.R;
@@ -92,7 +94,13 @@ public class ReportFragment extends Fragment{
         add.setIcon(R.drawable.ic_add);
         add.setOnMenuItemClickListener((MenuItem a) -> {
             new AddReportDialog().show(getActivity().getSupportFragmentManager(), AddReportDialog.ADD_REPORT_TITLE);
-        return true;
+
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInputFromWindow(
+                    getActivity().getWindow().getDecorView().getApplicationWindowToken(),
+                    InputMethodManager.SHOW_FORCED, 0);
+
+            return true;
         });
 
     }

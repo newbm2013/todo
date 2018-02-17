@@ -1,6 +1,8 @@
 package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
@@ -153,7 +155,10 @@ public class AddReportDialog extends BaseReportDialog {
     @Override
     public void onStart() {
         super.onStart();
-        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener((v)->
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v)->
                 positiveButtonInterface.onClick(v));
+        etTextReport.setFocusable(true);
+
     }
+
 }
