@@ -30,7 +30,7 @@ public class DellReportDialog extends android.support.v4.app.DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder
                 .setTitle("Delete")
-                .setMessage("Are you sure&")
+                .setMessage("Are you sure?")
                 .setPositiveButton("Delete", (dialogInterface, i) -> {
 
                     long id = ReportFragment.id;
