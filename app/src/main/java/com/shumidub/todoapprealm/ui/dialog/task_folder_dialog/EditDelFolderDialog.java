@@ -2,10 +2,12 @@ package com.shumidub.todoapprealm.ui.dialog.task_folder_dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -81,6 +83,9 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
                         folderSlidingPanelFragment.finishActionMode();
                         folderSlidingPanelFragment.notifyListsDataChanged();
                         Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
 
                     } else if (title == DELETE_LIST){
                         if (folderObject.getId() != defaultFolderId) {

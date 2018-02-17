@@ -1,6 +1,8 @@
 package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
@@ -100,6 +102,8 @@ public class AddReportDialog extends BaseReportDialog {
 
 
                 notifyDataChanged();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
                 dismiss();
 
             } else {
@@ -140,6 +144,9 @@ public class AddReportDialog extends BaseReportDialog {
                 }
 
             }
+
+
+
         };
     }
 

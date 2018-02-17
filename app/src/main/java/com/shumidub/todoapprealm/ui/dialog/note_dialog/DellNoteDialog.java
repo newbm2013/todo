@@ -79,6 +79,7 @@ public class DellNoteDialog extends android.support.v4.app.DialogFragment {
                     }
                     notifyDataChanged();
                     dialog.dismiss();
+
                 })
                 .setNegativeButton("Cancel", (dialog, i) -> dialog.cancel());
 

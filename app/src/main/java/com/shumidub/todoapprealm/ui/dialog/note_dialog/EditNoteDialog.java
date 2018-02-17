@@ -1,7 +1,9 @@
 package com.shumidub.todoapprealm.ui.dialog.note_dialog;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.realmcontrollers.notescontroller.FolderNotesRealmController;
@@ -81,6 +83,8 @@ public class EditNoteDialog extends AddNoteDialog {
             } else{
                 positiveButtonInterface.onClick();
                 notifyDataChanged();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
                 dialog.dismiss();
             }
         });

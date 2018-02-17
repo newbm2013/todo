@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -194,6 +195,8 @@ public class TaskActionModeCallback  {
     public void onEditTaskEditClick(Context context, SmallTasksFragment smallTasksFragment, ActionMode actionMode,
                                     TaskObject task, String taskText, int count, int maxAccumulation, boolean taskCycling, int priority) {
         TasksRealmController.editTask(task, taskText, count, maxAccumulation, taskCycling, priority);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(dialog.getWindow().getDecorView().getWindowToken(), 0);
         dialog.dismiss();
         actionMode.finish();
         smallTasksFragment.notifyDataChanged();

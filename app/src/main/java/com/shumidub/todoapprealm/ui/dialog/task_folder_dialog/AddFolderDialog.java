@@ -53,6 +53,11 @@ public class AddFolderDialog extends android.support.v4.app.DialogFragment {
                             }
                         }
 
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
+//                    imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
+//                    dialogInterface.dismiss();
+//                    dialogInterface.cancel();
 
 
 

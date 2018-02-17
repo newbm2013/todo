@@ -1,8 +1,10 @@
 package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
@@ -119,6 +121,8 @@ public class EditReportDialog extends BaseReportDialog {
                         englishRating, socialRating, famillyRating,
                         weekNumber);
                 notifyDataChanged();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
                 dismiss();
 
             } else {
