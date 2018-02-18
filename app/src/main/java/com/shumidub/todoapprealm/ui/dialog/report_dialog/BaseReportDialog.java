@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
@@ -34,6 +35,7 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
     public static final String DELETE_REPORT_TITLE = "Delete report";
 
     public static final String ADD_BUTTON_TEXT = "ADD";
+    public static final String EDIT_BUTTON_TEXT = "EDIT";
 
     protected MainActivity activity;
     protected EditText etDate;
@@ -53,6 +55,9 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
 
     protected TextInputLayout tilDate;
     protected TextInputLayout tilCountValue;
+
+    TextView cancelButton;
+    TextView actionButton;
 
     String title;
     View view;
@@ -88,13 +93,7 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder .setView(view)
-                .setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                })
-                .setNegativeButton("Cancel", (dialog, i) -> dialog.cancel());
+        builder .setView(view);
 
         dialog = builder.create();
 
@@ -142,6 +141,14 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
         tilCountValue = view.findViewById(R.id.til_count_value);
         switchWeek = view.findViewById(R.id.switch_week);
         llSwitchWeekContainer = view.findViewById(R.id.ll_week_switc_container);
+
+        cancelButton = view.findViewById(R.id.btn_cancel);
+        actionButton = view.findViewById(R.id.btn_action);
+
+        cancelButton.setOnClickListener((v) -> dialog.cancel());
+        actionButton.setOnClickListener((v)->  positiveButtonInterface.onClick(v));
+        actionButton.setText(positiveButtonText);
+
     }
 
     protected void notifyDataChanged() {

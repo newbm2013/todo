@@ -30,7 +30,7 @@ public class EditReportDialog extends BaseReportDialog {
 
     @Override
     protected void setPositiveButtonText() {
-        positiveButtonText = EDIT_REPORT_TITLE;
+        positiveButtonText = EDIT_BUTTON_TEXT;
     }
 
     @Override
@@ -181,8 +181,9 @@ public class EditReportDialog extends BaseReportDialog {
     @Override
     public void onStart() {
         super.onStart();
-        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener((v)->
+        actionButton.setOnClickListener((v)->
                 positiveButtonInterface.onClick(v));
+        etTextReport.requestFocus();
         if (id == 0) dismiss();
     }
 }

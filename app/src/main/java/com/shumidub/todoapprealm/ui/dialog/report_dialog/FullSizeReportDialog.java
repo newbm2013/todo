@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -35,6 +36,8 @@ public class FullSizeReportDialog extends DialogFragment {
     RatingBar ratingBarSocial;
     RatingBar ratingBarFamilly;
 
+    LinearLayout llActionButtons;
+
 
     public static FullSizeReportDialog newInstance(long id) {
         Bundle args = new Bundle();
@@ -60,6 +63,7 @@ public class FullSizeReportDialog extends DialogFragment {
         ratingBarEnglish = view.findViewById(R.id.ratingbar_english);
         ratingBarSocial = view.findViewById(R.id.ratingbar_social);
         ratingBarFamilly = view.findViewById(R.id.ratingbar_familly);
+
 
         tvDayCountFieldName = view.findViewById(R.id.tv_count_field_name);
 
@@ -103,6 +107,7 @@ public class FullSizeReportDialog extends DialogFragment {
         else{
             tvDate.setText(reportObject.getDate());
         }
+
 
         AlertDialog dialog = builder.setView(view).create();
         return dialog;

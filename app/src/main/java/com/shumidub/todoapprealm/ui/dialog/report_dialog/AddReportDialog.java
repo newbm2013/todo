@@ -155,10 +155,9 @@ public class AddReportDialog extends BaseReportDialog {
     @Override
     public void onStart() {
         super.onStart();
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((v)->
-                positiveButtonInterface.onClick(v));
-        etTextReport.setFocusable(true);
-
+        actionButton.setOnClickListener(
+                (v)-> positiveButtonInterface.onClick(v));
+        etTextReport.requestFocus();
     }
 
 }
