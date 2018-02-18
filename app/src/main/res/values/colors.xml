@@ -11,5 +11,13 @@
     <color name="colorBackgroundActivity">#e73f66b5</color>
     <color name="colorActionModeOldGood">#3285cc</color>
     <color name="colorActionMode">#0769be</color>
+    <color name="colorBlack">#101010</color>
+
+
+
+    <color name="colorCountValue100per">#0e9e00</color>
+    <color name="colorCountValue80per">#f7e51f</color>
+    <color name="colorCountValue60per">#f2641d</color>
+    <color name="colorCountValue0per">#d20808</color>
 
 </resources>

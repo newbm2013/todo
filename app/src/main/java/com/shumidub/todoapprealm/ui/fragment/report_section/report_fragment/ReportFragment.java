@@ -65,7 +65,7 @@ public class ReportFragment extends Fragment{
         emptyState = view.findViewById(R.id.empty_state);
 
         reportObjectList = ReportRealmController.getReportList();
-        reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(reportObjectList);
+        reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(getContext(),reportObjectList);
         recyclerView.setAdapter(reportRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

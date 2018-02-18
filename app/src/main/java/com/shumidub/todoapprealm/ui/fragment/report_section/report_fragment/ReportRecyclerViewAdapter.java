@@ -1,5 +1,9 @@
 package com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -12,7 +16,11 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +29,7 @@ import java.util.List;
 
 public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecyclerViewAdapter.ViewHolder> {
 
+    Context context;
     private List<ReportObject> reportObjects;
 
     private OnItemLongClicked onItemLongClicked;
@@ -45,8 +54,9 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
     }
 
 
-    public ReportRecyclerViewAdapter(List<ReportObject> reportObjects){
+    public ReportRecyclerViewAdapter(Context context, List<ReportObject> reportObjects){
        this.reportObjects = reportObjects;
+       this.context = context;
     }
 
     @Override
@@ -61,7 +71,28 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
         if (!reportObjects.isEmpty()) {
             ReportObject reportObject = reportObjects.get(position);
 
-            holder.tvDayCount.setText(String.valueOf(reportObject.getCountOfDay()));
+            int countOfDay = reportObject.getCountOfDay();
+            int color = Color.BLACK;
+
+
+            holder.tvDayCount.setText(String.valueOf(countOfDay));
+
+            if (reportObject.isWeekReport()){
+                if (countOfDay >= 50) color = context.getResources().getColor(R.color.colorCountValue100per);
+                else if (countOfDay >= 40) color = context.getResources().getColor(R.color.colorCountValue80per);
+                else if (countOfDay >= 30) color = context.getResources().getColor(R.color.colorCountValue60per);
+                else if (countOfDay >= 20) color = context.getResources().getColor(R.color.colorCountValue0per);
+                else if (countOfDay < 20) color = context.getResources().getColor(R.color.colorCountValue0per);
+            } else {
+                if (countOfDay >= 100) color = context.getResources().getColor(R.color.colorCountValue100per);
+                else if (countOfDay >= 80) color = context.getResources().getColor(R.color.colorCountValue80per);
+                else if (countOfDay >= 60) color = context.getResources().getColor(R.color.colorCountValue60per);
+                else if (countOfDay >= 40) color = context.getResources().getColor(R.color.colorCountValue0per);
+                else if (countOfDay < 40) color = context.getResources().getColor(R.color.colorCountValue0per);
+            }
+
+            holder.tvDayCount.setTextColor(color);
+
             holder.tvRetortText.setText(reportObject.getReportText());
 
             holder.ratingBarSoul.setRating(reportObject.getSoulRating());
@@ -92,12 +123,29 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
             if (reportObject.isWeekReport()){
                 holder.tvDate.setText("Week " + reportObject.getWeekNumber());
                 holder.tvDayCountFieldName.setText("Week count");
-//                holder.llDivider.setVisibility(View.VISIBLE);
-//                holder.itemView.setPadding(2,2,2,24);
+
             }
             else{
-                holder.tvDate.setText(reportObject.getDate());
-//                holder.itemView.setPadding(2,2,2,12);
+                String strDate = reportObject.getDate();
+
+
+
+                DateFormat formatter ;
+                Date date ;
+                formatter = new SimpleDateFormat("dd.MM.yyyy");
+                try {
+                    date = (Date)formatter.parse(strDate);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(date);
+                    int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+                    strDate = "Day " + dayOfYear + " ("+ strDate + ")";
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+                holder.tvDate.setText(strDate);
+
             }
         }
     }
