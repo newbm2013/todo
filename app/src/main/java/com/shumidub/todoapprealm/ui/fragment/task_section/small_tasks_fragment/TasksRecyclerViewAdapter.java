@@ -136,7 +136,8 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 holder.checkBox.setOnClickListener(
                         (cb) -> {
                             TasksRealmController.setTaskDoneOrParticullaryDone(taskObject, holder.checkBox.isChecked());
-                            notifyDataSetChanged();
+                            smallTasksFragment.notifyDataChanged();
+//                            notifyDataSetChanged();
                             smallTasksFragment.getActivity().invalidateOptionsMenu();
                             setTasksTextColor(holder, taskObject.isDone());
                         });
@@ -302,4 +303,6 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         itemTouchHelper = new ItemTouchHelper(itemTouchHelperSimpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
+
+
 }

@@ -126,6 +126,9 @@ public class SmallTasksFragment extends Fragment {
 
         rvTasks.setAdapter(tasksRecyclerViewAdapter);
 
+//        tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
+//        rvTasks.setAdapter(tasksRecyclerViewAdapter);
+
     }
 
     //Show Done and Not done Tasks
