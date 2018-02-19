@@ -52,6 +52,7 @@ import static com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmControll
 public class FolderSlidingPanelFragment extends Fragment implements IViewFolderSlidingPanelFragment {
 
     LinearLayout emptyState;
+    View view;
 
     // ACTIONBAR AND ACTIONMODE
     ActionBar actionBar;
@@ -108,7 +109,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.slide_up_panel_layout, container, false);
+        view = inflater.inflate(R.layout.slide_up_panel_layout, container, false);
         return view;
     }
 
@@ -336,6 +337,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
         rvFolders = view.findViewById(R.id.rv_lists);
         et = view.findViewById(R.id.et);
 
+
         tvTaskCycling = view.findViewById(R.id.task_cycling);
         tvTaskPriority = view.findViewById(R.id.task_priority);
 
@@ -347,6 +349,23 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
         tvTaskPriority.setOnClickListener((v) -> onTaskPriorityClick(tvTaskPriority));
         tvTaskCycling.setOnClickListener((v) -> onTaskCyclingClick(tvTaskCycling));
+
+
+        // todo can math keyboard heigth and set padding. + use it when open and hide keyboar. Maybe should do it on MainACTIVITY
+
+        /*
+        et.setOnFocusChangeListener((v,b)->{
+
+            if (b) {
+                rvFolders.setPadding(0,540,0,0);
+            }else{
+                rvFolders.setPadding(0,0,0,0);
+            }
+
+
+        });
+        */
+
     }
 
     private void setEmptyStateIfFoldersIsEmpty(View view){
