@@ -6,16 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.main.MainActivity"
-    android:id="@+id/constr"
+    android:id="@+id/root_layout"
     android:background="@color/colorBackgroundActivity"
     >
+
+    <LinearLayout
+        android:id="@+id/ll_padding_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
 
 
 
     <android.support.v4.view.ViewPager
+        app:layout_constraintTop_toBottomOf="@id/ll_padding_view"
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
     </android.support.v4.view.ViewPager>
 
 </android.support.constraint.ConstraintLayout>

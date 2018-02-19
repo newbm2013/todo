@@ -9,18 +9,22 @@ import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.ui.activity.base.BaseActivity;
 import com.shumidub.todoapprealm.ui.fragment.note_fragment.FolderNoteFragment;
 import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
+    LinearLayout llPaddingView;
     ViewPager viewPager;
     long time = 0;
     ActionBar actionBar;
@@ -34,15 +38,17 @@ public class MainActivity extends AppCompatActivity {
         App.setDayScopeValue();
 
         //todo need fix up view with open keyboard
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         setContentView(R.layout.activity_main);
+        attachKeyboardListeners();
 
         actionBar = getSupportActionBar();
         actionBar.setTitle("Tasks");
 
+        llPaddingView = findViewById(R.id.ll_padding_view);
         viewPager = findViewById(R.id.viewpager);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mainPagerAdapter);
@@ -208,5 +214,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    
+    @Override
+    protected void onShowKeyboard(int keyboardHeight) {
+        llPaddingView.setLayoutParams(
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, keyboardHeight));
+    }
+
+    @Override
+    protected void onHideKeyboard() {
+        llPaddingView.setLayoutParams(
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+    }
+
 }
