@@ -1,9 +1,8 @@
 package com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import java.util.List;
 
 public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecyclerViewAdapter.ViewHolder> {
 
+    View view;
     Context context;
     private List<ReportObject> reportObjects;
 
@@ -121,6 +121,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
 
 
             if (reportObject.isWeekReport()){
+                holder.cardView.setBackgroundColor(context.getResources().getColor(R.color.colorWhiteTransparent));
                 holder.tvDate.setText("Week " + reportObject.getWeekNumber());
                 holder.tvDayCountFieldName.setText("Week count");
 
@@ -158,6 +159,8 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        CardView cardView;
+
         TextView tvDate;
         TextView tvDayCount;
         TextView tvRetortText;
@@ -177,6 +180,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
             super(itemView);
 
             if(!reportObjects.isEmpty()) {
+                cardView = itemView.findViewById(R.id.item_card_view);
                 tvDate = itemView.findViewById(R.id.tv_date);
                 tvDayCount = itemView.findViewById(R.id.tv_count_value);
                 tvRetortText = itemView.findViewById(R.id.tv_report_text);
