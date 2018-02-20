@@ -18,6 +18,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+
+
     @Override
     public int getCount() {
         return 3;
@@ -36,6 +38,5 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             return null;
         }
     }
-
 
 }

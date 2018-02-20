@@ -35,7 +35,6 @@ import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.adapter.FolderOfTaskRecyclerViewAdapter;
-import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTasksFragment;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.task.FolderActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTaskFragmentPagerAdapter;
@@ -353,10 +352,12 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
                     @Override
                     public void onVisibilityChanged(boolean isOpen) {
                         if (isOpen){
+                            ((MainActivity)getActivity()).setPageCanChangedScrolled(false);
                             layoutParams.setMargins(0,keyboardHeight - tvBottomText.getHeight(),0,0);
                             rvFolders.setLayoutParams(layoutParams);
                         }
                         else {
+                            ((MainActivity)getActivity()).setPageCanChangedScrolled(true);
                             layoutParams.setMargins(0,0,0,0);
                             rvFolders.setLayoutParams(layoutParams);
                         }

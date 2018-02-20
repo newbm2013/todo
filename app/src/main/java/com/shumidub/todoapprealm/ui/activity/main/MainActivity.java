@@ -1,9 +1,6 @@
 package com.shumidub.todoapprealm.ui.activity.main;
 
-import android.graphics.Rect;
-import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -12,28 +9,22 @@ import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
-import com.shumidub.todoapprealm.ui.activity.base.BaseActivity;
 import com.shumidub.todoapprealm.ui.fragment.note_fragment.FolderNoteFragment;
 import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
     public LinearLayout rootLayout;
-    ViewPager viewPager;
+    CustomViewPager viewPager;
     long time = 0;
     ActionBar actionBar;
     MainPagerAdapter mainPagerAdapter;
@@ -223,6 +214,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    public void setPageCanChangedScrolled(boolean canScrolled){
+      viewPager.setPageCanChangedScrolled(canScrolled);
+    }
 
 
 }
