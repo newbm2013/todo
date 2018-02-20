@@ -1,6 +1,9 @@
 package com.shumidub.todoapprealm.ui.activity.main;
 
+import android.graphics.Rect;
+import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -9,7 +12,9 @@ import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -22,14 +27,18 @@ import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.Repo
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-public class MainActivity extends BaseActivity {
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
-    LinearLayout llPaddingView;
+public class MainActivity extends AppCompatActivity {
+
+    public LinearLayout rootLayout;
     ViewPager viewPager;
     long time = 0;
     ActionBar actionBar;
     MainPagerAdapter mainPagerAdapter;
     ActionMode actionMode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +52,12 @@ public class MainActivity extends BaseActivity {
 
 
         setContentView(R.layout.activity_main);
-        attachKeyboardListeners();
 
+        rootLayout = findViewById(R.id.root_layout);
         actionBar = getSupportActionBar();
         actionBar.setTitle("Tasks");
 
-        llPaddingView = findViewById(R.id.ll_padding_view);
+
         viewPager = findViewById(R.id.viewpager);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mainPagerAdapter);
@@ -214,16 +223,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onShowKeyboard(int keyboardHeight) {
-        llPaddingView.setLayoutParams(
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, keyboardHeight));
-    }
 
-    @Override
-    protected void onHideKeyboard() {
-        llPaddingView.setLayoutParams(
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
-    }
 
 }

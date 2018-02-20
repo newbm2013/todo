@@ -3,8 +3,10 @@ package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_
 
 import android.animation.StateListAnimator;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -18,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -38,6 +41,10 @@ import com.shumidub.todoapprealm.ui.actionmode.task.FolderActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTaskFragmentPagerAdapter;
 import com.shumidub.todoapprealm.ui.dialog.task_folder_dialog.AddFolderDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
 import java.util.Calendar;
 import java.util.List;
 import io.realm.RealmList;
@@ -51,8 +58,12 @@ import static com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmControll
 
 public class FolderSlidingPanelFragment extends Fragment implements IViewFolderSlidingPanelFragment {
 
+    LinearLayout rootLayout;
     LinearLayout emptyState;
     View view;
+
+    ConstraintLayout.LayoutParams layoutParams;
+    int keyboardHeight = 500;
 
     // ACTIONBAR AND ACTIONMODE
     ActionBar actionBar;
@@ -73,6 +84,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
     TextView tvTaskMaxAccumulate;
     TextView tvTaskPriority;
     TextView tvTaskCycling;
+    TextView tvBottomText;
 
     // FOLDER RV
     RecyclerView rvFolders;
@@ -311,6 +323,52 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+
+        //set root view changer on keyboard opens
+
+        layoutParams
+                = (ConstraintLayout.LayoutParams) rvFolders.getLayoutParams();
+        rootLayout = ((MainActivity)getActivity()).rootLayout;
+        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int height = rootLayout.getHeight();
+//                Log.w("Foo", String.format("layout height: %d", height));
+                Rect r = new Rect();
+                rootLayout.getWindowVisibleDisplayFrame(r);
+                int visible = r.bottom - r.top;
+                if (height - visible > 200){
+                    keyboardHeight = height - visible;
+                }
+//                Log.w("Foo", String.format("visible height: %d", visible));
+//                Log.w("Foo", String.format("keyboard height: %d", height - visible));
+            }
+        });
+
+
+
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if (isOpen){
+                            layoutParams.setMargins(0,keyboardHeight - tvBottomText.getHeight(),0,0);
+                            rvFolders.setLayoutParams(layoutParams);
+                        }
+                        else {
+                            layoutParams.setMargins(0,0,0,0);
+                            rvFolders.setLayoutParams(layoutParams);
+                        }
+
+                    }
+
+                });
+
+
+
+
+
     }
 
     @Override
@@ -349,6 +407,8 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
         tvTaskPriority.setOnClickListener((v) -> onTaskPriorityClick(tvTaskPriority));
         tvTaskCycling.setOnClickListener((v) -> onTaskCyclingClick(tvTaskCycling));
+
+        tvBottomText = view.findViewById(R.id.bottom_text);
 
 
         // todo can math keyboard heigth and set padding. + use it when open and hide keyboar. Maybe should do it on MainACTIVITY
