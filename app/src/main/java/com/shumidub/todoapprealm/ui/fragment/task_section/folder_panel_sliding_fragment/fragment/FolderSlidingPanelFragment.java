@@ -348,10 +348,9 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
         KeyboardVisibilityEvent.setEventListener(
                 getActivity(),
-                new KeyboardVisibilityEventListener() {
-                    @Override
-                    public void onVisibilityChanged(boolean isOpen) {
-                        if (isOpen){
+                //todo need thing about logig
+                (boolean isOpen) -> {
+                        if (isOpen && slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
                             ((MainActivity)getActivity()).setPageCanChangedScrolled(false);
                             layoutParams.setMargins(0,keyboardHeight - tvBottomText.getHeight(),0,0);
                             rvFolders.setLayoutParams(layoutParams);
@@ -361,13 +360,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
                             layoutParams.setMargins(0,0,0,0);
                             rvFolders.setLayoutParams(layoutParams);
                         }
-
-                    }
-
                 });
-
-
-
 
 
     }
@@ -412,20 +405,6 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
         tvBottomText = view.findViewById(R.id.bottom_text);
 
 
-        // todo can math keyboard heigth and set padding. + use it when open and hide keyboar. Maybe should do it on MainACTIVITY
-
-        /*
-        et.setOnFocusChangeListener((v,b)->{
-
-            if (b) {
-                rvFolders.setPadding(0,540,0,0);
-            }else{
-                rvFolders.setPadding(0,0,0,0);
-            }
-
-
-        });
-        */
 
     }
 

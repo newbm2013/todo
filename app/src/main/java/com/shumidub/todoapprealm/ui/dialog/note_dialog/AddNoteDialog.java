@@ -103,7 +103,11 @@ public class AddNoteDialog extends android.support.v4.app.DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder .setView(view)
                 .setPositiveButton(positiveButtonText, (di,i)-> {})
-                .setNegativeButton("Cancel", (dialog, i) -> dialog.cancel());
+                .setNegativeButton("Cancel", (dialog, i) -> {
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
+                    dialog.cancel();
+                });
 
         dialog = builder.create();
 

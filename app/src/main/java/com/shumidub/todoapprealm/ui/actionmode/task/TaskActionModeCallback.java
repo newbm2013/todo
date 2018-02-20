@@ -78,7 +78,10 @@ public class TaskActionModeCallback  {
                 tvEditTaskPriority.setOnClickListener((v) -> onEditTaskPriorityClick(tvEditTaskPriority));
                 tvEditTaskCycling.setOnClickListener((v) -> onEditTaskCyclingClick(tvEditTaskCycling));
                 tvEditTaskMaxAccumulate.setOnClickListener((v) -> onEditTaskValueClick(tvEditTaskMaxAccumulate));
-                tvEditTaskCancel.setOnClickListener((x)-> {dialog.dismiss();actionMode.finish();});
+                tvEditTaskCancel.setOnClickListener((x)-> {
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(dialog.getWindow().getDecorView().getWindowToken(), 0);
+                    dialog.dismiss();actionMode.finish();});
                 tvEditTaskEdit.setOnClickListener((v) -> {
                     String text = etEditTask.getText().toString();
                     int value = Integer.valueOf(tvEditTaskCountValue.getText().toString());

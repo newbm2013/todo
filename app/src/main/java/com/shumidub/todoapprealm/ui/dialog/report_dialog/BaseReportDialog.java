@@ -2,12 +2,14 @@ package com.shumidub.todoapprealm.ui.dialog.report_dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -145,7 +147,11 @@ public class BaseReportDialog extends android.support.v4.app.DialogFragment {
         cancelButton = view.findViewById(R.id.btn_cancel);
         actionButton = view.findViewById(R.id.btn_action);
 
-        cancelButton.setOnClickListener((v) -> dialog.cancel());
+        cancelButton.setOnClickListener((v) -> {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
+            dialog.cancel();
+        });
         actionButton.setOnClickListener((v)->  positiveButtonInterface.onClick(v));
         actionButton.setText(positiveButtonText);
 

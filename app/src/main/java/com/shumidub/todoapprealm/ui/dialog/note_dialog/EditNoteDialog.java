@@ -73,7 +73,6 @@ public class EditNoteDialog extends AddNoteDialog {
                 }else if(type == TYPE_NOTE){
                     FolderNotesRealmController.editNote(id, text);
                 }
-
             }
         };
         dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener((v)->{
