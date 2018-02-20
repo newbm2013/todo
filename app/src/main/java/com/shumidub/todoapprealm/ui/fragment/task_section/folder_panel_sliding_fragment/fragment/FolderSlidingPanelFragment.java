@@ -350,7 +350,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
                 getActivity(),
                 //todo need thing about logig
                 (boolean isOpen) -> {
-                        if (isOpen && slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
+                        if (isOpen && slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED && et.isFocused()  ){
                             ((MainActivity)getActivity()).setPageCanChangedScrolled(false);
                             layoutParams.setMargins(0,keyboardHeight - tvBottomText.getHeight(),0,0);
                             rvFolders.setLayoutParams(layoutParams);
