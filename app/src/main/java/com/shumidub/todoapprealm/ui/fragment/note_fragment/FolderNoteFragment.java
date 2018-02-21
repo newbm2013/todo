@@ -1,5 +1,6 @@
 package com.shumidub.todoapprealm.ui.fragment.note_fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,9 +39,11 @@ import static com.shumidub.todoapprealm.ui.dialog.note_dialog.AddNoteDialog.TYPE
  *
  */
 
+
 public class FolderNoteFragment extends Fragment{
 
     ActionBar actionBar;
+    public boolean actionModeIsEnabled = false;
 
     RecyclerView rv;
     LinearLayout emptyState;
@@ -129,6 +132,7 @@ public class FolderNoteFragment extends Fragment{
 
 
 
+    @SuppressLint("RestrictedApi")
     public void setFolderNoteViews(){
 
 
@@ -147,7 +151,7 @@ public class FolderNoteFragment extends Fragment{
         });
         folderAdapter.setOnLongClickListener((h,p,id1)->{
             actionBar.startActionMode(new FolderNoteActionModeCallback()
-                            .getFolderNoteActionMode((MainActivity) getActivity(),
+                            .getFolderNoteActionMode((MainActivity) getActivity(), this,
                                     EditNoteDialog.TYPE_FOLDER, id1));
 
             return true;
@@ -162,6 +166,7 @@ public class FolderNoteFragment extends Fragment{
 
     }
 
+    @SuppressLint("RestrictedApi")
     public void setNoteViews(long idFolderFromAdapter){
 
 
@@ -182,7 +187,7 @@ public class FolderNoteFragment extends Fragment{
         noteAdapter.setOnClickListener((h,p,id)-> setFolderNoteViews());
         noteAdapter.setOnLongClickListener((h,p,id)->{
             actionBar.startActionMode(new FolderNoteActionModeCallback()
-                    .getFolderNoteActionMode((MainActivity) getActivity(),
+                    .getFolderNoteActionMode((MainActivity) getActivity(), this,
                             EditNoteDialog.TYPE_NOTE, id));
             return true;
         });
@@ -201,6 +206,11 @@ public class FolderNoteFragment extends Fragment{
             setFolderNoteViews();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressLint("RestrictedApi")
+    public void finishActionMode(){
+        actionBar.startActionMode(new EmptyActionModeCallback());
     }
 
 

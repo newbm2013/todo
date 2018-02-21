@@ -1,5 +1,6 @@
 package com.shumidub.todoapprealm.ui.activity.main;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -7,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -165,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         int currentFragmentItem = viewPager.getCurrentItem();
+
         if (currentFragmentItem == 1){
             for (Fragment fragment: getSupportFragmentManager ().getFragments()){
                 if (fragment instanceof FolderSlidingPanelFragment){
@@ -192,7 +195,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (currentFragmentItem ==0){
             for (Fragment fragment: getSupportFragmentManager ().getFragments()){
                 if (fragment instanceof FolderNoteFragment) {
-                    if (((FolderNoteFragment) fragment).isNoteFragment) {
+                    if (((FolderNoteFragment) fragment).actionModeIsEnabled) {
+                        ((FolderNoteFragment) fragment).finishActionMode();
+                    } else if (((FolderNoteFragment) fragment).isNoteFragment) {
                         ((FolderNoteFragment) fragment).setFolderNoteViews();
                     } else {
                         onBackPressedWithTimer();
@@ -217,6 +222,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void setPageCanChangedScrolled(boolean canScrolled){
       viewPager.setPageCanChangedScrolled(canScrolled);
+    }
+
+
+    public int getPixelsFromDPs(int dps){
+        Resources r = ((MainActivity)this).getResources();
+        int  px = (int) (TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dps, r.getDisplayMetrics()));
+        return px;
     }
 
 

@@ -12,6 +12,7 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.dialog.note_dialog.DellNoteDialog;
 import com.shumidub.todoapprealm.ui.dialog.note_dialog.EditNoteDialog;
+import com.shumidub.todoapprealm.ui.fragment.note_fragment.FolderNoteFragment;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 
 
@@ -34,11 +35,15 @@ public class FolderNoteActionModeCallback {
     onMenuItemClick onMenuItemClick;
 
 
-    public ActionMode.Callback getFolderNoteActionMode(MainActivity activity,int type, long id){
+    public ActionMode.Callback getFolderNoteActionMode(MainActivity activity, FolderNoteFragment folderNoteFragment, int type, long id){
 
         return new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+
+                folderNoteFragment.actionModeIsEnabled = true;
+
+
                 MenuItem editList = menu.add("edit ");
                 editList.setIcon(R.drawable.ic_edit);
                 editList.setOnMenuItemClickListener((MenuItem a) -> {
@@ -78,6 +83,8 @@ public class FolderNoteActionModeCallback {
 
             @Override
             public void onDestroyActionMode(ActionMode actionMode) {
+
+                folderNoteFragment.actionModeIsEnabled = false;
 
             }
         };
