@@ -211,6 +211,10 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
                     cycling = false;
                     et.setText("");
                 } else {
+
+
+
+
 //                    idFolderFromTag = (Long) holder.itemView.findViewById(R.id.item_text)getTag();
                     idFolderFromTag = (Long) holder.itemView.findViewById(R.id.tv_note_text).getTag();
 
@@ -225,6 +229,11 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
                     setTitle(FolderTaskRealmController.getFolder(idFolderFromTag).getName());
                     slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+
+
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
+
                 }
             };
 
