@@ -158,7 +158,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                         (cb) -> {
                             TasksRealmController.setTaskDoneOrParticullaryDone(taskObject, holder.checkBox.isChecked());
                             smallTasksFragment.notifyDataChanged();
-//                            notifyDataSetChanged();
+//                          notifyDataSetChanged();
                             smallTasksFragment.getActivity().invalidateOptionsMenu();
                             setTasksTextColor(holder, taskObject.isDone());
                         });

@@ -30,6 +30,8 @@ import java.util.List;
 
 public class SmallTasksFragment extends Fragment {
 
+    int position;
+
 
     //TASKS VIEW, ADAPTER
     RecyclerView rvTasks;
@@ -78,6 +80,7 @@ public class SmallTasksFragment extends Fragment {
         setTasksListClickListeners();
         setTasks();
         setEmptyStateIfNeed();
+
     }
 
     private void setTasksListClickListeners(){
@@ -116,6 +119,11 @@ public class SmallTasksFragment extends Fragment {
     }
 
     public void notifyDataChanged(){
+
+        position = llm.findFirstVisibleItemPosition();
+
+        Log.d("DTAG458", "notifyDataChanged: position = " + position);
+
         //tasksRecyclerViewAdapter, reset task and done task
         if (tasksRecyclerViewAdapter ==null){
             tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
@@ -126,6 +134,9 @@ public class SmallTasksFragment extends Fragment {
         }
 
         rvTasks.setAdapter(tasksRecyclerViewAdapter);
+        llm.scrollToPosition(position);
+
+
 
 //        tasksRecyclerViewAdapter =  new TasksRecyclerViewAdapter((MainActivity) getActivity(), tasks, doneTasks, this);
 //        rvTasks.setAdapter(tasksRecyclerViewAdapter);
