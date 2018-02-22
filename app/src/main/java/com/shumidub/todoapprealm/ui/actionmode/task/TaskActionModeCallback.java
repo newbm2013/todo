@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTasksFragment;
 
 
@@ -27,6 +28,8 @@ import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.S
  */
 
 public class TaskActionModeCallback  {
+
+    MainActivity activity;
 
     ActionMode.Callback callback;
     AlertDialog dialog;
@@ -40,9 +43,13 @@ public class TaskActionModeCallback  {
 
     public ActionMode.Callback getCallback(Activity activity, SmallTasksFragment smallTasksFragment, TaskObject task){
 
+        this.activity = (MainActivity) activity;
+
         callback = new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+
+
 
                 actionMode.setTitle(task.getText());
 
@@ -126,7 +133,8 @@ public class TaskActionModeCallback  {
                     smallTasksFragment.notifyDataChanged();
                     actionMode.finish();
                     smallTasksFragment.getActivity().invalidateOptionsMenu();
-                    Toast.makeText(activity, "done", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(activity, "done", Toast.LENGTH_SHORT).show();
+                    ((MainActivity)smallTasksFragment.getActivity()).showToast("Done");
                     return true;
                 });
 
@@ -209,7 +217,8 @@ public class TaskActionModeCallback  {
         actionMode.finish();
         smallTasksFragment.notifyDataChanged();
         smallTasksFragment.getActivity().invalidateOptionsMenu();
-        Toast.makeText(context, "done", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "done", Toast.LENGTH_SHORT).show();
+        activity.showToast("Done");
     }
 
 

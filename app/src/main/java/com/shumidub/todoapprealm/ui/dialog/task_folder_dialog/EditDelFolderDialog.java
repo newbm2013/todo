@@ -82,7 +82,8 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
                         FolderTaskRealmController.editFolder(folderObject, text);
                         folderSlidingPanelFragment.finishActionMode();
                         folderSlidingPanelFragment.notifyListsDataChanged();
-                        Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                        activity.showToast("Done");
+//                        Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
 
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
@@ -90,12 +91,14 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
                     } else if (title == DELETE_LIST){
                         if (folderObject.getId() != defaultFolderId) {
                             FolderTaskRealmController.deleteFolder(folderObject);
-                            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                            activity.showToast("Deleted");
+//                            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                             folderSlidingPanelFragment.finishActionMode();
                             folderSlidingPanelFragment.notifyListsDataChanged();
                         }else{
-                            Toast.makeText(getContext(),
-                                    "Can't delete default folderObject", Toast.LENGTH_SHORT).show();
+                            activity.showToast("Can't delete default folderObject");
+//                            Toast.makeText(getContext(),
+//                                    "Can't delete default folderObject", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })

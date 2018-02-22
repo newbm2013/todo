@@ -3,7 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryLigth">#e73f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#daff41c0</color>
+    <color name="colorAccentOld">#daff41c0</color>
+    <color name="colorAccent">#ffe81a</color>
     <color name="colorGray">#ae817d7f</color>
     <color name="colorLightGray">#160027ff</color>
     <color name="colorWhite">#ffffff</color>

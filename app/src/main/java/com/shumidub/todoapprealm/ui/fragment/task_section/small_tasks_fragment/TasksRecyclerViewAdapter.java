@@ -268,6 +268,10 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
 
+//                if (smallTasksFragment.isAllTaskShowing){
+//                    return false;
+//                }
+
                 activity.getSupportActionBar().startActionMode(new EmptyActionModeCallback());
 
                 int fromPosition = viewHolder.getAdapterPosition();

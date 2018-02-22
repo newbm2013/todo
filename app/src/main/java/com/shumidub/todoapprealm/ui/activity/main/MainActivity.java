@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm.ui.activity.main;
 
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,8 +12,10 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
@@ -214,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
         if (time!=0 && System.currentTimeMillis() - time<2000) super.onBackPressed();
         else{
             time = System.currentTimeMillis();
-            Toast.makeText(this, "For exit press again", Toast.LENGTH_SHORT).show();
+            showToast("For exit press again");
+// Toast.makeText(this, "For exit press again", Toast.LENGTH_SHORT).show();
             Log.d("DTAG", "onBackPressedWithTimer: ");
         }
     }
@@ -230,6 +234,15 @@ public class MainActivity extends AppCompatActivity {
         int  px = (int) (TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dps, r.getDisplayMetrics()));
         return px;
+    }
+
+    public void showToast(String text){
+        Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        view.setBackgroundColor(Color.TRANSPARENT);
+        TextView textView = (TextView) view.findViewById(android.R.id.message);
+        textView.setTextColor(Color.YELLOW);
+        toast.show();
     }
 
 

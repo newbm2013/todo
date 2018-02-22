@@ -44,8 +44,9 @@ public class AddFolderDialog extends android.support.v4.app.DialogFragment {
                         String text = ((EditText) getDialog().findViewById(R.id.name)).getText().toString();
                         if (!text.isEmpty()){
                             long idFolder = FolderTaskRealmController.addFolder(text);
-                            Toast.makeText(getContext(),"Done", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getContext(),"Done", Toast.LENGTH_SHORT).show();
                             activity = (MainActivity) getActivity();
+                            activity.showToast("Done");
                             for (Fragment fragment : activity.getSupportFragmentManager().getFragments()){
                                 if (fragment instanceof FolderSlidingPanelFragment){
                                     ((FolderSlidingPanelFragment) fragment).notifyListsDataChanged();
