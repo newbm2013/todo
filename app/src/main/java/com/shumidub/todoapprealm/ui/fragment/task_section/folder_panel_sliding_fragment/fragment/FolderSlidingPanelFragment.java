@@ -112,6 +112,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
     int priority = 0;
     boolean cycling = false;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -554,7 +555,8 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
     }
 
 
-// todo thinc about logic открытия таск панели если нет фолдеров или какой по умоллчанию откроется (видимо откроется первый и использовать эмпти стэйт или запретить экспандить панель)
+
+    // todo thinc about logic открытия таск панели если нет фолдеров или какой по умоллчанию откроется (видимо откроется первый и использовать эмпти стэйт или запретить экспандить панель)
 
 }
 
