@@ -71,10 +71,17 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        // todo НЕ ВЫЗВАЛСЯ
+        Log.d("DTAG4568", "onCreateViewHolder: 4");
+
+
         View view;
         if ((tasks != null && !tasks.isEmpty() && tasks.size() > 0)
                 || (doneTasks!=null && !doneTasks.isEmpty() && doneTasks.size()>0)) {
 
+            //todo НЕ ВЫЗВАЛСЯ
+            Log.d("DTAG4568", "onCreateViewHolder: 4 true");
             isNotEmpty = true;
 
             if(viewType!=FOOTER_VIEW) {
@@ -104,6 +111,19 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+
+        if ((tasks != null && !tasks.isEmpty() && tasks.size() > 0)
+                || (doneTasks!=null && !doneTasks.isEmpty() && doneTasks.size()>0)) {
+
+            Log.d("DTAG4568", "onCreateViewHolder: 4 true");
+            isNotEmpty = true;
+
+        }
+
+        Log.d("DTAG4568", "onBindViewHolder: " + "position = " +position + " isNotEmpty = " + isNotEmpty);
+
+
         if (isNotEmpty ) {
 
             if (holder instanceof NormalViewHolder) {
@@ -160,6 +180,9 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             }
 
             isNotEmpty = false;
+        } else {
+
+            Log.d("DTAG", "onBindViewHolder: ");
         }
     }
 
