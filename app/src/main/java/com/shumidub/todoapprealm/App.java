@@ -1,6 +1,9 @@
 package com.shumidub.todoapprealm;
 
 import android.app.Application;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
@@ -10,6 +13,7 @@ import com.shumidub.todoapprealm.realmmodel.RealmInteger;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -17,6 +21,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmModel;
+import io.realm.RealmObject;
 
 /**
  * Created by Артем on 19.12.2017.
@@ -30,8 +35,12 @@ public class App extends Application {
     public static RealmList<FolderTaskObject> folderOfTasksListFromContainer;
     public static RealmList<FolderNotesObject> folderOfNotesContainerList;
 
+
+    RealmModel gettedFolderObject;
+
     public static int dayScope;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate() {
         super.onCreate();
@@ -43,6 +52,29 @@ public class App extends Application {
         initRealm();
         initContainers();
         if(BuildConfig.DEBUG && FolderTaskRealmController.listOfFolderIsEmpty()) addContent();
+        else {
+
+
+
+
+
+            for (RealmModel folderTask : folderOfTasksListFromContainer){
+
+                List<String> tasks = new ArrayList<>();
+
+                ((FolderTaskObject) folderTask).getTasks().forEach((t)-> tasks.add(t.getText().toString()));
+
+                Log.d("DTAG77", "onCreate: folderOfTasks name = "
+                        + ((FolderTaskObject)folderTask).getName() +
+                        " TASKS =  " + tasks );
+            }
+
+
+
+
+
+
+        }
     }
 
     public static void initRealm() {
@@ -70,7 +102,7 @@ public class App extends Application {
 
     private void addContent() {
 
-        long[] folderId = new long[1];
+
 
         realm.executeTransaction((Realm realm) -> {
 
@@ -81,27 +113,29 @@ public class App extends Application {
 
             final FolderTaskObject folderObject2
                     = realm.createObject(FolderTaskObject.class);
-            folderObject2.setId(System.currentTimeMillis());
+            folderObject2.setId(System.currentTimeMillis() + 5646465);
             folderObject2.setName("folderObject 2");
 
 
             folderOfTasksListFromContainer.add(folderObject);
             folderOfTasksListFromContainer.add(folderObject2);
 
-            final RealmModel gettedFolderObject = folderOfTasksListFromContainer.get(0);
-
-            folderId[0] = ((FolderTaskObject)gettedFolderObject).getId();
+           gettedFolderObject = folderOfTasksListFromContainer.get(0);
 
         });
 
+
+        long folderId = ((FolderTaskObject)gettedFolderObject).getId();
+        String folderName = ((FolderTaskObject)gettedFolderObject).getName();
+
         for (int i = 0; i < 20; i++) {
-            TasksRealmController.addTask("task " + i, 1, 1,
-                    false, 1, folderId[0]);
+            TasksRealmController.addTask("t " + i , 1, 1,
+                    false, 1, folderId);
+            Log.d("DTAG77", "addContent: t " + i + " folder" + folderName );
         }
 
-        folderOfTasksListFromContainer.toArray();
-        folderOfTasksListFromContainer.toArray();
-        folderOfTasksListFromContainer.toArray();
+
+
 
     }
 

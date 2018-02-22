@@ -2,6 +2,7 @@ package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_
 
 
 import android.animation.StateListAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -267,6 +268,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
             int dragFrom = -1;
             int dragTo = -1;
 
+            @SuppressLint("RestrictedApi")
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {

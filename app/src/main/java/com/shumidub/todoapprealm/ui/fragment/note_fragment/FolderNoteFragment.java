@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -228,11 +229,12 @@ public class FolderNoteFragment extends Fragment{
             int dragFrom = -1;
             int dragTo = -1;
 
+            @SuppressLint("RestrictedApi")
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
 
-                actionBar.startActionMode(new EmptyActionModeCallback());
+                    actionBar.startActionMode(new EmptyActionModeCallback());
 
                 int fromPosition = viewHolder.getAdapterPosition();
                 int toPosition = target.getAdapterPosition();

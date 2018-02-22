@@ -1,5 +1,6 @@
 package com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -239,6 +240,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             int dragFrom = -1;
             int dragTo = -1;
 
+            @SuppressLint("RestrictedApi")
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
@@ -259,6 +261,9 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                     dragFrom = fromPosition;
                 }
                 dragTo = toPosition;
+
+                //todo не сбрасывается from он становится равен предыдущему to?
+                Log.d("DTAG47", String.format("onMove: from %d  to %d ", fromPosition, toPosition));
 
                 if (! (viewHolder instanceof FooterViewHolder)){
                     notifyItemMoved(fromPosition, toPosition);
@@ -292,6 +297,8 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                         dragTo = dragTo < tasks.size() ? dragTo:tasks.size()-1;
                         TaskObject taskTargetPosition = tasks.get(dragTo);
                         reallyMoved(taskTarget, taskTargetPosition);
+                        //todo не сбрасывается from он становится равен предыдущему to?
+                        Log.d("DTAG487", String.format("onMove: from %d  to %d ", dragFrom, dragTo));
                     }
                 }
                 dragFrom = dragTo = -1;

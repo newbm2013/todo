@@ -202,6 +202,11 @@ public class TasksRealmController {
         int from = taskList.indexOf(taskObjectTarget);
         int to  = taskList.indexOf(taskObjectTargetPosition);
         taskList.add(to, taskList.remove(from));
+
+
+        //todo не сбрасывается from он становится равен предыдущему to?
+        Log.d("DTAG488", String.format("onMove: from %d  to %d ", from, to));
+
     }
 
     /** get unique id*/
