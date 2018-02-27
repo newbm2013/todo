@@ -23,6 +23,8 @@ import io.realm.RealmList;
 import io.realm.RealmModel;
 import io.realm.RealmObject;
 
+import static com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController.getTasks;
+
 /**
  * Created by Артем on 19.12.2017.
  *
@@ -56,13 +58,18 @@ public class App extends Application {
 
 
 
-
-
             for (RealmModel folderTask : folderOfTasksListFromContainer){
 
                 List<String> tasks = new ArrayList<>();
 
-                ((FolderTaskObject) folderTask).getTasks().forEach((t)-> tasks.add(t.getText().toString()));
+
+
+                RealmList<TaskObject> taskObjects = ((FolderTaskObject) folderTask).getTasks();
+
+                for (TaskObject t : taskObjects){
+                    tasks.add(t.getText().toString());
+                }
+
 
                 Log.d("DTAG77", "onCreate: folderOfTasks name = "
                         + ((FolderTaskObject)folderTask).getName() +
