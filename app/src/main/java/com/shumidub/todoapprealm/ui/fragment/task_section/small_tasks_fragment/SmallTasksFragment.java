@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.shumidub.todoapprealm.ui.actionmode.task.TaskActionModeCallback;
 
 import java.util.List;
 
+
 /**
  * Created by Артем on 16.01.2018.
  */
@@ -39,6 +41,7 @@ public class SmallTasksFragment extends Fragment {
     LinearLayoutManager llm;
     TasksRecyclerViewAdapter tasksRecyclerViewAdapter;
     static ActionMode actionMode;
+    ItemTouchHelperAttacher itemTouchHelperAttacher;
 
     TasksRecyclerViewAdapter.OnItemLongClicked onItemLongClicked;
     TasksRecyclerViewAdapter.OnItemClicked onItemClicked;
@@ -80,7 +83,12 @@ public class SmallTasksFragment extends Fragment {
         setTasksListClickListeners();
         setTasks();
         setEmptyStateIfNeed();
+    }
 
+    private void setItemTouchHelperAttacher(){
+        if (itemTouchHelperAttacher == null){
+            itemTouchHelperAttacher = new ItemTouchHelperAttacher(this);
+        }
     }
 
     private void setTasksListClickListeners(){
@@ -118,7 +126,9 @@ public class SmallTasksFragment extends Fragment {
         tasksRecyclerViewAdapter.setOnClicked(onItemClicked);
 
         Log.d("DTAG458", "setTasks: ATTACHEDDD" + rvTasks.getAdapter().getItemCount());
-        tasksRecyclerViewAdapter.attachTouchHelperToRecyclerView(rvTasks);
+
+        setItemTouchHelperAttacher();
+        itemTouchHelperAttacher.attachTouchHelperToRecyclerView(rvTasks);
     }
 
     public void notifyDataChanged(){
@@ -167,6 +177,10 @@ public class SmallTasksFragment extends Fragment {
             rvTasks.setAdapter(tasksRecyclerViewAdapter);
             isAllTaskShowing = false;
         }
+
+        setItemTouchHelperAttacher();
+        itemTouchHelperAttacher.setAdapter();
+        itemTouchHelperAttacher.setTasks();
     }
 
 //    public void tasksDataChanged(){
@@ -187,6 +201,9 @@ public class SmallTasksFragment extends Fragment {
             emptyState.setVisibility(View.GONE);
         }
     }
+
+
+
 
 }
 

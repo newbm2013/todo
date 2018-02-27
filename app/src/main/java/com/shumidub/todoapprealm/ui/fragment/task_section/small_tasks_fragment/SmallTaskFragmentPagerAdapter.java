@@ -3,6 +3,9 @@ package com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
 import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
@@ -60,4 +63,6 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
         setTaskList();
         super.notifyDataSetChanged();
     }
+
+
 }
