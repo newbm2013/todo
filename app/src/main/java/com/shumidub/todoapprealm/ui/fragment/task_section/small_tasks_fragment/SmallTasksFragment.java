@@ -116,6 +116,9 @@ public class SmallTasksFragment extends Fragment {
 
         tasksRecyclerViewAdapter.setOnLongClicked(onItemLongClicked);
         tasksRecyclerViewAdapter.setOnClicked(onItemClicked);
+
+        Log.d("DTAG458", "setTasks: ATTACHEDDD" + rvTasks.getAdapter().getItemCount());
+        tasksRecyclerViewAdapter.attachTouchHelperToRecyclerView(rvTasks);
     }
 
     public void notifyDataChanged(){
@@ -166,9 +169,10 @@ public class SmallTasksFragment extends Fragment {
         }
     }
 
-    public void tasksDataChanged(){
-        setTasks();
-    }
+//    public void tasksDataChanged(){
+//        // if you need use it, use it without attach touch helper inside setTasks();
+//        setTasks();
+//    }
 
     public void finishActionMode(){
         ((MainActivity) getActivity()).startSupportActionMode(new EmptyActionModeCallback());

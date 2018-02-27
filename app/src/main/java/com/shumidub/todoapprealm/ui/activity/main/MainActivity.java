@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         App.setDayScopeValue();
 
         //todo need fix up view with open keyboard
@@ -264,6 +265,8 @@ public class MainActivity extends AppCompatActivity {
                 TypedValue.COMPLEX_UNIT_DIP, dps, r.getDisplayMetrics()));
         return px;
     }
+
+
 
     public void showToast(String text){
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);

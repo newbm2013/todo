@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment;
 
 import android.annotation.SuppressLint;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -20,6 +21,8 @@ import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 
 
 import java.util.List;
+
+import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE;
 
 /**
  * Created by Артем on 19.12.2017.
@@ -63,11 +66,11 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         this.smallTasksFragment = smallTasksFragment;
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        attachTouchHelperToRecyclerView(recyclerView);
-    }
+//    @Override
+//    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+//        super.onAttachedToRecyclerView(recyclerView);
+//        attachTouchHelperToRecyclerView(recyclerView);
+//    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -263,14 +266,77 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
             int dragFrom = -1;
             int dragTo = -1;
 
+
+
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                Log.d("DTAG733", "onChildDraw: ");
+
+                if (smallTasksFragment.isAllTaskShowing) return ;
+
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+            @Override
+            public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                if (smallTasksFragment.isAllTaskShowing) return ;
+
+
+                Log.d("DTAG733", "onChildDrawOver: ");
+                super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+            @Override
+            public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
+
+                if (smallTasksFragment.isAllTaskShowing) return ;
+
+
+                Log.d("DTAG733", "onMoved: ");
+                super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
+            }
+
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                Log.d("DTAG733", "getMovementFlags: ");
+                if (smallTasksFragment.isAllTaskShowing) return ACTION_STATE_IDLE;
+                return super.getMovementFlags(recyclerView, viewHolder);
+            }
+
+
+            @Override
+            public boolean isLongPressDragEnabled() {
+
+                if (smallTasksFragment.isAllTaskShowing) return false;
+
+                Log.d("DTAG733", "isLongPressDragEnabled: ");
+                return super.isLongPressDragEnabled();
+
+            }
+
+
+            @Override
+            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+                Log.d("DTAG733", "onSelectedChanged: ");
+                super.onSelectedChanged(viewHolder, actionState);
+            }
+
+
+
+
+
             @SuppressLint("RestrictedApi")
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
 
-//                if (smallTasksFragment.isAllTaskShowing){
-//                    return false;
-//                }
+                if (smallTasksFragment.isAllTaskShowing){
+                    Log.d("DTAG", "onMove: smallTasksFragment.isAllTaskShowing = " + smallTasksFragment.isAllTaskShowing);
+                    return false;
+                }
 
                 activity.getSupportActionBar().startActionMode(new EmptyActionModeCallback());
 
@@ -295,6 +361,8 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 if (! (viewHolder instanceof FooterViewHolder)){
                     notifyItemMoved(fromPosition, toPosition);
                 }
+
+
                 return true;
             }
 
