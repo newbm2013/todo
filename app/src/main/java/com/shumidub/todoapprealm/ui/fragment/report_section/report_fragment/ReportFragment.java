@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
@@ -61,6 +63,7 @@ public class ReportFragment extends Fragment{
         setHasOptionsMenu(true);
 
 
+
         recyclerView = view.findViewById(R.id.rv);
         emptyState = view.findViewById(R.id.empty_state);
 
@@ -89,7 +92,7 @@ public class ReportFragment extends Fragment{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        MenuItem add = menu.add(2,2,2,"add ");
+        MenuItem add = menu.add(3,3,3,"add ");
         add.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         add.setIcon(R.drawable.ic_add);
         add.setOnMenuItemClickListener((MenuItem a) -> {
@@ -102,6 +105,18 @@ public class ReportFragment extends Fragment{
 
             return true;
         });
+
+        MenuItem sync = menu.add(1,1,1,"Sync ");
+        sync.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        sync.setIcon(R.drawable.ic_sync);
+        sync.setOnMenuItemClickListener((MenuItem a) -> {
+
+            ((MainActivity) getActivity()).showToast("SYNC");
+
+            return true;
+        });
+
+
 
     }
 
@@ -137,5 +152,7 @@ public class ReportFragment extends Fragment{
             emptyState.setVisibility(View.GONE);
         }
     }
+
+
 
 }

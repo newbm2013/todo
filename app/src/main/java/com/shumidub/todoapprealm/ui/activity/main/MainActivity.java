@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem dayScopeMenu = menu.add(1,1,1,"" + App.dayScope);
+        MenuItem dayScopeMenu = menu.add(2,2,2,"" + App.dayScope);
         dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         dayScopeMenu.setOnMenuItemClickListener((v)-> true);
         return super.onCreateOptionsMenu(menu);
