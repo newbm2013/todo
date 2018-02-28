@@ -35,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
     MainPagerAdapter mainPagerAdapter;
     ActionMode actionMode;
 
-    private int dayScopeClickCount = 0;
-    long lastTimeDayScopeClickCount = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,33 +158,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem dayScopeMenu = menu.add(1,1,1,"" + App.dayScope);
         dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        dayScopeMenu.setOnMenuItemClickListener((v)->{
-
-            if (lastTimeDayScopeClickCount == 0
-                    || (System.currentTimeMillis() -lastTimeDayScopeClickCount) < 500 ){
-
-                if (dayScopeClickCount>9){
-
-
-
-                    dayScopeClickCount = 0;
-                }
-
-                dayScopeClickCount++;
-                lastTimeDayScopeClickCount = System.currentTimeMillis();
-
-
-            } else {
-
-
-                lastTimeDayScopeClickCount = System.currentTimeMillis();
-            }
-
-
-
-
-
-            return true;});
+        dayScopeMenu.setOnMenuItemClickListener((v)-> true);
         return super.onCreateOptionsMenu(menu);
     }
 
