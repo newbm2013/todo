@@ -1,8 +1,6 @@
 package com.shumidub.todoapprealm.ui.fragment.note_fragment;
 
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +47,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
 
     @Override
     public NotesRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_card_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_item_card_view, parent, false);
         return new ViewHolder(view);
     }
 

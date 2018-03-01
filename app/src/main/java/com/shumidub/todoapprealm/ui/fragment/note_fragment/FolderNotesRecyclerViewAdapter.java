@@ -1,8 +1,6 @@
 package com.shumidub.todoapprealm.ui.fragment.note_fragment;
 
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,6 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
-import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 
 
@@ -47,7 +44,7 @@ public class FolderNotesRecyclerViewAdapter extends RecyclerView.Adapter<FolderN
 
     @Override
     public FolderNotesRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_card_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_item_card_view, parent, false);
         return new ViewHolder(view);
     }
 

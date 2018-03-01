@@ -43,7 +43,7 @@ public class FolderOfTaskRecyclerViewAdapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
 //        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.folder_card_view, parent, false);
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_card_view, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.folder_tasks_item_card_view, parent, false);
 
         return new ItemViewHolder(view);
     }
