@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     MainPagerAdapter mainPagerAdapter;
     ActionMode actionMode;
 
+    int pagerAdapterPosition = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         rootLayout = findViewById(R.id.root_layout);
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Tasks");
+
 
 
         viewPager = findViewById(R.id.viewpager);
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+
+                pagerAdapterPosition = position;
 
 
                 if (position==1){
@@ -125,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+        actionBar.setTitle("Tasks");
+
     }
 
 
@@ -248,5 +256,7 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-
+    public int getPagerAdapterPosition() {
+        return pagerAdapterPosition;
+    }
 }

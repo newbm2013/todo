@@ -140,7 +140,8 @@ public class FolderNoteFragment extends Fragment{
         actionBar.setDisplayHomeAsUpEnabled(false);
 
         title = "Notes";
-        actionBar.setTitle(title);
+        if ( ((MainActivity)getActivity()).getPagerAdapterPosition() == 0 )
+            actionBar.setTitle(title);
 
 
         type = AddNoteDialog.TYPE_FOLDER;
@@ -205,6 +206,7 @@ public class FolderNoteFragment extends Fragment{
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home ){
             setFolderNoteViews();
+            actionBar.setTitle(title);
         }
         return super.onOptionsItemSelected(item);
     }
