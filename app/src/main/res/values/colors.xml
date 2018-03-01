@@ -31,12 +31,12 @@
 
 
     green barsht 2 - 98
-    <color name="colorPrimary">#378760</color>
-    <color name="colorPrimaryLigth">#378760</color>
-    <color name="colorPrimaryDark">#378760</color>
-    <color name="colorBackgroundActivity">#62A07B</color>
+    <color name="colorPrimary">#267c52</color>
+    <color name="colorPrimaryLigth">#267c52</color>
+    <color name="colorPrimaryDark">#267c52</color>
+    <color name="colorBackgroundActivity">#599c74</color>
     <color name="colorAccent">#e47c5d</color>
-    <color name="colorActionMode">#e47c5d</color>
+    <color name="colorActionMode">#16633e</color>
 
 
 

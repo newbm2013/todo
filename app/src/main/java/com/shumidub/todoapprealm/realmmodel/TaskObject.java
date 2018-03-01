@@ -13,14 +13,14 @@ public class TaskObject extends RealmObject {
 
     private long id;
     private String text;
-    private boolean done;
+    private boolean done; // done or note completelly
     private long taskFolderId;
     private int priority;
-    private int lastDoneDate;
+    private int lastDoneDate; //
     private boolean isCycling;
-    private int countValue;
-    private int maxAccumulation;
-    private int countAccumulation;
+    private int countValue; //
+    private int maxAccumulation; //
+    private int countAccumulation; //
     private RealmList<RealmInteger> dateCountAccumulation;
 
 

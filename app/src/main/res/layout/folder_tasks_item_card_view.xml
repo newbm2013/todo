@@ -24,12 +24,11 @@
             android:ellipsize="end"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            app:layout_constraintEnd_toStartOf="@+id/textView"
+            app:layout_constraintEnd_toStartOf="@+id/tvFolderTaskCounts"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-
-            android:id="@+id/textView"
+            android:id="@+id/tvFolderTaskCounts"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"

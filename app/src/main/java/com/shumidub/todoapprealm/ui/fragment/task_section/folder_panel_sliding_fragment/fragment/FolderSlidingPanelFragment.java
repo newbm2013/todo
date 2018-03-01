@@ -89,6 +89,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
     // FOLDER RV
     RecyclerView rvFolders;
     FolderOfTaskRecyclerViewAdapter folderOfTaskRVAdapter;
+    LinearLayoutManager llm;
 
     // FOLDER LISTENERS
     FolderOfTaskRecyclerViewAdapter.OnHolderTextViewOnClickListener onHolderTextViewOnClickListener;
@@ -177,7 +178,8 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
         ///////////////////////    FOLDER VIEWS (onViewCreated)     //////////////////////
         findFolderViews(view);
-        rvFolders.setLayoutManager(new LinearLayoutManager(getContext()));
+        llm = new LinearLayoutManager(getContext());
+        rvFolders.setLayoutManager(llm);
         folderObjects = FolderTaskRealmController.getFoldersList();
 
         //set empty state for folder // todo need redesign view
@@ -204,17 +206,21 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
                 if (!text.isEmpty() || !text.equals("")) {
 
+                    idFolderFromTag = (Long) holder.itemView.findViewById(R.id.tv_note_text).getTag();
+
                     TasksRealmController.addTask(text, count , maxAccumulation, cycling, priority,
-                            ((Long) holder.itemView.findViewById(R.id.tv_note_text).getTag()) );
+                            idFolderFromTag);
 //                            ((Long) holder.itemView.findViewById(R.id.item_text).getTag()) );
 
                     //todo reset view
                     priority = 0;
                     cycling = false;
                     et.setText("");
+
+                    //todo need without holder. for test now  // need get item view - not text view tag
+                    setFolderTaskCountsById(holder, idFolderFromTag);
+
                 } else {
-
-
 
 
 //                    idFolderFromTag = (Long) holder.itemView.findViewById(R.id.item_text)getTag();
@@ -235,6 +241,8 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
                     InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
+
+
 
                 }
             };
@@ -554,6 +562,11 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
     }
 
+    public void setFolderTaskCountsById( FolderOfTaskRecyclerViewAdapter.ViewHolder holder, long idFolder){
+//        FolderOfTaskRecyclerViewAdapter.ViewHolder holder2 = (FolderOfTaskRecyclerViewAdapter.ViewHolder) rvFolders.getChildViewHolder(  rvFolders.findViewWithTag(idFolder));
+        int position = rvFolders.getChildAdapterPosition(rvFolders.findViewWithTag(idFolder));
+        folderOfTaskRVAdapter.setFolderTaskCounts(holder, position);
+    }
 
 
     // todo thinc about logic открытия таск панели если нет фолдеров или какой по умоллчанию откроется (видимо откроется первый и использовать эмпти стэйт или запретить экспандить панель)
