@@ -30,13 +30,13 @@
     <!--<color name="colorActionMode">#e47c5d</color>-->
 
 
-    <!--green barsht 2 - 98 -->
-    <!--<color name="colorPrimary">#378760</color>-->
-    <!--<color name="colorPrimaryLigth">#378760</color>-->
-    <!--<color name="colorPrimaryDark">#378760</color>-->
-    <!--<color name="colorBackgroundActivity">#62A07B</color>-->
-    <!--<color name="colorAccent">#e47c5d</color>-->
-    <!--<color name="colorActionMode">#e47c5d</color>-->
+    green barsht 2 - 98
+    <color name="colorPrimary">#378760</color>
+    <color name="colorPrimaryLigth">#378760</color>
+    <color name="colorPrimaryDark">#378760</color>
+    <color name="colorBackgroundActivity">#62A07B</color>
+    <color name="colorAccent">#e47c5d</color>
+    <color name="colorActionMode">#e47c5d</color>
 
 
 
@@ -48,7 +48,7 @@
     <!--<color name="colorAccent">#e47c5d</color>-->
     <!--<color name="colorActionMode">#e47c5d</color>-->
 
-    <!--last yellow   100  -->
+    <!--last yellow   100-->
     <!--<color name="colorPrimary">#FFC08C</color>-->
     <!--<color name="colorPrimaryLigth">#FFD37A</color>-->
     <!--<color name="colorPrimaryDark">#FFD37A</color>-->
