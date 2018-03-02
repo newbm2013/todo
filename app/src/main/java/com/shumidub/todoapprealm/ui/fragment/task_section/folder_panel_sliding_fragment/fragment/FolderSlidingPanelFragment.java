@@ -118,6 +118,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         resetTasksCountAccumulation();
+        App.folderSlidingPanelFragment = this;
     }
 
     @Nullable
@@ -217,8 +218,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
                     cycling = false;
                     et.setText("");
 
-                    //todo need without holder. for test now  // need get item view - not text view tag
-                    setFolderTaskCountsById(holder, idFolderFromTag);
+                    folderOfTaskRVAdapter.notifyDataSetChanged();
 
                 } else {
 
@@ -503,6 +503,11 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
         setEmptyStateIfNeed();
     }
 
+
+    public void notifyFolderOfTasksRVAdapterDataSetChanged(){
+        folderOfTaskRVAdapter.notifyDataSetChanged();
+    }
+
 //    protected void tasksDataChanged(){
 //        setTasks();
 //    }
@@ -560,12 +565,6 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
             return FolderTaskRealmController.getFoldersList().get(smallTasksViewPager.getCurrentItem()).getName();
         } else return "Tasks";
 
-    }
-
-    public void setFolderTaskCountsById( FolderOfTaskRecyclerViewAdapter.ViewHolder holder, long idFolder){
-//        FolderOfTaskRecyclerViewAdapter.ViewHolder holder2 = (FolderOfTaskRecyclerViewAdapter.ViewHolder) rvFolders.getChildViewHolder(  rvFolders.findViewWithTag(idFolder));
-        int position = rvFolders.getChildAdapterPosition(rvFolders.findViewWithTag(idFolder));
-        folderOfTaskRVAdapter.setFolderTaskCounts(holder, position);
     }
 
 

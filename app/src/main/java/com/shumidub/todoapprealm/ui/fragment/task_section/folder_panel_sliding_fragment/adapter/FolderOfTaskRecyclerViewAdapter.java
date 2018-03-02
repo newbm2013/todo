@@ -72,7 +72,6 @@ public class FolderOfTaskRecyclerViewAdapter
 
         setFolderTaskCounts(holder, position);
 
-
     }
 
 
@@ -82,7 +81,7 @@ public class FolderOfTaskRecyclerViewAdapter
     }
 
 
-    public void setFolderTaskCounts(ViewHolder holder, int position){
+    private void setFolderTaskCounts(ViewHolder holder, int position){
         int todayDate = Integer.valueOf("" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
                 Calendar.getInstance().get(Calendar.YEAR));
 
@@ -95,16 +94,24 @@ public class FolderOfTaskRecyclerViewAdapter
 
             all = all + (task.getCountValue() * task.getMaxAccumulation());
 
+            if (false) {
 
-            if (task.getLastDoneDate() == todayDate) {
-                int equalDateCount = 0;
-                for (RealmInteger realmInteger : task.getDateCountAccumulation()) {
-                    if (realmInteger.getMyInteger() == todayDate) {
-                        equalDateCount++;
+            } else {
+
+                if (task.getLastDoneDate() == todayDate) {
+                    int equalDateCount = 0;
+                    for (RealmInteger realmInteger : task.getDateCountAccumulation()) {
+                        if (realmInteger.getMyInteger() == todayDate) {
+                            equalDateCount++;
+                        }
                     }
-                    done = equalDateCount * task.getCountValue();
+                    done = done + equalDateCount * task.getCountValue();
                 }
             }
+
+
+
+
         }
 
         String folderTaskCounts = String.format("%d / %d", done, all);

@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
@@ -155,7 +156,10 @@ public class TaskActionModeCallback  {
 
             @Override
             public void onDestroyActionMode(ActionMode actionMode) {
-
+                if (App.getFolderSlidingPanelFragment() != null){
+                    App.getFolderSlidingPanelFragment()
+                            .notifyFolderOfTasksRVAdapterDataSetChanged();
+                }
             }
         };
         return callback;

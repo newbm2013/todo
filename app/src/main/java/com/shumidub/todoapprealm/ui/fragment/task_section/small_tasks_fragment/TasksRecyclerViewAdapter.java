@@ -18,6 +18,7 @@ import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmContr
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
+import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 
 
 import java.util.List;
@@ -164,6 +165,14 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 //                          notifyDataSetChanged();
                             smallTasksFragment.getActivity().invalidateOptionsMenu();
                             setTasksTextColor(holder, taskObject.isDone());
+
+                            Log.d("DTAG22222", "onBindViewHolder: sdfdsf1111");
+                            if (App.getFolderSlidingPanelFragment() != null){
+                                Log.d("DTAG22222", "onBindViewHolder: sdfdsf2222");
+                                App.getFolderSlidingPanelFragment()
+                                        .notifyFolderOfTasksRVAdapterDataSetChanged();
+                            }
+
                         });
 
                 holder.textView.setOnLongClickListener((View view) -> {
