@@ -2,6 +2,7 @@ package com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -122,6 +123,14 @@ public class FolderOfTaskRecyclerViewAdapter
 
         String folderTaskCounts = String.format("%d / %d", done, all);
         ((ItemViewHolder) holder).tvFolderTaskCounts.setText(folderTaskCounts);
+        if (!realmListFolder.get(position).isDaily){
+            ((ItemViewHolder) holder).tvFolderTaskCounts.setTextColor(Color.BLUE);
+        } else {
+            //todo default color ?
+//            ((ItemViewHolder) holder).tvFolderTaskCounts.setTextColor(Color.BLUE);
+        }
+
+
     }
 
 

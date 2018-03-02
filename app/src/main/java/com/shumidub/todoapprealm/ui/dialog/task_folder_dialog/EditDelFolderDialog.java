@@ -72,7 +72,7 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
             etName = view.findViewById(R.id.name);
             cbIsDaily = view.findViewById(R.id.checkboxIsDaily);
             etName.setText(folderObject.getName());
-            cbIsDaily.setChecked(folderObject.isDaily);
+            cbIsDaily.setChecked(folderObject.isDaily());
             builder.setView(view);
         } else if (title == DELETE_LIST ){
             builder.setMessage("Are you sure?");

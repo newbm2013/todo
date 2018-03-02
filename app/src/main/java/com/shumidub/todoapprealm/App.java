@@ -61,12 +61,9 @@ public class App extends Application {
         else {
 
 
-
             for (RealmModel folderTask : folderOfTasksListFromContainer){
 
                 List<String> tasks = new ArrayList<>();
-
-
 
                 RealmList<TaskObject> taskObjects = ((FolderTaskObject) folderTask).getTasks();
 
