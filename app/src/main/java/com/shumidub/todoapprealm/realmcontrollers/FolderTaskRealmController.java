@@ -30,13 +30,14 @@ public class FolderTaskRealmController {
     }
 
     /** add folder */
-    public static long addFolder(String name){
+    public static long addFolder(String name, boolean isDaily){
         long id = getIdForNextValue();
         App.initRealm();
         App.realm.executeTransaction((transaction) -> {
                 FolderTaskObject folder = App.realm.createObject(FolderTaskObject.class);
                 folder.setId(id);
                 folder.setName(name);
+                folder.setDaily(isDaily);
 //              App.realm.insert(folder);
                 App.folderOfTasksListFromContainer.add(folder);
         });
@@ -44,17 +45,20 @@ public class FolderTaskRealmController {
     }
 
     /** edit folder by folderobject */
-    public static long editFolder(FolderTaskObject folder, String name){
+    public static long editFolder(FolderTaskObject folder, String name, boolean isDaily){
         App.initRealm();
-        realm.executeTransaction((transaction)-> folder.setName(name));
+        realm.executeTransaction((transaction)-> {
+            folder.setName(name);
+            folder.setDaily(isDaily);
+        });
         return folder.getId();
     }
 
     /** edit folder by id */
-    public static long editFolder(long id, String name){
+    public static long editFolder(long id, String name, boolean isDaily){
         App.initRealm();
         FolderTaskObject folder = getFolder(id);
-        return editFolder(folder, name);
+        return editFolder(folder, name, isDaily);
     }
 
     /** delete folder by folderobject */

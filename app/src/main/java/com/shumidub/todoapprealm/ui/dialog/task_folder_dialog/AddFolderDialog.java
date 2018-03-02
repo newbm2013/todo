@@ -5,12 +5,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.shumidub.todoapprealm.R;
@@ -27,6 +29,7 @@ import io.reactivex.annotations.NonNull;
 public class AddFolderDialog extends android.support.v4.app.DialogFragment {
 
     EditText etName;
+    CheckBox cbIsDaily;
     MainActivity activity;
 
     @NonNull
@@ -35,6 +38,7 @@ public class AddFolderDialog extends android.support.v4.app.DialogFragment {
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_folder_layout, null);
         etName = view.findViewById(R.id.name);
+        cbIsDaily = view.findViewById(R.id.checkboxIsDaily);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Add new folder ")
@@ -43,7 +47,7 @@ public class AddFolderDialog extends android.support.v4.app.DialogFragment {
                 .setPositiveButton("Add", (dialogInterface, i) -> {
                         String text = ((EditText) getDialog().findViewById(R.id.name)).getText().toString();
                         if (!text.isEmpty()){
-                            long idFolder = FolderTaskRealmController.addFolder(text);
+                            long idFolder = FolderTaskRealmController.addFolder(text, cbIsDaily.isChecked());
 //                            Toast.makeText(getContext(),"Done", Toast.LENGTH_SHORT).show();
                             activity = (MainActivity) getActivity();
                             activity.showToast("Done");
@@ -70,6 +74,10 @@ public class AddFolderDialog extends android.support.v4.app.DialogFragment {
                 });
 
         AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource( R.color.colorBackgroundActivity );
+        dialog.getWindow().setStatusBarColor( Color.YELLOW );
+
+
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnKeyListener((DialogInterface dialogInterface, int keyCode,KeyEvent event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK) {

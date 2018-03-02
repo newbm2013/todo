@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
     FolderTaskObject folderObject;
     String currentTextList;
     EditText etName;
+    CheckBox cbIsDaily;
     long defaultFolderId;
     MainActivity activity;
     static FolderSlidingPanelFragment folderSlidingPanelFragment;
@@ -68,7 +70,9 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
         if (title == EDIT_LIST ){
             View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_folder_layout, null);
             etName = view.findViewById(R.id.name);
+            cbIsDaily = view.findViewById(R.id.checkboxIsDaily);
             etName.setText(folderObject.getName());
+            cbIsDaily.setChecked(folderObject.isDaily);
             builder.setView(view);
         } else if (title == DELETE_LIST ){
             builder.setMessage("Are you sure?");
@@ -79,7 +83,7 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
                     activity = (MainActivity) getActivity();
                     if (title == EDIT_LIST ) {
                         String text = etName.getText().toString();
-                        FolderTaskRealmController.editFolder(folderObject, text);
+                        FolderTaskRealmController.editFolder(folderObject, text, cbIsDaily.isChecked());
                         folderSlidingPanelFragment.finishActionMode();
                         folderSlidingPanelFragment.notifyListsDataChanged();
                         activity.showToast("Done");
@@ -119,6 +123,8 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
                 }
                 return false;
         });
+
+        dialog.getWindow().setBackgroundDrawableResource( R.color.colorBackgroundActivity );
         return dialog;
     }
 }

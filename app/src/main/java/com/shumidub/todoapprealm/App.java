@@ -55,6 +55,8 @@ public class App extends Application {
                 .build());
         initRealm();
         initContainers();
+
+
         if(BuildConfig.DEBUG && FolderTaskRealmController.listOfFolderIsEmpty()) addContent();
         else {
 
@@ -117,12 +119,14 @@ public class App extends Application {
             final FolderTaskObject folderObject
                     = realm.createObject(FolderTaskObject.class);
             folderObject.setId(System.currentTimeMillis());
-            folderObject.setName("folderObject 1");
+            folderObject.setName("folderObject 1 daily");
+            folderObject.setDaily(true);
 
             final FolderTaskObject folderObject2
                     = realm.createObject(FolderTaskObject.class);
             folderObject2.setId(System.currentTimeMillis() + 5646465);
-            folderObject2.setName("folderObject 2");
+            folderObject2.setName("folderObject 2 not daily");
+            folderObject.setDaily(false);
 
 
             folderOfTasksListFromContainer.add(folderObject);

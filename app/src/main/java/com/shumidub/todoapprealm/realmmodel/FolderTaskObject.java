@@ -12,6 +12,7 @@ public class FolderTaskObject extends RealmObject {
     private String name;
     private long id;
     public io.realm.RealmList<TaskObject> folderTasks;
+    public boolean isDaily;
 
     public String getName() {
         return name;
@@ -32,5 +33,13 @@ public class FolderTaskObject extends RealmObject {
     }
     public void setTasks(RealmList<TaskObject> tasks) {
         this.folderTasks = folderTasks;
+    }
+
+    public boolean isDaily() {
+        return isDaily;
+    }
+
+    public void setDaily(boolean daily) {
+        isDaily = daily;
     }
 }

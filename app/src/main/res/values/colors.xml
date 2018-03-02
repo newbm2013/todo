@@ -73,6 +73,7 @@
 
 
     <color name="colorGray">#ae817d7f</color>
+    <color name="colorDarkGray">#414041</color>
     <color name="colorLightGray">#160027ff</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorTransparent">#00ffffff</color>
