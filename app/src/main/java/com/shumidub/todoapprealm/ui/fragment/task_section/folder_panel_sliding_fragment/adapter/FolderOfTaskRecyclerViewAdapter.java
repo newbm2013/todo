@@ -129,8 +129,6 @@ public class FolderOfTaskRecyclerViewAdapter
             //todo default color ?
 //            ((ItemViewHolder) holder).tvFolderTaskCounts.setTextColor(Color.BLUE);
         }
-
-
     }
 
 
