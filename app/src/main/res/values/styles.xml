@@ -17,6 +17,11 @@
             name="SplashTheme"
             parent="Theme.AppCompat.Light">
             <item name="android:windowBackground">@drawable/splashscreen_drawable</item>
+            <item name="colorPrimary">@color/colorPrimary</item>
+            <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+            <item name="colorAccent">@color/colorAccent</item>
+            <item name="android:actionBarSize">54dp</item>
+            <item name="android:actionModeBackground">@color/colorActionMode</item>
         </style>
 
 

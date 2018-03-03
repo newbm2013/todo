@@ -217,6 +217,13 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
                     priority = 0;
                     cycling = false;
                     et.setText("");
+                    tvTaskCountValue.setText("" + 1);
+                    tvTaskCountValue.setTextColor(getResources().getColor(R.color.colorWhite));
+                    tvTaskMaxAccumulate.setText("" + 1);
+                    tvTaskMaxAccumulate.setTextColor(getResources().getColor(R.color.colorWhite));
+                    tvTaskPriority.setText(" ! ");
+                    tvTaskPriority.setTextColor(getResources().getColor(R.color.colorWhite));
+                    tvTaskCycling.setTextColor(getResources().getColor(R.color.colorWhite));
 
                     folderOfTaskRVAdapter.notifyDataSetChanged();
 
