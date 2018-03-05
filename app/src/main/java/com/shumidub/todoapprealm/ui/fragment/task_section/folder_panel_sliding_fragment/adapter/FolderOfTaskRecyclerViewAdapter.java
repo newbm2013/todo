@@ -95,7 +95,7 @@ public class FolderOfTaskRecyclerViewAdapter
 
             all = all + (task.getCountValue() * task.getMaxAccumulation());
 
-            if (false) { // todo  not day folder
+            if (!realmListFolder.get(position).isDaily()) { // todo  not day folder
 
                 int equalDateCount = 0;
                 for (RealmInteger realmInteger : task.getDateCountAccumulation()) {
