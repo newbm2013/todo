@@ -49,6 +49,50 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743240234576:android:1d3b1268576e7822",
+        "android_client_info": {
+          "package_name": "com.shumidub.todoapprealm.alpha4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743240234576-ni59vuehrtac18ok9vu8ftui7gk21q05.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shumidub.todoapprealm.alpha4",
+            "certificate_hash": "d3371647f33ec9d38b130fa9f9dacfeb5fb0aa19"
+          }
+        },
+        {
+          "client_id": "743240234576-5tnpdfgpe5jgnu1p9b99porjiv46lcvg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNOcf_Pi-dybWkfjiMneeVzQyM9eez_jE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743240234576-5tnpdfgpe5jgnu1p9b99porjiv46lcvg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
