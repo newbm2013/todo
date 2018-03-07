@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
+import com.shumidub.todoapprealm.sync.LocalSyncUtil;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.actionmode.report.ReportActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
@@ -111,7 +112,7 @@ public class ReportFragment extends Fragment{
         sync.setIcon(R.drawable.ic_sync);
         sync.setOnMenuItemClickListener((MenuItem a) -> {
 
-            ((MainActivity) getActivity()).showToast("SYNC");
+            new LocalSyncUtil(getActivity()).putAllRealmDbAsMessage();
 
             return true;
         });
