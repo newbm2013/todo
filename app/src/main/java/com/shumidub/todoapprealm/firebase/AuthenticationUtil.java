@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm.firebase;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.shumidub.todoapprealm.R;
@@ -11,25 +12,30 @@ import com.shumidub.todoapprealm.R;
 
 public class AuthenticationUtil {
 
-    private FirebaseAuth mAuth;
+    private static FirebaseAuth mAuth;
 
-    public void buildGoogleSingInOpinions(){
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-    }
+//    public static void buildGoogleSingInOpinions(){
+//        // Configure Google Sign In
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//    }
 
-    public void initAuth(){
+
+
+
+
+    public static void initAuth(){
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public FirebaseUser getCurrentUser(){
+    public static  FirebaseUser getCurrentUser(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
 //        updateUI(currentUser);
         return currentUser;
     }
+
 
 
 

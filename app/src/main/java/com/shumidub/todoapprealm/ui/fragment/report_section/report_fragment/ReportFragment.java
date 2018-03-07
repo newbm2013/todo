@@ -2,6 +2,7 @@ package com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -22,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.firebase.AuthenticationUtil;
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
@@ -110,6 +112,10 @@ public class ReportFragment extends Fragment{
         sync.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         sync.setIcon(R.drawable.ic_sync);
         sync.setOnMenuItemClickListener((MenuItem a) -> {
+
+            AuthenticationUtil.initAuth();
+            AuthenticationUtil.getCurrentUser();
+
 
             ((MainActivity) getActivity()).showToast("SYNC");
 
