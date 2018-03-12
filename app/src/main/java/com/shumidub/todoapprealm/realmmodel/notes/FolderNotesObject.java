@@ -30,6 +30,7 @@ public class FolderNotesObject extends RealmObject {
         this.id = id;
     }
 
+    //todo need refactor getNotes
     public RealmList<NoteObject> getTasks() {
         return notesObjectRealmList;
     }

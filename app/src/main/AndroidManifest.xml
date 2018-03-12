@@ -15,7 +15,7 @@
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
-            android:label="А4">
+            android:label="100todo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,12 +24,8 @@
         <activity android:name=".ui.activity.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
-            android:label="А4-2"
+            android:label="А4-splash"
             android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

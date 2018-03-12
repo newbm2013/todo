@@ -20,7 +20,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:text="Soul, flow, connectivity"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_weight="0.8" />
 
         <RatingBar
@@ -53,7 +53,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:text="Phinance, IT, pro"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_weight="0.8" />
 
         <RatingBar
@@ -83,16 +83,16 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
-            android:text="Health, eyes, smile, body (+back)"
-            android:textSize="16sp"
             android:layout_weight="0.8"
+            android:ellipsize="end"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:freezesText="false"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:ellipsize="end"/>
+            android:text="Health, eyes, smile, body (+back)"
+            android:textSize="14sp" />
 
         <!--android:ellipsize="marquee"-->
 
@@ -122,15 +122,15 @@
             android:id="@+id/tv_english_field_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:lines="1"
             android:layout_marginBottom="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
+            android:layout_weight="0.8"
+            android:lines="1"
+            android:maxLines="1"
             android:text="English"
-            android:textSize="16sp"
-            android:layout_weight="0.8" />
+            android:textSize="14sp" />
 
         <RatingBar
             android:id="@+id/ratingbar_english"
@@ -155,15 +155,15 @@
             android:id="@+id/tv_social_field_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:lines="1"
             android:layout_marginBottom="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
+            android:layout_weight="0.8"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Social"
-            android:textSize="16sp"
-            android:layout_weight="0.8" />
+            android:textSize="14sp" />
 
         <RatingBar
             android:id="@+id/ratingbar_social"
@@ -188,15 +188,15 @@
             android:id="@+id/tv_familly_field_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:lines="1"
             android:layout_marginBottom="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
+            android:layout_weight="0.8"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Familly"
-            android:textSize="16sp"
-            android:layout_weight="0.8" />
+            android:textSize="14sp" />
 
         <RatingBar
             android:id="@+id/ratingbar_familly"

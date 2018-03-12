@@ -83,7 +83,9 @@
                 android:layout_height="wrap_content"
                 android:maxLines="7"
                 android:layout_margin="8dp"
-                android:text="report text"/>
+                android:text="report text"
+                android:textSize="16dp"
+                android:textColor="@color/colorBlack"/>
 
 
             <LinearLayout

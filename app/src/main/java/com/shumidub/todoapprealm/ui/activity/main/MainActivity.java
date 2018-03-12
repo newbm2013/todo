@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
         View view = toast.getView();
         view.setBackgroundColor(Color.TRANSPARENT);
         TextView textView = (TextView) view.findViewById(android.R.id.message);
-        textView.setTextColor(Color.YELLOW);
+        textView.setTextColor(getResources().getColor(R.color.colorAccent));
         toast.show();
     }
 
