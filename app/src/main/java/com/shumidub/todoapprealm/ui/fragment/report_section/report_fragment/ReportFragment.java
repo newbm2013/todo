@@ -112,7 +112,7 @@ public class ReportFragment extends Fragment{
         sync.setIcon(R.drawable.ic_sync);
         sync.setOnMenuItemClickListener((MenuItem a) -> {
 
-            new LocalSyncUtil(getActivity()).putAllRealmDbAsMessage();
+        new LocalSyncUtil(getActivity()).putAllRealmDbAsMessage();
 
             return true;
         });

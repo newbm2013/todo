@@ -34,52 +34,55 @@ public class LocalSyncUtil {
     private String getRealmDbAsString(){
         String message = "";
         String indent = "    ";
+        String smallIndent = " ";
         String nextLine = "\n";
 
         App.initRealm();
 
-
+        message = ">>>>> NOTES >>>>>" + nextLine + nextLine;
         RealmList<FolderNotesObject> folderOfNotesList = App.realm.where(RealmFoldersContainer.class).findFirst().folderOfNotesList;
-
         for (FolderNotesObject folderNotesObject : folderOfNotesList){
-
-            //todo add folderOfNotesInfo
-
+            message = message + indent + folderNotesObject.getName() + " :"+ nextLine;
             RealmList<NoteObject> notesList = folderNotesObject.getTasks();
-            for (NoteObject notesObject : notesList){
-
-                //todo add notesInfo
-
+            for (NoteObject noteObject : notesList){
+                message = message + indent + indent + " --> " + noteObject.getText() + nextLine + nextLine;
             }
+            message = message + nextLine;
         }
+        message = message + nextLine + nextLine;
 
+        message = message + ">>>>> TASKS >>>>>" + nextLine + nextLine;
 
-
-        RealmList<FolderTaskObject> folderOfTasksList = App.realm.where(RealmFoldersContainer.class).findFirst().folderOfNotesList;
+        RealmList<FolderTaskObject> folderOfTasksList = App.realm.where(RealmFoldersContainer.class).findFirst().folderOfTasksList;
 
         for (FolderTaskObject folderTaskObject : folderOfTasksList){
 
-            //todo add folderOfTasksInfo
+
+            message = message + indent + folderTaskObject.getName() + (folderTaskObject.isDaily() ? " " : " NOT_DAILLY" ) + " :" + nextLine;
 
             RealmList<TaskObject> taskList = folderTaskObject.getTasks();
             for (TaskObject taskObject : taskList){
-
-                //todo add tasksInfo
-
+                if (! (taskObject.isDone() && !taskObject.isCycling())){
+                    message = message + indent  +
+                            " --> " + taskObject.getText()
+                            + nextLine + indent + indent + " count = " + taskObject.getCountValue()
+                            + nextLine + indent + indent + " maxAccum = " + taskObject.getMaxAccumulation()
+                            + nextLine + indent + indent + " priority = " + taskObject.getPriority()
+                            + nextLine + indent + indent + " cycling = " + taskObject.isCycling()
+                            + nextLine + nextLine;
+                }
             }
+            message = message + nextLine;
         }
+        message = message + nextLine + nextLine;
 
 
+        message = message + ">>>>> REPORTS >>>>>" + nextLine + nextLine;
         for (ReportObject reportObject : App.realm.where(ReportObject.class).findAll()){
-
-            //todo add report
-
+            message = message + reportObject.toString() + nextLine + nextLine;
         }
-
-
 
         return message;
-
 
     }
 
@@ -87,7 +90,6 @@ public class LocalSyncUtil {
     public void putAllRealmDbAsMessage(){
         putMessage(getRealmDbAsString());
     }
-
 
 
 }

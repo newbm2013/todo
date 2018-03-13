@@ -32,6 +32,7 @@ public class FolderOfTaskRecyclerViewAdapter
     RealmList<FolderTaskObject> realmListFolder;
     OnHolderTextViewOnClickListener onHolderTextViewOnClickListener;
     OnHolderTextViewOnLongClickListener onHolderTextViewOnLongClickListener;
+    Activity activity;
 
 
     public interface OnHolderTextViewOnClickListener {
@@ -43,6 +44,7 @@ public class FolderOfTaskRecyclerViewAdapter
 
     public FolderOfTaskRecyclerViewAdapter(RealmList<FolderTaskObject> realmListFolder, Activity activity){
         this.realmListFolder = realmListFolder;
+        this.activity = activity;
     }
 
     @Override
@@ -123,11 +125,10 @@ public class FolderOfTaskRecyclerViewAdapter
 
         String folderTaskCounts = String.format("%d / %d", done, all);
         ((ItemViewHolder) holder).tvFolderTaskCounts.setText(folderTaskCounts);
-        if (!realmListFolder.get(position).isDaily){
-            ((ItemViewHolder) holder).tvFolderTaskCounts.setTextColor(Color.BLUE);
+        if (realmListFolder.get(position).isDaily){
+            ((ItemViewHolder) holder).tvFolderTaskCounts.setTextColor(activity.getApplicationContext().getResources().getColor(R.color.colorPrimaryDark));
         } else {
-            //todo default color ?
-//            ((ItemViewHolder) holder).tvFolderTaskCounts.setTextColor(Color.BLUE);
+            ((ItemViewHolder) holder).tvFolderTaskCounts.setTextColor(Color.GRAY);
         }
     }
 

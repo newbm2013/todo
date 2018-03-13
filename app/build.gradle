@@ -11,11 +11,11 @@ android {
 
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.shumidub.todoapprealm.alpha4"
+        applicationId "com.shumidub.todoapprealm.alpha6"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 3
-        versionName "a4"
+        versionName "a6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
