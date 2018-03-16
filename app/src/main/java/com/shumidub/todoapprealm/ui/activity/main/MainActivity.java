@@ -250,10 +250,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void showToast(String text){
         Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-        View view = toast.getView();
-        view.setBackgroundColor(Color.TRANSPARENT);
-        TextView textView = (TextView) view.findViewById(android.R.id.message);
-        textView.setTextColor(getResources().getColor(R.color.colorAccent));
+//        View view = toast.getView();
+//        view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+//        TextView textView = (TextView) view.findViewById(android.R.id.message);
+//        textView.setTextColor(getResources().getColor(R.color.colorPrimary));
         toast.show();
     }
 

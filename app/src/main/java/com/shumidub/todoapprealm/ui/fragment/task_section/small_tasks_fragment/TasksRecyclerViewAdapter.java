@@ -3,6 +3,7 @@ package com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment;
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -207,14 +208,18 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
                             //todo need explore EXPLORE
 
-                            ((CheckBox) cb).setChecked(true);
+                            holder.checkBox.setChecked(taskObject.isDone() ? false : true);
 
                             ((NormalViewHolder) holder).itemView
-                                    .animate().translationX(10000f).setDuration(250l)
+                                    .animate()
+                                    .scaleX(0.002f)
+                                    .scaleY(0.002f)
+                                    .alpha(0.2f)
+//                                  .translationX(10000f)
+                                    .setDuration(175l)
                                     .withEndAction(()->smallTasksFragment.notifyDataChanged());
 
-
-//                            smallTasksFragment.notifyDataChanged();
+//                          smallTasksFragment.notifyDataChanged();
                             smallTasksFragment.getActivity().invalidateOptionsMenu();
                             setTasksTextColor(holder, taskObject.isDone());
 
@@ -224,7 +229,6 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                                 App.getFolderSlidingPanelFragment()
                                         .notifyFolderOfTasksRVAdapterDataSetChanged();
                             }
-
                         });
 
                 holder.textView.setOnLongClickListener((View view) -> {

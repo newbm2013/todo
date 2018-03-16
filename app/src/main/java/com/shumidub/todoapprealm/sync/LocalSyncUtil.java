@@ -42,7 +42,7 @@ public class LocalSyncUtil {
         message = ">>>>> NOTES >>>>>" + nextLine + nextLine;
         RealmList<FolderNotesObject> folderOfNotesList = App.realm.where(RealmFoldersContainer.class).findFirst().folderOfNotesList;
         for (FolderNotesObject folderNotesObject : folderOfNotesList){
-            message = message + indent + folderNotesObject.getName() + " :"+ nextLine;
+            message = message + indent + folderNotesObject.getName() + " :"+ nextLine + nextLine;
             RealmList<NoteObject> notesList = folderNotesObject.getTasks();
             for (NoteObject noteObject : notesList){
                 message = message + indent + indent + " --> " + noteObject.getText() + nextLine + nextLine;
@@ -58,7 +58,7 @@ public class LocalSyncUtil {
         for (FolderTaskObject folderTaskObject : folderOfTasksList){
 
 
-            message = message + indent + folderTaskObject.getName() + (folderTaskObject.isDaily() ? " " : " NOT_DAILLY" ) + " :" + nextLine;
+            message = message + indent + folderTaskObject.getName() + (folderTaskObject.isDaily() ? " " : " NOT_DAILLY" ) + " :" + nextLine + nextLine;
 
             RealmList<TaskObject> taskList = folderTaskObject.getTasks();
             for (TaskObject taskObject : taskList){
