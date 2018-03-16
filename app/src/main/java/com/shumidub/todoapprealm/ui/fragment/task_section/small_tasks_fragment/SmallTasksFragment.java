@@ -79,6 +79,10 @@ public class SmallTasksFragment extends Fragment {
         tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
         if (FolderTaskRealmController.getFolder(tasksFolderId)==null) tasksFolderId =0;
         rvTasks = view.findViewById(R.id.rv);
+
+//        rvTasks.setItemAnimator(new SlideInDownItemAnimator());
+//        rvTasks.getItemAnimator().setRemoveDuration(20000);
+
         rvTasks.setHasFixedSize(true);
         setTasksListClickListeners();
         setTasks();

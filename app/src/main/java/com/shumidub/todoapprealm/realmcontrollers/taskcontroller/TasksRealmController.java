@@ -223,4 +223,13 @@ public class TasksRealmController {
         return ((FolderTaskObject) App.realm.where(FolderTaskObject.class)
                 .equalTo("id", folderId).findFirst()).folderTasks;
     }
+
+    public static void setTaskPriority(TaskObject taskObject, int priority){
+        if (priority >= 0 && priority <= 3) {
+            App.initRealm();
+            App.realm.executeTransaction((r) -> taskObject.setPriority(priority));
+        }
+    }
+
+
 }

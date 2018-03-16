@@ -43,6 +43,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     private ItemTouchHelper.SimpleCallback itemTouchHelperSimpleCallback;
     MainActivity activity;
 
+
     public interface OnItemLongClicked{
         void onLongClick (View view, int position);
     }
@@ -107,6 +108,9 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
     private void setTasksTextColor(ViewHolder holder, boolean isDone){
         if (isDone){
             holder.textView.setTextColor(Color.GRAY);
+
+
+
         }else if(!isDone){
             holder.textView.setTextColor(Color.BLACK);
         }
@@ -132,7 +136,7 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
 
             if (holder instanceof NormalViewHolder) {
 
-                TaskObject taskObject = tasks.get(position);
+                final TaskObject taskObject = tasks.get(position);
 
                 long taskId = taskObject.getId();
                 String text = taskObject.getText();
@@ -142,27 +146,75 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
                 holder.tvCount.setText("" + taskObject.getCountValue());
                 holder.tvAccumulation.setText(taskObject.getCountAccumulation() + "/" + taskObject.getMaxAccumulation());
 
-                int priority = taskObject.getPriority();
+
+                int priorityFromTaskObject = taskObject.getPriority();
+                int priorityCount = taskObject.getPriority();
                 String textPriority = "";
 
-                while (priority>0){
+                while (priorityCount>0){
                     textPriority += "!";
-                    priority-=1;
+                    priorityCount-=1;
                 }
 
                 holder.tvPriority.setText(textPriority);
+                if (priorityFromTaskObject>0) holder.tvPriority.setTextColor(activity.getResources().getColor(R.color.colorAccent));
+                else holder.tvPriority.setTextColor(activity.getResources().getColor(R.color.colorWhite));
 
-                int color = taskObject.isCycling() ? Color.RED : Color.WHITE;
-                holder.tvCycling.setTextColor(color);
+
+                holder.tvPriority.setOnClickListener((listener)-> {
+
+                    View view = holder.tvPriority;
+
+                    int priority = taskObject.getPriority();
+
+                        if (priority>2) priority =0;
+                        else priority ++;
+
+                        TasksRealmController.setTaskPriority(taskObject, priority);
+
+                        if (priority>1){
+                            String priorityText = "!";
+                            int i = priority;
+                            while (i>1){
+                                priorityText +="!";
+                                i--;
+                            }
+                            ((TextView) view).setText(priorityText);
+                        } else ((TextView) view).setText("!");
+
+                        if (priority>0) ((TextView) view).setTextColor(activity.getResources().getColor(R.color.colorAccent));
+                        else ((TextView) view).setTextColor(activity.getResources().getColor(R.color.colorWhite));
+
+
+                });
+
+//                int color = taskObject.isCycling() ? Color.RED : Color.WHITE;
+//                holder.tvCycling.setTextColor(color);
 
                 holder.checkBox.setChecked(taskObject.isDone());
+
+                if (taskObject.isCycling() && !taskObject.isDone()) holder.checkBox.setButtonDrawable(R.drawable.unchecked_accent_color_checkbox);
+                else if (!taskObject.isCycling() && !taskObject.isDone()) holder.checkBox.setButtonDrawable(R.drawable.unchecked_gray_checkbox);
+
+                if (taskObject.isCycling() && taskObject.isDone()) holder.checkBox.setButtonDrawable(R.drawable.checked_accent_color_checkbox);
+                else if (!taskObject.isCycling() && taskObject.isDone()) holder.checkBox.setButtonDrawable(R.drawable.checked_gray_checkbox);
+
                 setTasksTextColor(holder, taskObject.isDone());
 
                 holder.checkBox.setOnClickListener(
                         (cb) -> {
                             TasksRealmController.setTaskDoneOrParticullaryDone(taskObject, holder.checkBox.isChecked());
-                            smallTasksFragment.notifyDataChanged();
-//                          notifyDataSetChanged();
+
+                            //todo need explore EXPLORE
+
+                            ((CheckBox) cb).setChecked(true);
+
+                            ((NormalViewHolder) holder).itemView
+                                    .animate().translationX(10000f).setDuration(250l)
+                                    .withEndAction(()->smallTasksFragment.notifyDataChanged());
+
+
+//                            smallTasksFragment.notifyDataChanged();
                             smallTasksFragment.getActivity().invalidateOptionsMenu();
                             setTasksTextColor(holder, taskObject.isDone());
 

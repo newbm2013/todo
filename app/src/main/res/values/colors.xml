@@ -35,6 +35,7 @@
     <color name="colorPrimaryLigth">#267c52</color>
     <color name="colorPrimaryDark">#267c52</color>
     <color name="colorBackgroundActivity">#599c74</color>
+    <color name="colorBackgroundActivity80Transparent">#4f599c74</color>
     <color name="colorAccent">#e47c5d</color>
     <color name="colorActionMode">#16633e</color>
 
