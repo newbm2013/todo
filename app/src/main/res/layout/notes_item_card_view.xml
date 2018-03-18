@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/tv_note_text"
-        android:layout_width="340dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="left"
         android:layout_marginStart="4dp"
