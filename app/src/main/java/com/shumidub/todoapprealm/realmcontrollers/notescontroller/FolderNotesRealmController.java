@@ -56,6 +56,7 @@ public class FolderNotesRealmController implements INotesController {
 
     public static long getNewValidFolderNotesId() {
         long id =  System.currentTimeMillis();
+        App.initRealm();
         while ((App.realm.where(FolderNotesObject.class).equalTo("id", id)).findFirst()!=null){
             id ++;
         }
