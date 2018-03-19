@@ -30,6 +30,7 @@ import com.shumidub.todoapprealm.ui.actionmode.report.ReportActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.dialog.report_dialog.AddReportDialog;
 import com.shumidub.todoapprealm.ui.dialog.report_dialog.FullSizeReportDialog;
+import com.shumidub.todoapprealm.ui.dialog.syncdialog.SyncDialog;
 
 import java.util.List;
 
@@ -111,9 +112,7 @@ public class ReportFragment extends Fragment{
         sync.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         sync.setIcon(R.drawable.ic_sync);
         sync.setOnMenuItemClickListener((MenuItem a) -> {
-
-        new LocalSyncUtil(getActivity()).putAllRealmDbAsMessage();
-
+            new SyncDialog().show(getActivity().getSupportFragmentManager(), "SYNC_DIALOG");
             return true;
         });
 
