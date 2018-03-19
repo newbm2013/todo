@@ -1,6 +1,8 @@
 package com.shumidub.todoapprealm.realmcontrollers.notescontroller;
 
 
+import android.util.Log;
+
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
 import com.shumidub.todoapprealm.realmmodel.notes.NoteObject;
@@ -41,8 +43,17 @@ public class FolderNotesRealmController implements INotesController {
 
     public static void delFolderNote(long id){
         App.initRealm();
+
+        RealmList<NoteObject> realmList = getFolderNote(id).getTasks();
+
+
+
+        Log.d("DTAG77777", "delFolderNote: size = " + realmList.size());
+
+        App.initRealm();
         App.realm.executeTransaction((r) -> {
-            App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst().deleteFromRealm();
+                    realmList.deleteAllFromRealm();
+                    App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst().deleteFromRealm();
         });
     }
 
@@ -82,15 +93,22 @@ public class FolderNotesRealmController implements INotesController {
                 .equalTo("id", idFolderNotesObject).findFirst();
         App.realm.executeTransaction((realm -> {
             NoteObject noteObject = App.realm.createObject(NoteObject.class);
+//            NoteObject noteObject = new NoteObject();
             noteObject.setId(id);
             noteObject.setText(text);
+            noteObject.setIdFolder(idFolderNotesObject);
             folderNotesObject.getTasks().add(noteObject);
+
+
+
+            Log.d("DTAG77777", "addNote:= " + App.realm.where(NoteObject.class).equalTo("id",noteObject.getId()).findAll().size());
+
+
         }));
         return id;
     }
 
     public static void editNote(long idNotesObject, String text ){
-        App.initRealm();
         App.initRealm();
         App.realm.executeTransaction((r) -> {
             App.realm.where(NoteObject.class).equalTo("id", idNotesObject)
@@ -100,8 +118,15 @@ public class FolderNotesRealmController implements INotesController {
 
     public static void delNote(long idNotesObject){
         App.initRealm();
-        App.initRealm();
         App.realm.executeTransaction((r) -> {
+
+            NoteObject noteObject = App.realm.where(NoteObject.class).equalTo("id", idNotesObject).findFirst();
+
+            long idFolderObject = noteObject.getIdFolder();
+            FolderNotesObject folderNotesObject = App.realm.where(FolderNotesObject.class).equalTo("id", idFolderObject).findFirst();
+
+            folderNotesObject.getTasks().remove(noteObject);
+
             App.realm.where(NoteObject.class).equalTo("id", idNotesObject)
                     .findFirst().deleteFromRealm();
         });

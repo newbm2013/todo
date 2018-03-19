@@ -10,10 +10,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
@@ -95,10 +94,12 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
                     } else if (title == DELETE_LIST){
                         if (folderObject.getId() != defaultFolderId) {
                             FolderTaskRealmController.deleteFolder(folderObject);
-                            activity.showToast("Deleted");
+
 //                            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                             folderSlidingPanelFragment.finishActionMode();
                             folderSlidingPanelFragment.notifyListsDataChanged();
+                            activity.invalidateOptionsMenu();
+                            activity.showToast("Deleted");
                         }else{
                             activity.showToast("Can't delete default folderObject");
 //                            Toast.makeText(getContext(),

@@ -5,7 +5,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
@@ -22,7 +22,6 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmModel;
-import io.realm.RealmObject;
 
 import static com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController.getTasks;
 
@@ -57,7 +56,9 @@ public class App extends Application {
         initContainers();
 
 
-        if(BuildConfig.DEBUG && FolderTaskRealmController.listOfFolderIsEmpty()) addContent();
+        if(BuildConfig.DEBUG && FolderTaskRealmController.listOfFolderIsEmpty())
+            Log.d("DTAG", "onCreate: ");
+//            addContent();
         else {
 
 

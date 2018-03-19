@@ -2,7 +2,6 @@ package com.shumidub.todoapprealm.realmcontrollers.taskcontroller;
 
 import android.util.Log;
 import com.shumidub.todoapprealm.App;
-import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.TaskObject;
 import java.util.Calendar;
@@ -178,10 +177,17 @@ public class TasksRealmController {
         if (App.realm.isInTransaction()) {
             task.getDateCountAccumulation().clear();
             task.deleteFromRealm();
+            if(task.isValid() && FolderTaskRealmController.getFolder(taskId).getTasks().contains(task)){
+                FolderTaskRealmController.getFolder(taskId).getTasks().remove(task);
+            }
+
         } else {
             App.realm.executeTransaction((transaction) -> {
                 task.getDateCountAccumulation().clear();
                 task.deleteFromRealm();
+                if( task.isValid() && FolderTaskRealmController.getFolder(taskId).getTasks().contains(task)){
+                    FolderTaskRealmController.getFolder(taskId).getTasks().remove(task);
+                }
             });
         }
 
@@ -212,6 +218,7 @@ public class TasksRealmController {
     /** get unique id*/
     private static long getIdForNextValue(){
         long id =  System.currentTimeMillis();
+        App.initRealm();
         while ((App.realm.where(TaskObject.class).equalTo("id", id)).findFirst()!=null){
             id ++;
         }

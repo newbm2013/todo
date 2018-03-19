@@ -133,6 +133,7 @@ public class TaskActionModeCallback  {
                     TasksRealmController.deleteTask(task);
                     smallTasksFragment.notifyDataChanged();
                     actionMode.finish();
+                    ((MainActivity)smallTasksFragment.getActivity()).invalidateOptionsMenu();
                     smallTasksFragment.getActivity().invalidateOptionsMenu();
 //                    Toast.makeText(activity, "done", Toast.LENGTH_SHORT).show();
                     ((MainActivity)smallTasksFragment.getActivity()).showToast("Done");

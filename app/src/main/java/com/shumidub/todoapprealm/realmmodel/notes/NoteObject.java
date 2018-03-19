@@ -10,6 +10,7 @@ import io.realm.RealmObject;
 public class NoteObject extends RealmObject {
 
     private long id;
+    private long idFolder;
     private String text;
 
     public long getId() {return id;}
@@ -24,4 +25,11 @@ public class NoteObject extends RealmObject {
         this.text = text;
     }
 
+    public long getIdFolder() {
+        return idFolder;
+    }
+
+    public void setIdFolder(long idFolder) {
+        this.idFolder = idFolder;
+    }
 }

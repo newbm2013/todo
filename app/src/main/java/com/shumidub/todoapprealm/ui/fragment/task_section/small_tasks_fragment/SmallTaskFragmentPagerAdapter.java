@@ -3,11 +3,8 @@ package com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 
-import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 
 import java.util.ArrayList;
@@ -45,6 +42,7 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
     // для размера результа - создаем лист только с ид
     // todo для чего это?
     private void setTaskList(){
+        folderTaskModelModelId.clear();
         folderTaskModel = FolderTaskRealmController.getFoldersList();
         for (FolderTaskObject folderObject : folderTaskModel){
             folderTaskModelModelId.add(folderObject.getId());

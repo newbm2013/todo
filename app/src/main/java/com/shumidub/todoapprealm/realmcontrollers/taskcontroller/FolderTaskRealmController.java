@@ -1,8 +1,11 @@
-package com.shumidub.todoapprealm.realmcontrollers;
+package com.shumidub.todoapprealm.realmcontrollers.taskcontroller;
+
+import android.util.Log;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
+import com.shumidub.todoapprealm.realmmodel.TaskObject;
 
 import io.realm.RealmList;
 import io.realm.RealmQuery;
@@ -64,7 +67,12 @@ public class FolderTaskRealmController {
     /** delete folder by folderobject */
     public static void deleteFolder(FolderTaskObject folderObject){
         App.initRealm();
-        realm.executeTransaction((transaction)-> folderObject.deleteFromRealm());
+        RealmList<TaskObject> realmList = folderObject.getTasks();
+
+        realm.executeTransaction((transaction)-> {
+            realmList.deleteAllFromRealm();
+            folderObject.deleteFromRealm();
+        });
     }
 
     /** delete folder by id */
@@ -113,6 +121,7 @@ public class FolderTaskRealmController {
     /** get unique id*/
     static long getIdForNextValue() {
         long id =  System.currentTimeMillis();
+        App.initRealm();
         while ((App.realm.where(FolderTaskObject.class).equalTo("id", id)).findFirst()!=null){
             id ++;
         }

@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
@@ -43,13 +43,12 @@ import com.shumidub.todoapprealm.ui.dialog.task_folder_dialog.AddFolderDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.Calendar;
 import java.util.List;
 import io.realm.RealmList;
 
-import static com.shumidub.todoapprealm.realmcontrollers.FolderTaskRealmController.listOfFolderIsEmpty;
+import static com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController.listOfFolderIsEmpty;
 
 
 /**
@@ -172,7 +171,9 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
                 if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) setTitle("Tasks");
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED){
                     finishActionMode();
-                    setTitle(FolderTaskRealmController.getFoldersList().get(smallTasksViewPager.getCurrentItem()).getName());
+                    if (FolderTaskRealmController.getFoldersList().size()>0) {
+                        setTitle(FolderTaskRealmController.getFoldersList().get(smallTasksViewPager.getCurrentItem()).getName());
+                    }
                 }
             }
         });
@@ -184,7 +185,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
         folderObjects = FolderTaskRealmController.getFoldersList();
 
         //set empty state for folder // todo need redesign view
-        setEmptyStateIfFoldersIsEmpty(view);
+//        setEmptyStateIfFoldersIsEmpty(view);
 
         //set adapter for folder rv
         folderOfTaskRVAdapter = new FolderOfTaskRecyclerViewAdapter(folderObjects, getActivity());
@@ -206,12 +207,9 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
                 int maxAccumulation = Integer.valueOf(tvTaskMaxAccumulate.getText().toString());
 
                 if (!text.isEmpty() || !text.equals("")) {
-
                     idFolderFromTag = (Long) holder.itemView.findViewById(R.id.tv_note_text).getTag();
-
                     TasksRealmController.addTask(text, count , maxAccumulation, cycling, priority,
                             idFolderFromTag);
-//                            ((Long) holder.itemView.findViewById(R.id.item_text).getTag()) );
 
                     //todo reset view
                     priority = 0;
@@ -224,33 +222,22 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
                     tvTaskPriority.setText(" ! ");
                     tvTaskPriority.setTextColor(getResources().getColor(R.color.colorWhite));
                     tvTaskCycling.setTextColor(getResources().getColor(R.color.colorWhite));
-
                     folderOfTaskRVAdapter.notifyDataSetChanged();
-
-                } else {
-
-
-//                    idFolderFromTag = (Long) holder.itemView.findViewById(R.id.item_text)getTag();
-                    idFolderFromTag = (Long) holder.itemView.findViewById(R.id.tv_note_text).getTag();
-
-                    // setTasks(); //todo check if it need
-
 
                     smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager());
                     smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
+
+
+                } else {
+                    idFolderFromTag = (Long) holder.itemView.findViewById(R.id.tv_note_text).getTag();
+                    // setTasks(); //todo check if it need
+                    smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+                    smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
                     smallTasksViewPager.setCurrentItem(position);
-
-
-
                     setTitle(FolderTaskRealmController.getFolder(idFolderFromTag).getName());
                     slidingUpPanelLayout. setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-
-
                     InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
-
-
-
                 }
             };
 
@@ -445,9 +432,9 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
     }
 
     private void setEmptyStateIfFoldersIsEmpty(View view){
-        if (listOfFolderIsEmpty()){
-            (view.findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
-        } else (view.findViewById(R.id.tv_empty)).setVisibility(View.INVISIBLE);
+//        if (listOfFolderIsEmpty()){
+//            (view.findViewById(R.id.tv_empty)).setVisibility(View.VISIBLE);
+//        } else (view.findViewById(R.id.tv_empty)).setVisibility(View.INVISIBLE);
     }
 
     private ActionMode.Callback getCallback(int callbackType){
