@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
-import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
 
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;

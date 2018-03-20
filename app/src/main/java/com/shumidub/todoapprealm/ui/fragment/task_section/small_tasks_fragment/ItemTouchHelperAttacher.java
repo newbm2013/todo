@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 

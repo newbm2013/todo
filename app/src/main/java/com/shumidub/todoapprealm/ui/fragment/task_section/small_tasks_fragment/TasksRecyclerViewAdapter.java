@@ -1,9 +1,6 @@
 package com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment;
 
-import android.annotation.SuppressLint;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -16,15 +13,11 @@ import android.widget.TextView;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
-import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
-import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 
 
 import java.util.List;
-
-import static android.support.v7.widget.helper.ItemTouchHelper.ACTION_STATE_IDLE;
 
 /**
  * Created by Артем on 19.12.2017.

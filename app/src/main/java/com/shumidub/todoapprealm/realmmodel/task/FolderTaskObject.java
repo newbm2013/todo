@@ -1,4 +1,4 @@
-package com.shumidub.todoapprealm.realmmodel;
+package com.shumidub.todoapprealm.realmmodel.task;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

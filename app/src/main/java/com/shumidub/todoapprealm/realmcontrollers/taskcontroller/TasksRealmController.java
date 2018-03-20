@@ -2,8 +2,8 @@ package com.shumidub.todoapprealm.realmcontrollers.taskcontroller;
 
 import android.util.Log;
 import com.shumidub.todoapprealm.App;
-import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 import java.util.Calendar;
 import java.util.List;
 import io.reactivex.annotations.NonNull;

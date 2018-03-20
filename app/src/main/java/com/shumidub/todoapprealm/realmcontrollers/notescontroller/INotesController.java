@@ -1,6 +1,5 @@
 package com.shumidub.todoapprealm.realmcontrollers.notescontroller;
 
-import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
 
 import io.realm.RealmList;

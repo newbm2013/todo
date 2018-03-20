@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm.realmmodel;
 
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
+import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -10,7 +11,7 @@ import io.realm.RealmObject;
  *
  */
 
-public class RealmFoldersContainer<R> extends RealmObject {
+public class RealmFoldersContainer extends RealmObject {
     public RealmList<FolderTaskObject> folderOfTasksList;
     public RealmList<FolderNotesObject> folderOfNotesList;
 }

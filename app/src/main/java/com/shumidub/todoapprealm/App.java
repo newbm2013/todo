@@ -7,10 +7,10 @@ import android.util.Log;
 
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
-import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
 import com.shumidub.todoapprealm.realmmodel.RealmInteger;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 

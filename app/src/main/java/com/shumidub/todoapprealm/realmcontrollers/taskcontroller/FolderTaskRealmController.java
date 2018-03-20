@@ -1,11 +1,9 @@
 package com.shumidub.todoapprealm.realmcontrollers.taskcontroller;
 
-import android.util.Log;
-
 import com.shumidub.todoapprealm.App;
-import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 
 import io.realm.RealmList;
 import io.realm.RealmQuery;

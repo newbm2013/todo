@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
-import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
 
 import java.util.ArrayList;
 

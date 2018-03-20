@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.task.TaskActionModeCallback;

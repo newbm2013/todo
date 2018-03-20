@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.shumidub.todoapprealm.App;
-import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 import com.shumidub.todoapprealm.realmmodel.notes.FolderNotesObject;
 import com.shumidub.todoapprealm.realmmodel.notes.NoteObject;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
-import com.shumidub.todoapprealm.ui.activity.base.BaseActivity;
 
 import io.realm.RealmList;
 

@@ -1,6 +1,6 @@
 package com.shumidub.todoapprealm.realmmodel.notes;
 
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.notescontroller.FolderNotesRealmController;
+import com.shumidub.todoapprealm.sync.JsonSyncUtil;
 import com.shumidub.todoapprealm.sync.LocalSyncUtil;
 import com.shumidub.todoapprealm.ui.dialog.report_dialog.AddReportDialog;
 import com.shumidub.todoapprealm.ui.fragment.note_fragment.FolderNoteFragment;
@@ -33,6 +34,8 @@ public class SyncDialog extends android.support.v4.app.DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        JsonSyncUtil jsonSyncUtil = new JsonSyncUtil(getActivity());
+
         View view = getActivity().getLayoutInflater()
                 .inflate(R.layout.sync_dialog, null);
 
@@ -54,6 +57,21 @@ public class SyncDialog extends android.support.v4.app.DialogFragment {
         view.findViewById(R.id.btnSaveText).setOnClickListener((v)->{
             new LocalSyncUtil(getActivity()).putAllRealmDbAsMessage();
         });
+
+
+        view.findViewById(R.id.btnRestore).setOnClickListener((v)->{
+            jsonSyncUtil.realmBdFromJson();
+
+        });
+
+
+        view.findViewById(R.id.btnBackup).setOnClickListener((v)->{
+            jsonSyncUtil.realmBdToJson();
+        });
+
+        if (!jsonSyncUtil.jsonIsExist()){
+            view.findViewById(R.id.btnRestore).setEnabled(false);
+        }
 
         return dialog;
     }

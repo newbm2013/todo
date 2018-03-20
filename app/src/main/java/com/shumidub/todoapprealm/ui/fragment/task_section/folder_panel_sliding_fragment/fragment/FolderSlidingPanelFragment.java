@@ -31,9 +31,9 @@ import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
-import com.shumidub.todoapprealm.realmmodel.FolderTaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
-import com.shumidub.todoapprealm.realmmodel.TaskObject;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.adapter.FolderOfTaskRecyclerViewAdapter;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
@@ -47,8 +47,6 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import java.util.Calendar;
 import java.util.List;
 import io.realm.RealmList;
-
-import static com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController.listOfFolderIsEmpty;
 
 
 /**

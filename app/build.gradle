@@ -59,7 +59,7 @@ dependencies {
 
     implementation 'asia.ivity.android:marqueeview:1.1.5@aar'
 
-//    implementationп 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
 
 
 }
