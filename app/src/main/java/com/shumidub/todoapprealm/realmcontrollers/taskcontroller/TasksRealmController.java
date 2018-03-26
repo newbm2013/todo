@@ -228,7 +228,9 @@ public class TasksRealmController {
     @SuppressWarnings("All")
     public static RealmList<TaskObject> getFolderTasksRealmListFromFolder (long folderId){
         return ((FolderTaskObject) App.realm.where(FolderTaskObject.class)
-                .equalTo("id", folderId).findFirst()).folderTasks;
+                .equalTo("id", folderId)
+                .findFirst())
+                .folderTasks;
     }
 
     public static void setTaskPriority(TaskObject taskObject, int priority){

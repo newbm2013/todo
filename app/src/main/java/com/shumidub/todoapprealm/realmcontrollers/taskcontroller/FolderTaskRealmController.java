@@ -1,9 +1,13 @@
 package com.shumidub.todoapprealm.realmcontrollers.taskcontroller;
 
+import android.util.Log;
+
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
 import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
+
+import java.util.ArrayList;
 
 import io.realm.RealmList;
 import io.realm.RealmQuery;
@@ -69,7 +73,23 @@ public class FolderTaskRealmController {
 
         realm.executeTransaction((transaction)-> {
             realmList.deleteAllFromRealm();
+
+            ArrayList<Long> arrayList = new ArrayList<>();
+            for (int i = 0; i<App.folderOfTasksListFromContainer.size(); i++){
+                arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
+            }
+            Log.d("DTAG24257", "BEFORE DELETING - folderIdArray = : " + arrayList.toString());
+
+
             App.folderOfTasksListFromContainer.remove(folderObject);
+
+            arrayList.clear();
+            for (int i = 0; i<App.folderOfTasksListFromContainer.size(); i++){
+                arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
+            }
+            Log.d("DTAG24257", "AFTER DELETING - folderIdArray = : " + arrayList.toString());
+
+
             folderObject.deleteFromRealm();
         });
     }

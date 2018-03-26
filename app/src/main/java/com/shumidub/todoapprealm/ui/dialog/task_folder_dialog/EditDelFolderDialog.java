@@ -97,9 +97,9 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
 
 //                            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                             folderSlidingPanelFragment.finishActionMode();
-                            folderSlidingPanelFragment.notifyListsDataChanged();
                             activity.invalidateOptionsMenu();
                             activity.showToast("Deleted");
+                            folderSlidingPanelFragment.notifyListsDataChanged();
                         }else{
                             activity.showToast("Can't delete default folderObject");
 //                            Toast.makeText(getContext(),

@@ -34,11 +34,12 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
             arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
         }
 
-        Log.d("DTAG2425", "folderIdArray = : " + arrayList.toArray().toString());
+        Log.d("DTAG2425", "folderIdArray = : " + arrayList.toString());
 
         long id = App.folderOfTasksListFromContainer.get(position).getId();
 
         Log.d("DTAG2425", "getItem: folderID = " + id);
+        Log.d("DTAG2425", " ");
         return SmallTasksFragment.newInstance (id);
     }
 
@@ -48,4 +49,11 @@ public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
 
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+
+        //todo What?
+
+    }
 }

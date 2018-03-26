@@ -56,6 +56,7 @@ public class SmallTasksFragment extends Fragment {
         Bundle args = new Bundle();
         args.putLong(TASK_FOLDER_ID_KEY, tasksListId);
         Log.d("DTAG2425", "newInstance: folderId = " + tasksListId);
+        Log.d("DTAG2425", " ");
         SmallTasksFragment fragment = new SmallTasksFragment();
         fragment.setArguments(args);
         return fragment;
@@ -171,11 +172,17 @@ public class SmallTasksFragment extends Fragment {
     }
 
     public void setTasks(){
-        if (tasksFolderId == 0) doneTasks = TasksRealmController.getDoneTasks();
-        else doneTasks = TasksRealmController.getDoneTasks(tasksFolderId);
 
-        if (tasksFolderId == 0) tasks = TasksRealmController.getNotDoneTasks();
-        else tasks = TasksRealmController.getNotDoneTasks(tasksFolderId);
+
+//        if (tasksFolderId == 0) tasks = TasksRealmController.getNotDoneTasks();
+//        else
+        tasks = TasksRealmController.getNotDoneTasks(tasksFolderId);
+
+
+//        if (tasksFolderId == 0) doneTasks = TasksRealmController.getDoneTasks();
+//        else
+            doneTasks = TasksRealmController.getDoneTasks(tasksFolderId);
+
 
         llm = new LinearLayoutManager(getContext());
 
