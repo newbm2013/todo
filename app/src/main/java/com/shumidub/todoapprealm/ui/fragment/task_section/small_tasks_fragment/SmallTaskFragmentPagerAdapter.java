@@ -3,7 +3,9 @@ package com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
+import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
 
@@ -18,48 +20,31 @@ import io.realm.RealmList;
 public class SmallTaskFragmentPagerAdapter extends FragmentPagerAdapter {
 
 
-    RealmList<FolderTaskObject> folderTaskModel;
-    ArrayList <Long> folderTaskModelModelId = new ArrayList<>();
-
     public SmallTaskFragmentPagerAdapter(FragmentManager fm) {
-
         super(fm);
-        setTaskList();
     }
+
 
     @Override
     public Fragment getItem(int position) {
-        return SmallTasksFragment.newInstance (folderTaskModelModelId.get(position));
+
+        ArrayList<Long> arrayList = new ArrayList<>();
+
+        for (int i = 0; i<App.folderOfTasksListFromContainer.size(); i++){
+            arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
+        }
+
+        Log.d("DTAG2425", "folderIdArray = : " + arrayList.toArray().toString());
+
+        long id = App.folderOfTasksListFromContainer.get(position).getId();
+
+        Log.d("DTAG2425", "getItem: folderID = " + id);
+        return SmallTasksFragment.newInstance (id);
     }
 
     @Override
     public int getCount() {
-        return folderTaskModelModelId.size();
-    }
-
-
-    //есть реалм результ фолдеров
-    // для размера результа - создаем лист только с ид
-    // todo для чего это?
-    private void setTaskList(){
-        folderTaskModelModelId.clear();
-        folderTaskModel = FolderTaskRealmController.getFoldersList();
-        for (FolderTaskObject folderObject : folderTaskModel){
-            folderTaskModelModelId.add(folderObject.getId());
-        }
-    }
-
-
-
-//    public void  notifyTaskListChanged(){
-//        setTaskList();
-//        notifyDataSetChanged();
-//    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        setTaskList();
-        super.notifyDataSetChanged();
+        return App.folderOfTasksListFromContainer.size();
     }
 
 

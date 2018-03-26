@@ -22,7 +22,7 @@ public class FolderTaskRealmController {
     /** Get all folder */
     public static RealmList<FolderTaskObject> getFoldersList(){
         App.initRealm();
-        return App.realm.where(RealmFoldersContainer.class).findFirst().folderOfTasksList;
+        return App.folderOfTasksListFromContainer;
     }
 
     /** get folder by id */
@@ -69,6 +69,7 @@ public class FolderTaskRealmController {
 
         realm.executeTransaction((transaction)-> {
             realmList.deleteAllFromRealm();
+            App.folderOfTasksListFromContainer.remove(folderObject);
             folderObject.deleteFromRealm();
         });
     }

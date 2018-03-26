@@ -553,8 +553,16 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
     public String getValidTitle(){
 
-        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED){
-            return FolderTaskRealmController.getFoldersList().get(smallTasksViewPager.getCurrentItem()).getName();
+        int childCount = smallTaskFragmentPagerAdapter.getCount();
+
+        if (
+                childCount>0
+                        && slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED){
+            return FolderTaskRealmController
+                    .getFoldersList()
+                    .get(smallTasksViewPager
+                            .getCurrentItem())
+                    .getName();
         } else return "Tasks";
 
     }

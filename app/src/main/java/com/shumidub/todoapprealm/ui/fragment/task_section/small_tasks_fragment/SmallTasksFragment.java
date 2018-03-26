@@ -55,14 +55,52 @@ public class SmallTasksFragment extends Fragment {
     public static final SmallTasksFragment newInstance(long tasksListId) {
         Bundle args = new Bundle();
         args.putLong(TASK_FOLDER_ID_KEY, tasksListId);
+        Log.d("DTAG2425", "newInstance: folderId = " + tasksListId);
         SmallTasksFragment fragment = new SmallTasksFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState!=null){
+            tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY,0);
+            Log.d("DTAG2425", "onCreate1: folderId =" + tasksFolderId);
+        }
+
+        if (getArguments()!= null){
+            long tasksFolderId2 = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
+            if (tasksFolderId2 != 0 && tasksFolderId == 0){
+                tasksFolderId = tasksFolderId2;
+                Log.d("DTAG2425", "onCreate2: folderId =" + tasksFolderId);
+            }
+        }
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        if (tasksFolderId==0){
+            if (savedInstanceState!=null){
+                tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY,0);
+                Log.d("DTAG2425", "onCreateView1: folderId =" + tasksFolderId);
+            }
+
+            if (getArguments()!= null && tasksFolderId == 0){
+                long tasksFolderId2 = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
+                if (tasksFolderId2 != 0 ){
+                    tasksFolderId = tasksFolderId2;
+                    Log.d("DTAG2425", "onCreateView2: folderId =" + tasksFolderId);
+                }
+            }
+        }
+
+
         View view = inflater.inflate(R.layout.rv_fragment_template_layout, container, false);
         emptyState = view.findViewById(R.id.empty_state);
         return view;
@@ -72,10 +110,31 @@ public class SmallTasksFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        if (tasksFolderId==0){
+            if (savedInstanceState!=null){
+                tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY,0);
+                Log.d("DTAG2425", "onViewCreated1: folderId =" + tasksFolderId);
+            }
+
+            if (getArguments()!= null && tasksFolderId == 0){
+                long tasksFolderId2 = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
+                if (tasksFolderId2 != 0 ){
+                    tasksFolderId = tasksFolderId2;
+                    Log.d("DTAG2425", "onViewCreated2: folderId =" + tasksFolderId);
+                }
+            }
+        }
+
+
+
 //        TASK
         isAllTaskShowing = false;
-        tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
-        if (FolderTaskRealmController.getFolder(tasksFolderId)==null) tasksFolderId =0;
+
+//        tasksFolderId = getArguments().getLong(TASK_FOLDER_ID_KEY, 0);
+//        if (FolderTaskRealmController.getFolder(tasksFolderId)==null) tasksFolderId =0;
+
+
         rvTasks = view.findViewById(R.id.rv);
 
 //        rvTasks.setItemAnimator(new SlideInDownItemAnimator());
