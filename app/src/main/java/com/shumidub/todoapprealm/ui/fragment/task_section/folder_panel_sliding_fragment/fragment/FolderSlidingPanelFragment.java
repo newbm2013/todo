@@ -491,7 +491,17 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 //      folderObjects = FolderRealmController.getFolders();
 //      folderOfTaskRVAdapter.notifyDataSetChanged();
         folderOfTaskRVAdapter.notifyDataSetChanged();
-        smallTaskFragmentPagerAdapter.notifyDataSetChanged();
+
+        smallTasksViewPager.removeAllViews();
+//        smallTaskFragmentPagerAdapter.notifyDataSetChanged();
+        smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+        smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
+
+
+
+//        smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getChildFragmentManager());
+//        smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
+
         setEmptyStateIfNeed();
     }
 

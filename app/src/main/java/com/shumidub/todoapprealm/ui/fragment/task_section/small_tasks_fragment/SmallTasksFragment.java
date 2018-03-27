@@ -21,6 +21,7 @@ import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.task.TaskActionModeCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -179,9 +180,10 @@ public class SmallTasksFragment extends Fragment {
         tasks = TasksRealmController.getNotDoneTasks(tasksFolderId);
 
 
+
 //        if (tasksFolderId == 0) doneTasks = TasksRealmController.getDoneTasks();
 //        else
-            doneTasks = TasksRealmController.getDoneTasks(tasksFolderId);
+        doneTasks = TasksRealmController.getDoneTasks(tasksFolderId);
 
 
         llm = new LinearLayoutManager(getContext());
