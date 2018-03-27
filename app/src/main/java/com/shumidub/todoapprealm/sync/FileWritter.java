@@ -22,7 +22,7 @@ public class FileWritter {
 
 
         File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), FILE_NAME);
+                Environment.DIRECTORY_DOWNLOADS), FILE_NAME);
 
         if(file.exists())  file.delete();
 
@@ -36,20 +36,21 @@ public class FileWritter {
 
         FileOutputStream stream = null;
         try {
+
             stream = new FileOutputStream(file);
+            stream.write(json.getBytes());
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-
-        try {
-            stream.write(json.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e2) {
+            e2.printStackTrace();
         } finally {
             try {
                 stream.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e2){
+                e2.printStackTrace();
             }
         }
 
@@ -60,7 +61,7 @@ public class FileWritter {
     public static String readFile(){
 
         File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), FILE_NAME);
+                Environment.DIRECTORY_DOWNLOADS), FILE_NAME);
 
 
         int length = (int) file.length();

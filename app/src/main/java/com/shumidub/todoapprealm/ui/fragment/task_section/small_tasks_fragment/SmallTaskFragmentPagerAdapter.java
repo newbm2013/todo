@@ -54,8 +54,8 @@ public class SmallTaskFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-
-          return App.folderOfTasksListFromContainer.size();
+        int size = App.folderOfTasksListFromContainer.size();
+        return size;
     }
 
 
