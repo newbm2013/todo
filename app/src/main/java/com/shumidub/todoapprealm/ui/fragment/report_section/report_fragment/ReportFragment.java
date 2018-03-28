@@ -1,11 +1,15 @@
 package com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
@@ -112,6 +116,9 @@ public class ReportFragment extends Fragment{
         sync.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         sync.setIcon(R.drawable.ic_sync);
         sync.setOnMenuItemClickListener((MenuItem a) -> {
+
+            checkPermission();
+
             new SyncDialog().show(getActivity().getSupportFragmentManager(), "SYNC_DIALOG");
             return true;
         });
@@ -129,6 +136,18 @@ public class ReportFragment extends Fragment{
 //        reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(reportObjectList);
 //        recyclerView.setAdapter(reportRecyclerViewAdapter);
 
+    }
+
+
+    private void checkPermission(){
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
+            checkPermission();
+        } else{
+            return;
+        }
     }
 
     public static void setId(long idReport){

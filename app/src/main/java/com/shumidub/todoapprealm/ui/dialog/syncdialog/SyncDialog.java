@@ -69,9 +69,9 @@ public class SyncDialog extends android.support.v4.app.DialogFragment {
             jsonSyncUtil.realmBdToJson();
         });
 
-        if (!jsonSyncUtil.jsonIsExist()){
-            view.findViewById(R.id.btnRestore).setEnabled(false);
-        }
+//        if (!jsonSyncUtil.jsonIsExist()){
+//            view.findViewById(R.id.btnRestore).setEnabled(false);
+//        }
 
         return dialog;
     }

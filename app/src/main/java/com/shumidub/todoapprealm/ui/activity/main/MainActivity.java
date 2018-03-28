@@ -41,8 +41,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        onCreateActions();
+    }
 
 
+    public void onCreateActions(){
         App.setDayScopeValue();
 
         //todo need fix up view with open keyboard
@@ -54,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         rootLayout = findViewById(R.id.root_layout);
         actionBar = getSupportActionBar();
-
-
 
 
         viewPager = findViewById(R.id.viewpager);
@@ -114,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
                     for (Fragment fragment: getSupportFragmentManager ().getFragments()){
                         if (fragment instanceof FolderSlidingPanelFragment){
                             actionBar.setTitle( ((FolderSlidingPanelFragment) fragment).getValidTitle() );
-                            }
                         }
                     }
+                }
 
                 else if (position == 2){
                     actionBar.setTitle("Reports");
@@ -133,9 +134,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         actionBar.setTitle("Tasks");
-
     }
 
+
+    public void resetAllView(){
+
+        viewPager.removeAllViews();
+        mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mainPagerAdapter);
+
+    }
 
     @Override
     protected void onPause() {

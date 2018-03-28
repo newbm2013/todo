@@ -16,6 +16,22 @@ import io.realm.RealmObject;
 public class RealmFoldersContainer extends RealmObject implements Serializable{
     public RealmList<FolderTaskObject> folderOfTasksList;
     public RealmList<FolderNotesObject> folderOfNotesList;
+
+    public RealmList<FolderTaskObject> getFolderOfTasksList() {
+        return folderOfTasksList;
+    }
+
+    public void setFolderOfTasksList(RealmList<FolderTaskObject> folderOfTasksList) {
+        this.folderOfTasksList = folderOfTasksList;
+    }
+
+    public RealmList<FolderNotesObject> getFolderOfNotesList() {
+        return folderOfNotesList;
+    }
+
+    public void setFolderOfNotesList(RealmList<FolderNotesObject> folderOfNotesList) {
+        this.folderOfNotesList = folderOfNotesList;
+    }
 }
 
 

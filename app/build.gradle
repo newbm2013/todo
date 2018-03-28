@@ -13,7 +13,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.shumidub.todoapprealm.alpha6"
-        minSdkVersion 22
+        minSdkVersion 24
         targetSdkVersion 26
         versionCode 3
         versionName "a6"

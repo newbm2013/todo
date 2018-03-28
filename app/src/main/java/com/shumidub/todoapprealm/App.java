@@ -32,6 +32,8 @@ import static com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRea
 
 public class App extends Application {
 
+    static App mApp;
+
     public static Realm realm;
     public static RealmFoldersContainer realmFoldersContainer;
     public static RealmList<FolderTaskObject> folderOfTasksListFromContainer;
@@ -47,6 +49,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        mApp = this;
+
         Realm.init(this);
         Realm.setDefaultConfiguration(new RealmConfiguration.Builder()
                 .schemaVersion(1)
@@ -83,6 +88,10 @@ public class App extends Application {
 
 
         }
+    }
+
+    public static App getApp(){
+        return mApp;
     }
 
     public static void initRealm() {
