@@ -3,8 +3,10 @@ package com.shumidub.todoapprealm.ui.dialog.syncdialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -64,23 +66,34 @@ public class SyncDialog extends android.support.v4.app.DialogFragment {
             jsonSyncUtil.realmBdFromJson();
             ((MainActivity)getActivity()).invalidateOptionsMenu();
 
+
         });
 
 
         view.findViewById(R.id.btnBackup).setOnClickListener((v)->{
             jsonSyncUtil.realmBdToJson();
+            dialog.cancel();
         });
 
 //        if (!jsonSyncUtil.jsonIsExist()){
 //            view.findViewById(R.id.btnRestore).setEnabled(false);
 //        }
 
+        dialog.getWindow().setBackgroundDrawableResource(R.color.colorPrimaryDark);
+//
+//        view.findViewById(R.id.btnBackup).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDarker));
+//        view.findViewById(R.id.btnRestore).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDarker));
+//        view.findViewById(R.id.btnSaveText).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDarker));
+
         return dialog;
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.WHITE);
 
-
-
+    }
 }

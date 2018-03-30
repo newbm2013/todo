@@ -41,7 +41,7 @@ public class JsonSyncUtil {
 
 
         if (jsonIsExist()){
-            ((MainActivity)activity).showToast("Saved to download folder!");
+            ((MainActivity)activity).showToast("Saved to Download folder as REALM_BD_JSON.txt!");
         } else {
             ((MainActivity)activity).showToast("Error!");
         }
@@ -56,8 +56,10 @@ public class JsonSyncUtil {
 
     public void realmBdFromJson(){
 
+
+
         if (!jsonIsExist()){
-            ((MainActivity)activity).showToast("Backup not found");
+            ((MainActivity)activity).showToast("Backup file (REALM_BD_JSON.txt) not found on Download folder");
             return;
         } else {
 
@@ -66,7 +68,7 @@ public class JsonSyncUtil {
 
             Log.d("DTAG44444", "realmBdFromJson: " + json);
 
-            if (!TextUtils.isEmpty(json)) {
+//            if (!TextUtils.isEmpty(json)) {
                 GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
                 Gson gson = builder.create();
 
@@ -127,9 +129,9 @@ public class JsonSyncUtil {
 
 
 
-            }else{
-                ((MainActivity)activity).showToast("File is empty!");
-            }
+//            }else{
+//                ((MainActivity)activity).showToast("File is empty!");
+//            }
 
 
 

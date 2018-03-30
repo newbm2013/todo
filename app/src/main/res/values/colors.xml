@@ -34,6 +34,7 @@
     <color name="colorPrimary">#267c52</color>
     <color name="colorPrimaryLigth">#267c52</color>
     <color name="colorPrimaryDark">#267c52</color>
+    <color name="colorPrimaryDarker">#086337</color>
     <color name="colorBackgroundActivity">#599c74</color>
     <color name="colorBackgroundActivity80Transparent">#4f599c74</color>
     <color name="colorAccent">#e47c5d</color>
