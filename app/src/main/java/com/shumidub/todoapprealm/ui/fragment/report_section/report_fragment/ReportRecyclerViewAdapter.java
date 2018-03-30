@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
 
 import java.text.DateFormat;
@@ -30,7 +32,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
 
     View view;
     Context context;
-    private List<ReportObject> reportObjects;
+
 
     private OnItemLongClicked onItemLongClicked;
     private OnItemClicked onItemClicked;
@@ -54,8 +56,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
     }
 
 
-    public ReportRecyclerViewAdapter(Context context, List<ReportObject> reportObjects){
-       this.reportObjects = reportObjects;
+    public ReportRecyclerViewAdapter(Context context){
        this.context = context;
     }
 
@@ -68,8 +69,8 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (!reportObjects.isEmpty()) {
-            ReportObject reportObject = reportObjects.get(position);
+        if (!ReportRealmController.getReportList().isEmpty()) {
+            ReportObject reportObject = ReportRealmController.getReportList().get(position);
 
             int countOfDay = reportObject.getCountOfDay();
             int color = Color.BLACK;
@@ -154,7 +155,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
 
     @Override
     public int getItemCount() {
-        return reportObjects.size();
+        return ReportRealmController.getReportList().size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -179,7 +180,7 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
         public ViewHolder(View itemView) {
             super(itemView);
 
-            if(!reportObjects.isEmpty()) {
+            if(!ReportRealmController.getReportList().isEmpty()) {
                 cardView = itemView.findViewById(R.id.item_card_view);
                 tvDate = itemView.findViewById(R.id.tv_date);
                 tvDayCount = itemView.findViewById(R.id.tv_count_value);

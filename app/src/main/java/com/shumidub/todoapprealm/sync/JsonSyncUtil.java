@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.shumidub.todoapprealm.App;
+import com.shumidub.todoapprealm.realmcontrollers.ContainersControllers.ContainersRealmController;
 import com.shumidub.todoapprealm.realmmodel.RealmFoldersContainer;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 
@@ -18,12 +19,10 @@ import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 
 public class JsonSyncUtil {
 
-    RealmFoldersContainer realmFoldersContainer;
     Activity activity;
 
     public JsonSyncUtil(Activity activity){
         App.initRealm();
-        realmFoldersContainer = App.realm.where(RealmFoldersContainer.class).findFirst();
         this.activity = activity;
     }
 
@@ -33,7 +32,7 @@ public class JsonSyncUtil {
 
         GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
         Gson gson = builder.create();
-        String json = gson.toJson(App.realm.copyFromRealm(realmFoldersContainer));
+        String json = gson.toJson(App.realm.copyFromRealm(App.realm.where(RealmFoldersContainer.class).findFirst()));
 
 
 
@@ -41,12 +40,17 @@ public class JsonSyncUtil {
         FileWritter.saveFile(json);
 
 
+        if (jsonIsExist()){
+            ((MainActivity)activity).showToast("Saved to download folder!");
+        } else {
+            ((MainActivity)activity).showToast("Error!");
+        }
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, json);
-        sendIntent.setType("text/plain");
-        activity.startActivity(sendIntent);
+//        Intent sendIntent = new Intent();
+//        sendIntent.setAction(Intent.ACTION_SEND);
+//        sendIntent.putExtra(Intent.EXTRA_TEXT, json);
+//        sendIntent.setType("text/plain");
+//        activity.startActivity(sendIntent);
 
     }
 
@@ -70,7 +74,8 @@ public class JsonSyncUtil {
 
                 App.realm.executeTransaction((transaction) -> {
 
-                    realmFoldersContainer.deleteFromRealm();
+
+                    ContainersRealmController.deleteFromRealmAllContainers();
 
                     RealmFoldersContainer realmFoldersContainer2 = gson.fromJson(json, RealmFoldersContainer.class);
 
@@ -100,10 +105,24 @@ public class JsonSyncUtil {
                 });
 
 
-                ((MainActivity)activity).showToast("Restored! Please restart App!");
+                ((MainActivity)activity).showToast("Restored!");
 
                 App.getApp().onCreate();
-//                ((MainActivity) activity).resetAllView();
+
+
+                //todo !!!!!!!!!!!!
+
+//                ((MainActivity) activity).finishAndRemoveTask();
+                ((MainActivity) activity).finish();
+
+                ((MainActivity) activity).resetAllView();
+
+                App.getApp().onCreate();
+                Intent intent = new Intent(activity, MainActivity.class);
+                activity.startActivity(intent);
+
+
+
 //                ((MainActivity) activity).onCreateActions();
 
 

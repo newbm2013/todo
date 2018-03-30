@@ -1,5 +1,7 @@
 package com.shumidub.todoapprealm.realmcontrollers.reportcontroller;
 
+import android.util.Log;
+
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
 
@@ -14,7 +16,8 @@ public class ReportRealmController  {
 
     public static List<ReportObject> getReportList() {
         App.initRealm();
-        return App.realm.where(ReportObject.class).findAllSorted("id");
+        return App.realmFoldersContainer.reportObjectList;
+//        return App.realm.where(ReportObject.class).findAllSorted("id");
     }
 
 
@@ -55,7 +58,16 @@ public class ReportRealmController  {
 
             reportObject.setWeekReport(isWeekReport);
             reportObject.setWeekNumber(weekNumber);
-            App.realm.insert(reportObject);
+
+
+            Log.d("DTAG", "addReport: ");
+            
+//            ??????
+//            App.realm.insert(reportObject);
+
+            App.realmFoldersContainer.reportObjectList.add(reportObject);
+
+
         }));
         return id;
     }
@@ -84,9 +96,23 @@ public class ReportRealmController  {
     }
 
     public static void delReport(long id) {
+        Log.d("DTAG", "delReport: ");
         App.initRealm();
         ReportObject reportObject = App.realm.where(ReportObject.class).equalTo("id", id).findFirst();
-        realm.executeTransaction((transaction)-> reportObject.deleteFromRealm());
+
+        if (App.realm.isInTransaction()){
+            App.realmFoldersContainer.reportObjectList.remove(reportObject);
+            reportObject.deleteFromRealm();
+            App.realm.where(ReportObject.class).equalTo("id", id).findAll().deleteAllFromRealm();
+
+        } else {
+
+            realm.executeTransaction((transaction) -> {
+                App.realmFoldersContainer.reportObjectList.remove(reportObject);
+                reportObject.deleteFromRealm();
+                App.realm.where(ReportObject.class).equalTo("id", id).findAll().deleteAllFromRealm();
+            });
+        }
 
     }
 

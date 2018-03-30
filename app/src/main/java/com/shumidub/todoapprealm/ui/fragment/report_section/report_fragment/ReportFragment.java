@@ -7,14 +7,12 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,12 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
 import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
-import com.shumidub.todoapprealm.sync.LocalSyncUtil;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.actionmode.report.ReportActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
@@ -49,7 +45,7 @@ public class ReportFragment extends Fragment{
     LinearLayout emptyState;
     ActionBar actionBar;
     ReportRecyclerViewAdapter reportRecyclerViewAdapter;
-    List<ReportObject> reportObjectList;
+//    List<ReportObject> reportObjectList;
     public boolean actionModeIsEnabled = false;
 
     public static long id = 0l;
@@ -73,8 +69,8 @@ public class ReportFragment extends Fragment{
         recyclerView = view.findViewById(R.id.rv);
         emptyState = view.findViewById(R.id.empty_state);
 
-        reportObjectList = ReportRealmController.getReportList();
-        reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(getContext(),reportObjectList);
+//        reportObjectList = ReportRealmController.getReportList();
+        reportRecyclerViewAdapter = new ReportRecyclerViewAdapter(getContext());
         recyclerView.setAdapter(reportRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -117,18 +113,23 @@ public class ReportFragment extends Fragment{
         sync.setIcon(R.drawable.ic_sync);
         sync.setOnMenuItemClickListener((MenuItem a) -> {
 
-            checkPermission();
+            if (permissionIsAllowed() == true){
+                new SyncDialog().show(getActivity().getSupportFragmentManager(), "SYNC_DIALOG");
+            }else{
+                requiredWritePermisson();
+                if (permissionIsAllowed() == true){
+                    new SyncDialog().show(getActivity().getSupportFragmentManager(), "SYNC_DIALOG");
+                }else {
+                    ((MainActivity) getActivity()).showToast("Need allow permission!");
+                }
+            }
 
-            new SyncDialog().show(getActivity().getSupportFragmentManager(), "SYNC_DIALOG");
             return true;
         });
-
-
-
     }
 
     public void notifyDataChanged(){
-        reportObjectList = ReportRealmController.getReportList();
+//        reportObjectList = ReportRealmController.getReportList();
         reportRecyclerViewAdapter.notifyDataSetChanged();
 
         setEmptyStateIfNeed();
@@ -139,15 +140,18 @@ public class ReportFragment extends Fragment{
     }
 
 
-    private void checkPermission(){
+    private boolean permissionIsAllowed(){
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
-            checkPermission();
+            return false;
         } else{
-            return;
+            return true;
         }
+    }
+
+    private void requiredWritePermisson(){
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
     }
 
     public static void setId(long idReport){

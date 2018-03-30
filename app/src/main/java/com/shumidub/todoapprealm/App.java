@@ -5,6 +5,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.shumidub.todoapprealm.realmcontrollers.ContainersControllers.ContainersRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.notescontroller.FolderNotesRealmController;
+import com.shumidub.todoapprealm.realmcontrollers.reportcontroller.ReportRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.task.FolderTaskObject;
@@ -23,6 +26,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmModel;
 
+import static com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController.addTask;
 import static com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController.getTasks;
 
 /**
@@ -61,33 +65,37 @@ public class App extends Application {
         initContainers();
 
 
-        if(BuildConfig.DEBUG && FolderTaskRealmController.listOfFolderIsEmpty())
+//        addContent(100, 1000);
+
+
+        if(BuildConfig.DEBUG && FolderTaskRealmController.listOfFolderIsEmpty()) {
             Log.d("DTAG", "onCreate: ");
-//            addContent();
-        else {
-
-
-            for (RealmModel folderTask : folderOfTasksListFromContainer){
-
-                List<String> tasks = new ArrayList<>();
-
-                RealmList<TaskObject> taskObjects = ((FolderTaskObject) folderTask).getTasks();
-
-                for (TaskObject t : taskObjects){
-                    tasks.add(t.getText().toString());
-                }
-
-
-                Log.d("DTAG77", "onCreate: folderOfTasks name = "
-                        + ((FolderTaskObject)folderTask).getName() +
-                        " TASKS =  " + tasks );
-            }
-
-
-
-
-
+//            addContent(100, 500);  //= 50 000 notes, tasks and reports
         }
+//        else {
+
+
+//            for (RealmModel folderTask : folderOfTasksListFromContainer){
+//
+//                List<String> tasks = new ArrayList<>();
+//
+//                RealmList<TaskObject> taskObjects = ((FolderTaskObject) folderTask).getTasks();
+//
+//                for (TaskObject t : taskObjects){
+//                    tasks.add(t.getText().toString());
+//                }
+//
+//
+//                Log.d("DTAG77", "onCreate: folderOfTasks name = "
+//                        + ((FolderTaskObject)folderTask).getName() +
+//                        " TASKS =  " + tasks );
+//            }
+
+
+
+
+
+//        }
     }
 
     public static App getApp(){
@@ -117,41 +125,79 @@ public class App extends Application {
         folderOfNotesContainerList = realmFoldersContainer.folderOfNotesList;
     }
 
-    private void addContent() {
+
+    private void addContent(int numberFolders, int numberObjects) {
+
+        initRealm();
 
 
 
-        realm.executeTransaction((Realm realm) -> {
+        for (int i = 0; i < numberFolders; i++){
 
-            final FolderTaskObject folderObject
-                    = realm.createObject(FolderTaskObject.class);
-            folderObject.setId(System.currentTimeMillis());
-            folderObject.setName("folderObject 1 daily");
-            folderObject.setDaily(true);
-
-            final FolderTaskObject folderObject2
-                    = realm.createObject(FolderTaskObject.class);
-            folderObject2.setId(System.currentTimeMillis() + 5646465);
-            folderObject2.setName("folderObject 2 not daily");
-            folderObject.setDaily(false);
+            long idFolderTask = FolderTaskRealmController.addFolder("folder " + i, i/2==0);
+            Log.d("DTAG", "addContent: 1    " + i);
 
 
-            folderOfTasksListFromContainer.add(folderObject);
-            folderOfTasksListFromContainer.add(folderObject2);
+            for (int i2 = 0; i2 < numberObjects; i2++) {
+                addTask("Notes " + i2, 3, 4, true, 2, idFolderTask);
+                Log.d("DTAG", "addContent: 2    " + i2);
+            }
 
-           gettedFolderObject = folderOfTasksListFromContainer.get(0);
+            long idFolderNote = FolderNotesRealmController.addFolderNote("Note " + i);
+            Log.d("DTAG", "addContent: 3    " + i);
 
-        });
+            for (int i2 = 0; i2 < numberObjects; i2++) {
+                FolderNotesRealmController.addNote(idFolderNote, "note " + i2);
+                Log.d("DTAG", "addContent: 4    " + i2);
+            }
 
 
-        long folderId = ((FolderTaskObject)gettedFolderObject).getId();
-        String folderName = ((FolderTaskObject)gettedFolderObject).getName();
+            for (int i2 = 0; i2 < numberObjects; i2++) {
+                ReportRealmController.addReport("23.03.2012", 100,
+                        "TEXT REPORT #" + i,10,10,
+                        10,9,8,
+                        7,i/3!=0,13);
+                Log.d("DTAG", "addContent: 5    " + i + " " + i2);
+            }
 
-        for (int i = 0; i < 20; i++) {
-            TasksRealmController.addTask("t " + i , 1, 1,
-                    false, 1, folderId);
-            Log.d("DTAG77", "addContent: t " + i + " folder" + folderName );
+
+
+
         }
+
+
+//
+//        realm.executeTransaction((Realm realm) -> {
+//
+//            final FolderTaskObject folderObject
+//                    = realm.createObject(FolderTaskObject.class);
+//            folderObject.setId(System.currentTimeMillis());
+//            folderObject.setName("folderObject 1 daily");
+//            folderObject.setDaily(true);
+//
+//            final FolderTaskObject folderObject2
+//                    = realm.createObject(FolderTaskObject.class);
+//            folderObject2.setId(System.currentTimeMillis() + 5646465);
+//            folderObject2.setName("folderObject 2 not daily");
+//            folderObject.setDaily(false);
+//
+//
+//            folderOfTasksListFromContainer.add(folderObject);
+//            folderOfTasksListFromContainer.add(folderObject2);
+//
+//           gettedFolderObject = folderOfTasksListFromContainer.get(0);
+
+//        });
+//
+//
+//        long folderId = ((FolderTaskObject)gettedFolderObject).getId();
+//        String folderName = ((FolderTaskObject)gettedFolderObject).getName();
+//
+//        for (int i = 0; i < 20; i++) {
+//            TasksRealmController.addTask("t " + i , 1, 1,
+//                    false, 1, folderId);
+//            Log.d("DTAG77", "addContent: t " + i + " folder" + folderName );
+//        }
 
 
 
@@ -167,7 +213,12 @@ public class App extends Application {
 
         App.dayScope = 0;
 
+        Log.d("DTAG", "setDayScopeValue: = " + App.dayScope);
+
         for (TaskObject task : allDoneAndParticullaryDoneTasks) {
+
+            Log.d("DTAG", "setDayScopeValue: " + task.getText());
+
             if (task.getLastDoneDate() == todayDate) {
                 int equalDateCount = 0;
                 for (RealmInteger realmInteger : task.getDateCountAccumulation()) {
@@ -175,6 +226,9 @@ public class App extends Application {
                         equalDateCount++;
                     }
                 }
+
+                Log.d("DTAG", "setDayScopeValue: + " +  (task.getCountValue() * equalDateCount) );
+
                 App.dayScope = App.dayScope + task.getCountValue() * equalDateCount;
             }
         }

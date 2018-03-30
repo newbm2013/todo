@@ -12,6 +12,7 @@ import com.shumidub.todoapprealm.R;
 import com.shumidub.todoapprealm.realmcontrollers.notescontroller.FolderNotesRealmController;
 import com.shumidub.todoapprealm.sync.JsonSyncUtil;
 import com.shumidub.todoapprealm.sync.LocalSyncUtil;
+import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.dialog.report_dialog.AddReportDialog;
 import com.shumidub.todoapprealm.ui.fragment.note_fragment.FolderNoteFragment;
 
@@ -61,6 +62,7 @@ public class SyncDialog extends android.support.v4.app.DialogFragment {
 
         view.findViewById(R.id.btnRestore).setOnClickListener((v)->{
             jsonSyncUtil.realmBdFromJson();
+            ((MainActivity)getActivity()).invalidateOptionsMenu();
 
         });
 

@@ -51,10 +51,15 @@ public class FolderNotesRealmController implements INotesController {
         Log.d("DTAG77777", "delFolderNote: size = " + realmList.size());
 
         App.initRealm();
-        App.realm.executeTransaction((r) -> {
-                    realmList.deleteAllFromRealm();
-                    App.realm.where(FolderNotesObject.class).equalTo("id", id).findFirst().deleteFromRealm();
-        });
+        if (App.realm.isInTransaction()){
+            realmList.deleteAllFromRealm();
+            App.realm.where(FolderNotesObject.class).equalTo("id", id).findAll().deleteAllFromRealm();
+        } else {
+            App.realm.executeTransaction((r) -> {
+                realmList.deleteAllFromRealm();
+                App.realm.where(FolderNotesObject.class).equalTo("id", id).findAll().deleteAllFromRealm();
+            });
+        }
     }
 
 

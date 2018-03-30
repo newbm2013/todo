@@ -1,5 +1,6 @@
 package com.shumidub.todoapprealm.ui.activity.main;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,11 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.shumidub.todoapprealm.App;
 import com.shumidub.todoapprealm.R;
+import com.shumidub.todoapprealm.realmmodel.notes.NoteObject;
+import com.shumidub.todoapprealm.realmmodel.report.ReportObject;
+import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.note_fragment.FolderNoteFragment;
 import com.shumidub.todoapprealm.ui.fragment.report_section.report_fragment.ReportFragment;
 import com.shumidub.todoapprealm.ui.fragment.task_section.folder_panel_sliding_fragment.fragment.FolderSlidingPanelFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import io.realm.RealmObject;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     ActionMode actionMode;
 
     int pagerAdapterPosition = 1;
+
+    MenuItem dayScopeMenu;
 
 
     @Override
@@ -143,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mainPagerAdapter);
 
+        mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        viewPager = null;
+
     }
 
     @Override
@@ -173,15 +184,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem dayScopeMenu = menu.add(2,2,2,"" + App.dayScope);
+        dayScopeMenu = menu.add(2,2,2,"" + App.dayScope);
         dayScopeMenu.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        dayScopeMenu.setOnMenuItemClickListener((v)-> true);
+        dayScopeMenu.setOnMenuItemClickListener((v)->{
+
+            App.initRealm();
+
+            Log.d("DTAG", "onCreateOptionsMenu: reports =  " + App.realm.where(ReportObject.class).findAll().toString());
+            Log.d("DTAG", "onCreateOptionsMenu: notes ="  + App.realm.where(NoteObject.class).findAll().toString());
+            Log.d("DTAG", "onCreateOptionsMenu: tasks" + App.realm.where(TaskObject.class).findAll().toString());
+
+            return true;});
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public void invalidateOptionsMenu() {
         App.setDayScopeValue();
+        if (dayScopeMenu !=null) dayScopeMenu.setTitle("" + App.dayScope);
         super.invalidateOptionsMenu();
     }
 
@@ -257,12 +277,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void showToast(String text){
-        Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        if (!MainActivity.this.isFinishing()) {
+            Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
 //        View view = toast.getView();
 //        view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 //        TextView textView = (TextView) view.findViewById(android.R.id.message);
 //        textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-        toast.show();
+            toast.show();
+        }
     }
 
     public int getPagerAdapterPosition() {

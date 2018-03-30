@@ -71,27 +71,68 @@ public class FolderTaskRealmController {
         App.initRealm();
         RealmList<TaskObject> realmList = folderObject.getTasks();
 
-        realm.executeTransaction((transaction)-> {
-            realmList.deleteAllFromRealm();
+        long folderId = folderObject.getId();
 
-            ArrayList<Long> arrayList = new ArrayList<>();
-            for (int i = 0; i<App.folderOfTasksListFromContainer.size(); i++){
-                arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
-            }
-            Log.d("DTAG24257", "BEFORE DELETING - folderIdArray = : " + arrayList.toString());
+        if (App.realm.isInTransaction()){
 
 
-            App.folderOfTasksListFromContainer.remove(folderObject);
-
-            arrayList.clear();
-            for (int i = 0; i<App.folderOfTasksListFromContainer.size(); i++){
-                arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
-            }
-            Log.d("DTAG24257", "AFTER DELETING - folderIdArray = : " + arrayList.toString());
+                realmList.deleteAllFromRealm();
+                App.realm.where(TaskObject.class).equalTo("taskFolderId", folderId).findAll().deleteAllFromRealm();
 
 
-            folderObject.deleteFromRealm();
-        });
+//            ArrayList<Long> arrayList = new ArrayList<>();
+//            for (int i = 0; i<App.folderOfTasksListFromContainer.size(); i++){
+//                arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
+//            }
+//            Log.d("DTAG24257", "BEFORE DELETING - folderIdArray = : " + arrayList.toString());
+
+
+                App.folderOfTasksListFromContainer.remove(folderObject);
+
+//            arrayList.clear();
+//            for (int i = 0; i<App.folderOfTasksListFromContainer.size(); i++){
+//                arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
+//            }
+//            Log.d("DTAG24257", "AFTER DELETING - folderIdArray = : " + arrayList.toString());
+
+
+                folderObject.deleteFromRealm();
+
+                App.realm.where(FolderTaskObject.class).equalTo("id", folderId).findAll().deleteAllFromRealm();
+
+
+
+        }else {
+
+            realm.executeTransaction((transaction) -> {
+                realmList.deleteAllFromRealm();
+                App.realm.where(TaskObject.class).equalTo("taskFolderId", folderId).findAll().deleteAllFromRealm();
+
+
+//            ArrayList<Long> arrayList = new ArrayList<>();
+//            for (int i = 0; i<App.folderOfTasksListFromContainer.size(); i++){
+//                arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
+//            }
+//            Log.d("DTAG24257", "BEFORE DELETING - folderIdArray = : " + arrayList.toString());
+
+
+                App.folderOfTasksListFromContainer.remove(folderObject);
+
+//            arrayList.clear();
+//            for (int i = 0; i<App.folderOfTasksListFromContainer.size(); i++){
+//                arrayList.add(App.folderOfTasksListFromContainer.get(i).getId());
+//            }
+//            Log.d("DTAG24257", "AFTER DELETING - folderIdArray = : " + arrayList.toString());
+
+
+                folderObject.deleteFromRealm();
+
+                App.realm.where(FolderTaskObject.class).equalTo("id", folderId).findAll().deleteAllFromRealm();
+
+
+            });
+
+        }
     }
 
     /** delete folder by id */

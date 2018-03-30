@@ -85,11 +85,17 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
                         FolderTaskRealmController.editFolder(folderObject, text, cbIsDaily.isChecked());
                         folderSlidingPanelFragment.finishActionMode();
                         folderSlidingPanelFragment.notifyListsDataChanged();
-                        activity.showToast("Done");
-//                        Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
 
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
+
+                        if (activity == null) activity = (MainActivity) getActivity();
+                        if (activity.isFinishing()) return;
+                        else {
+                            activity.showToast("Done");
+//                        Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                        }
+
 
                     } else if (title == DELETE_LIST){
                         if (folderObject.getId() != defaultFolderId) {
@@ -98,9 +104,13 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
 //                            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                             folderSlidingPanelFragment.finishActionMode();
                             activity.invalidateOptionsMenu();
-                            activity.showToast("Deleted");
                             folderSlidingPanelFragment.notifyListsDataChanged();
+                            if (activity == null) activity = (MainActivity) getActivity();
+                            if (activity.isFinishing()) return;
+                            activity.showToast("Deleted");
                         }else{
+                            if (activity == null) activity = (MainActivity) getActivity();
+                            if (activity.isFinishing()) return;
                             activity.showToast("Can't delete default folderObject");
 //                            Toast.makeText(getContext(),
 //                                    "Can't delete default folderObject", Toast.LENGTH_SHORT).show();
