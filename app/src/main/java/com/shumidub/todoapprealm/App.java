@@ -1,6 +1,7 @@
 package com.shumidub.todoapprealm;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
@@ -48,6 +49,7 @@ public class App extends Application {
     RealmModel gettedFolderObject;
 
     public static int dayScope;
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -126,44 +128,44 @@ public class App extends Application {
     }
 
 
-    private void addContent(int numberFolders, int numberObjects) {
-
-        initRealm();
-
-
-
-        for (int i = 0; i < numberFolders; i++){
-
-            long idFolderTask = FolderTaskRealmController.addFolder("folder " + i, i/2==0);
-            Log.d("DTAG", "addContent: 1    " + i);
-
-
-            for (int i2 = 0; i2 < numberObjects; i2++) {
-                addTask("Notes " + i2, 3, 4, true, 2, idFolderTask);
-                Log.d("DTAG", "addContent: 2    " + i2);
-            }
-
-            long idFolderNote = FolderNotesRealmController.addFolderNote("Note " + i);
-            Log.d("DTAG", "addContent: 3    " + i);
-
-            for (int i2 = 0; i2 < numberObjects; i2++) {
-                FolderNotesRealmController.addNote(idFolderNote, "note " + i2);
-                Log.d("DTAG", "addContent: 4    " + i2);
-            }
-
-
-            for (int i2 = 0; i2 < numberObjects; i2++) {
-                ReportRealmController.addReport("23.03.2012", 100,
-                        "TEXT REPORT #" + i,10,10,
-                        10,9,8,
-                        7,i/3!=0,13);
-                Log.d("DTAG", "addContent: 5    " + i + " " + i2);
-            }
-
-
-
-
-        }
+//    private void addContent(int numberFolders, int numberObjects) {
+//
+//        initRealm();
+//
+//
+//
+//        for (int i = 0; i < numberFolders; i++){
+//
+//            long idFolderTask = FolderTaskRealmController.addFolder("folder " + i, i/2==0);
+//            Log.d("DTAG", "addContent: 1    " + i);
+//
+//
+//            for (int i2 = 0; i2 < numberObjects; i2++) {
+//                addTask("Notes " + i2, 3, 4, true, 2, idFolderTask);
+//                Log.d("DTAG", "addContent: 2    " + i2);
+//            }
+//
+//            long idFolderNote = FolderNotesRealmController.addFolderNote("Note " + i);
+//            Log.d("DTAG", "addContent: 3    " + i);
+//
+//            for (int i2 = 0; i2 < numberObjects; i2++) {
+//                FolderNotesRealmController.addNote(idFolderNote, "note " + i2);
+//                Log.d("DTAG", "addContent: 4    " + i2);
+//            }
+//
+//
+//            for (int i2 = 0; i2 < numberObjects; i2++) {
+//                ReportRealmController.addReport("23.03.2012", 100,
+//                        "TEXT REPORT #" + i,10,10,
+//                        10,9,8,
+//                        7,i/3!=0,13);
+//                Log.d("DTAG", "addContent: 5    " + i + " " + i2);
+//            }
+//
+//
+//
+//
+//        }
 
 
 //
@@ -202,7 +204,7 @@ public class App extends Application {
 
 
 
-    }
+//    }
 
     public static void setDayScopeValue(){
         // done and not done tasks but where countAccumulation more than 0

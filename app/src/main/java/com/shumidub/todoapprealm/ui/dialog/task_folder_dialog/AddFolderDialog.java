@@ -51,7 +51,7 @@ public class AddFolderDialog extends android.support.v4.app.DialogFragment {
                             activity.showToast("Done");
                             for (Fragment fragment : activity.getSupportFragmentManager().getFragments()){
                                 if (fragment instanceof FolderSlidingPanelFragment){
-                                    ((FolderSlidingPanelFragment) fragment).notifyListsDataChanged();
+                                    ((FolderSlidingPanelFragment) fragment).notifySmallTasksViewPagerListsChanged();
                                 }
                             }
                         }

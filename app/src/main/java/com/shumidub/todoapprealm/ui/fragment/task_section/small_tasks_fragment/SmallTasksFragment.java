@@ -14,14 +14,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.shumidub.todoapprealm.R;
-import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.FolderTaskRealmController;
 import com.shumidub.todoapprealm.realmcontrollers.taskcontroller.TasksRealmController;
 import com.shumidub.todoapprealm.realmmodel.task.TaskObject;
 import com.shumidub.todoapprealm.ui.actionmode.EmptyActionModeCallback;
 import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.task.TaskActionModeCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -144,7 +142,7 @@ public class SmallTasksFragment extends Fragment {
 
         rvTasks.setHasFixedSize(true);
         setTasksListClickListeners();
-        setTasks();
+        setTasksAndRV();
         setEmptyStateIfNeed();
     }
 
@@ -172,7 +170,15 @@ public class SmallTasksFragment extends Fragment {
         };
     }
 
-    public void setTasks(){
+
+    public void setTasksAndNotifyDataSetChanged(){
+        tasks = TasksRealmController.getNotDoneTasks(tasksFolderId);
+        doneTasks = TasksRealmController.getDoneTasks(tasksFolderId);
+        notifyDataChanged();
+    }
+
+
+    public void setTasksAndRV(){
 
 
 //        if (tasksFolderId == 0) tasks = TasksRealmController.getNotDoneTasks();
@@ -195,7 +201,7 @@ public class SmallTasksFragment extends Fragment {
         tasksRecyclerViewAdapter.setOnLongClicked(onItemLongClicked);
         tasksRecyclerViewAdapter.setOnClicked(onItemClicked);
 
-        Log.d("DTAG458", "setTasks: ATTACHEDDD" + rvTasks.getAdapter().getItemCount());
+        Log.d("DTAG458", "setTasksAndRV: ATTACHEDDD" + rvTasks.getAdapter().getItemCount());
 
         setItemTouchHelperAttacher();
         itemTouchHelperAttacher.attachTouchHelperToRecyclerView(rvTasks);
@@ -254,13 +260,13 @@ public class SmallTasksFragment extends Fragment {
     }
 
 //    public void tasksDataChanged(){
-//        // if you need use it, use it without attach touch helper inside setTasks();
-//        setTasks();
+//        // if you need use it, use it without attach touch helper inside setTasksAndRV();
+//        setTasksAndRV();
 //    }
 
-    public void finishActionMode(){
-        ((MainActivity) getActivity()).startSupportActionMode(new EmptyActionModeCallback());
-    }
+//    public void finishActionMode(){
+//        ((MainActivity) getActivity()).startSupportActionMode(new EmptyActionModeCallback());
+//    }
 
     private void setEmptyStateIfNeed(){
 

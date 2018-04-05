@@ -40,6 +40,7 @@ import com.shumidub.todoapprealm.ui.activity.main.MainActivity;
 import com.shumidub.todoapprealm.ui.actionmode.task.FolderActionModeCallback;
 import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTaskFragmentPagerAdapter;
 import com.shumidub.todoapprealm.ui.dialog.task_folder_dialog.AddFolderDialog;
+import com.shumidub.todoapprealm.ui.fragment.task_section.small_tasks_fragment.SmallTasksFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -100,6 +101,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
     public static Long idFolderFromTag;
     private static String title;
     public static String titleFolder;
+    int lastDateResetTasksCountAccumulation;
 
     ////////////////////////////     SMALL TASKS VIEWS AND VARIABLES     //////////////////////////
 
@@ -228,7 +230,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
                 } else {
                     idFolderFromTag = (Long) holder.itemView.findViewById(R.id.tv_note_text).getTag();
-                    // setTasks(); //todo check if it need
+                    // setTasksAndRV(); //todo check if it need
                     smallTaskFragmentPagerAdapter = new SmallTaskFragmentPagerAdapter(getActivity().getSupportFragmentManager());
                     smallTasksViewPager.setAdapter(smallTaskFragmentPagerAdapter);
                     smallTasksViewPager.setCurrentItem(position);
@@ -386,6 +388,23 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        int todayDate = Integer.valueOf("" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR) +
+                Calendar.getInstance().get(Calendar.YEAR));
+
+        if (lastDateResetTasksCountAccumulation!=todayDate){
+            if (resetTasksCountAccumulation()){
+                for (int position = 0; position < smallTaskFragmentPagerAdapter.getCount(); position ++){
+                    ((SmallTasksFragment)smallTaskFragmentPagerAdapter.getItem(position)).setTasksAndNotifyDataSetChanged();
+                }
+            }
+        }
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -487,7 +506,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
         onResume();
     }
 
-    public void notifyListsDataChanged(){
+    public void notifySmallTasksViewPagerListsChanged(){
 //      folderObjects = FolderRealmController.getFolders();
 //      folderOfTaskRVAdapter.notifyDataSetChanged();
         folderOfTaskRVAdapter.notifyDataSetChanged();
@@ -511,7 +530,7 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
     }
 
 //    protected void tasksDataChanged(){
-//        setTasks();
+//        setTasksAndRV();
 //    }
 
     public void finishActionMode(){
@@ -523,7 +542,10 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
 
 
     /** update done status and number of doing on cycling tasks if done day != today*/
-    private void resetTasksCountAccumulation(){
+    private boolean resetTasksCountAccumulation(){
+
+        boolean resetingIsUsed = false;
+
         // done and not done tasks but where countAccumulation more than 0
         List<TaskObject> allDoneAndParticullaryDoneTasks = TasksRealmController.getDoneAndPartiallyDoneTasks();
 
@@ -533,8 +555,12 @@ public class FolderSlidingPanelFragment extends Fragment implements IViewFolderS
         for (TaskObject task : allDoneAndParticullaryDoneTasks) {
             if (task.isCycling()  && task.getLastDoneDate() != todayDate ){
                 TasksRealmController.setTaskDoneOrParticullaryDone(task, false);
+                resetingIsUsed = true;
             }
         }
+        lastDateResetTasksCountAccumulation = todayDate;
+        return resetingIsUsed;
+
     }
 
     public static String getTitle(){

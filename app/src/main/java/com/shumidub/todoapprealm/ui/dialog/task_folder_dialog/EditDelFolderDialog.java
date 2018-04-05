@@ -84,7 +84,7 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
                         String text = etName.getText().toString();
                         FolderTaskRealmController.editFolder(folderObject, text, cbIsDaily.isChecked());
                         folderSlidingPanelFragment.finishActionMode();
-                        folderSlidingPanelFragment.notifyListsDataChanged();
+                        folderSlidingPanelFragment.notifySmallTasksViewPagerListsChanged();
 
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getDialog().getWindow().getDecorView().getWindowToken(), 0);
@@ -104,7 +104,7 @@ public class EditDelFolderDialog extends android.support.v4.app.DialogFragment{
 //                            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                             folderSlidingPanelFragment.finishActionMode();
                             activity.invalidateOptionsMenu();
-                            folderSlidingPanelFragment.notifyListsDataChanged();
+                            folderSlidingPanelFragment.notifySmallTasksViewPagerListsChanged();
                             if (activity == null) activity = (MainActivity) getActivity();
                             if (activity.isFinishing()) return;
                             activity.showToast("Deleted");
