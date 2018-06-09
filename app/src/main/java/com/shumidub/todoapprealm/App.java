@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.shumidub.todoapprealm.realmcontrollers.ContainersControllers.ContainersRealmController;
@@ -49,6 +50,12 @@ public class App extends Application {
     RealmModel gettedFolderObject;
 
     public static int dayScope;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
